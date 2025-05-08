@@ -62,6 +62,7 @@ const achievementsData = [
     progress: 100,
     icon: <Users />,
     completed: true,
+    claimed: true,
     pointsAwarded: 50
   },
   {
@@ -71,6 +72,7 @@ const achievementsData = [
     progress: 100,
     icon: <Star />,
     completed: true,
+    claimed: true,
     pointsAwarded: 100
   },
   {
@@ -80,6 +82,7 @@ const achievementsData = [
     progress: 60,
     icon: <TrendingUp />,
     completed: false,
+    claimed: false,
     pointsAwarded: 200
   },
   {
@@ -89,6 +92,7 @@ const achievementsData = [
     progress: 33,
     icon: <Shield />,
     completed: false,
+    claimed: false,
     pointsAwarded: 300
   }
 ];

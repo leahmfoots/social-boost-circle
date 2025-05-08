@@ -69,7 +69,7 @@ const completedEngagements = [
     title: "Amazing Places in Europe",
     points: 15,
     completedAt: "2023-05-07T13:24:00",
-    status: "verified"
+    status: "verified" as const
   },
   {
     id: "c2",
@@ -79,7 +79,7 @@ const completedEngagements = [
     title: "Easy 10-Minute Recipes",
     points: 10, 
     completedAt: "2023-05-06T17:45:00",
-    status: "verified"
+    status: "verified" as const
   },
   {
     id: "c3",
@@ -89,7 +89,7 @@ const completedEngagements = [
     title: "Digital Art Creation Process",
     points: 5,
     completedAt: "2023-05-05T09:30:00",
-    status: "verified"
+    status: "verified" as const
   }
 ];
 
