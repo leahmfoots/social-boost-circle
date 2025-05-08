@@ -8,9 +8,13 @@ import { Award, Gift, Star, TrendingUp, Lock, Shield, Users, Check } from "lucid
 import { toast } from "@/hooks/use-toast";
 import DashboardLayout from "@/components/DashboardLayout";
 import RewardClaimModal from "@/components/RewardClaimModal";
+import { Achievement, Reward } from "@/types/rewards";
+import RewardsSection from "@/components/rewards/RewardsSection";
+import AchievementsSection from "@/components/rewards/AchievementsSection";
+import RewardsProgress from "@/components/rewards/RewardsProgress";
 
 // Sample rewards data
-const rewardsData = [
+const rewardsData: Reward[] = [
   {
     id: "1",
     title: "Featured Creator Spotlight",
@@ -54,7 +58,7 @@ const rewardsData = [
 ];
 
 // Sample achievements data
-const achievementsData = [
+const achievementsData: Achievement[] = [
   {
     id: "a1",
     title: "First Steps",
@@ -101,10 +105,10 @@ const RewardsPage = () => {
   const [rewards, setRewards] = useState(rewardsData);
   const [achievements, setAchievements] = useState(achievementsData);
   const [showModal, setShowModal] = useState(false);
-  const [selectedReward, setSelectedReward] = useState<typeof rewardsData[0] | null>(null);
+  const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [userPoints, setUserPoints] = useState(780);
   
-  const handleClaimReward = (reward: typeof rewardsData[0]) => {
+  const handleClaimReward = (reward: Reward) => {
     setSelectedReward(reward);
     setShowModal(true);
   };
@@ -170,126 +174,22 @@ const RewardsPage = () => {
           </Badge>
         </div>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>Rewards Progress</CardTitle>
-            <CardDescription>Track your journey to the next reward level</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {rewards
-              .sort((a, b) => a.pointsRequired - b.pointsRequired)
-              .filter(r => r.pointsRequired > userPoints)
-              .slice(0, 1)
-              .map(nextReward => (
-                <div key={nextReward.id} className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Next reward: {nextReward.title}</span>
-                    <span>{userPoints}/{nextReward.pointsRequired} points</span>
-                  </div>
-                  <Progress value={(userPoints / nextReward.pointsRequired) * 100} />
-                  <p className="text-xs text-muted-foreground">
-                    {nextReward.pointsRequired - userPoints} more points needed
-                  </p>
-                </div>
-              ))}
-          </CardContent>
-        </Card>
+        <RewardsProgress 
+          rewards={rewards}
+          userPoints={userPoints}
+        />
       </div>
       
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Available Rewards</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {rewards.map(reward => (
-            <Card key={reward.id}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle>{reward.title}</CardTitle>
-                    <CardDescription>{reward.description}</CardDescription>
-                  </div>
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Gift className="h-5 w-5 text-primary" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Badge variant="secondary" className="mb-1">
-                  {reward.category}
-                </Badge>
-                <div className="text-sm font-medium mt-1">
-                  {reward.pointsRequired} points required
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full" 
-                  disabled={userPoints < reward.pointsRequired}
-                  onClick={() => handleClaimReward(reward)}
-                >
-                  {userPoints >= reward.pointsRequired ? (
-                    "Claim Reward"
-                  ) : (
-                    <div className="flex items-center">
-                      <Lock className="h-4 w-4 mr-2" />
-                      <span>Need {reward.pointsRequired - userPoints} more points</span>
-                    </div>
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <RewardsSection 
+        rewards={rewards}
+        userPoints={userPoints}
+        onClaimReward={handleClaimReward}
+      />
       
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Achievements</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {achievements.map(achievement => (
-            <Card key={achievement.id}>
-              <CardHeader className="flex flex-row items-start gap-4">
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  {achievement.icon}
-                </div>
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    {achievement.title}
-                    {achievement.completed && (
-                      <Badge variant="outline" className="flex items-center gap-1">
-                        <Check className="h-3 w-3" />
-                        Completed
-                      </Badge>
-                    )}
-                  </CardTitle>
-                  <CardDescription>{achievement.description}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Progress</span>
-                    <span>{achievement.progress}%</span>
-                  </div>
-                  <Progress value={achievement.progress} />
-                </div>
-                {achievement.completed && (
-                  <div className="mt-3 text-sm font-medium">
-                    {achievement.claimed ? (
-                      <Badge>Claimed ({achievement.pointsAwarded} points)</Badge>
-                    ) : (
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleClaimAchievement(achievement.id)}
-                      >
-                        Claim {achievement.pointsAwarded} points
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <AchievementsSection 
+        achievements={achievements}
+        onClaimAchievement={handleClaimAchievement}
+      />
       
       <RewardClaimModal
         open={showModal}

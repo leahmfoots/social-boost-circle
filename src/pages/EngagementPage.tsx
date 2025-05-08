@@ -9,9 +9,10 @@ import DashboardLayout from "@/components/DashboardLayout";
 import EngagementTable from "@/components/EngagementTable";
 import EngagementOpportunity from "@/components/EngagementOpportunity";
 import PointsHistory from "@/components/PointsHistory";
+import { Engagement, Opportunity } from "@/types/engagement";
 
 // Sample data
-const engagementOpportunities = [
+const engagementOpportunities: Opportunity[] = [
   {
     id: "1",
     username: "creator123",
@@ -60,7 +61,7 @@ const engagementOpportunities = [
 ];
 
 // Sample completed engagements
-const completedEngagements = [
+const completedEngagements: Engagement[] = [
   {
     id: "c1",
     username: "travel_vlogger",
@@ -69,7 +70,7 @@ const completedEngagements = [
     title: "Amazing Places in Europe",
     points: 15,
     completedAt: "2023-05-07T13:24:00",
-    status: "verified" as const
+    status: "verified"
   },
   {
     id: "c2",
@@ -79,7 +80,7 @@ const completedEngagements = [
     title: "Easy 10-Minute Recipes",
     points: 10, 
     completedAt: "2023-05-06T17:45:00",
-    status: "verified" as const
+    status: "verified"
   },
   {
     id: "c3",
@@ -89,7 +90,7 @@ const completedEngagements = [
     title: "Digital Art Creation Process",
     points: 5,
     completedAt: "2023-05-05T09:30:00",
-    status: "verified" as const
+    status: "verified"
   }
 ];
 
@@ -108,10 +109,10 @@ const EngagementPage = () => {
     setOpportunities(opportunities.filter(opp => opp.id !== id));
     
     // Add to completed
-    const newCompleted = {
+    const newCompleted: Engagement = {
       ...opportunity,
       completedAt: new Date().toISOString(),
-      status: "pending" as const
+      status: "pending"
     };
     
     setCompleted([newCompleted, ...completed]);
@@ -119,7 +120,7 @@ const EngagementPage = () => {
     // After a delay, update to verified (simulating verification process)
     setTimeout(() => {
       setCompleted(prev => prev.map(eng => 
-        eng.id === id ? {...eng, status: "verified" as const} : eng
+        eng.id === id ? {...eng, status: "verified"} : eng
       ));
       
       // Update points

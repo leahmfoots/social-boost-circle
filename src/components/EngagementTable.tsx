@@ -9,17 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-interface Engagement {
-  id: string;
-  username: string;
-  platform: string;
-  contentType: string;
-  title: string;
-  points: number;
-  completedAt: string;
-  status: "pending" | "verified" | "rejected";
-}
+import { Engagement } from "@/types/engagement";
 
 interface EngagementTableProps {
   engagements: Engagement[];

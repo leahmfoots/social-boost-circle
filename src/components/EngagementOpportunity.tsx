@@ -3,16 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Award, Link as LinkIcon } from "lucide-react";
-
-interface Opportunity {
-  id: string;
-  username: string;
-  platform: string;
-  contentType: string;
-  title: string;
-  points: number;
-  timeRequired: string;
-}
+import { Opportunity } from "@/types/engagement";
 
 interface EngagementOpportunityProps {
   opportunity: Opportunity;
