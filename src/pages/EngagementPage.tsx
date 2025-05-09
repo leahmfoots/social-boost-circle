@@ -1,241 +1,220 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Users, MessageSquare, Heart, Award, Filter } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import DashboardLayout from "@/components/DashboardLayout";
-import EngagementTable from "@/components/EngagementTable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import EngagementOpportunity from "@/components/EngagementOpportunity";
-import PointsHistory from "@/components/PointsHistory";
+import EngagementTable from "@/components/EngagementTable";
+import EngagementChart from "@/components/analytics/EngagementChart";
+import EngagementFilter from "@/components/engagement/EngagementFilter";
 import { Engagement, Opportunity } from "@/types/engagement";
+import { Input } from "@/components/ui/input";
+import { Search, SlidersHorizontal } from "lucide-react";
 
-// Sample data
-const engagementOpportunities: Opportunity[] = [
+// Mock data for opportunities and engagements
+const mockOpportunities: Opportunity[] = [
   {
     id: "1",
-    username: "creator123",
+    username: "tech_guru",
     platform: "YouTube",
-    contentType: "video",
-    title: "How to Grow Your Audience in 2023",
-    points: 15,
-    timeRequired: "3-5 min",
+    contentType: "Video",
+    title: "React 18 New Features Explained",
+    points: 40,
+    timeRequired: "5-7 min",
   },
   {
     id: "2",
-    username: "social_expert",
-    platform: "Twitter",
-    contentType: "tweet",
-    title: "10 Tips for Better Engagement",
-    points: 5,
-    timeRequired: "1-2 min",
+    username: "design_expert",
+    platform: "Instagram",
+    contentType: "Post",
+    title: "UI Design Trends for 2023",
+    points: 25,
+    timeRequired: "3-4 min",
   },
   {
     id: "3",
-    username: "content_queen",
-    platform: "Instagram",
-    contentType: "post",
-    title: "My Journey as a Content Creator",
-    points: 10,
+    username: "code_master",
+    platform: "Twitter",
+    contentType: "Thread",
+    title: "TypeScript Tips & Tricks",
+    points: 20,
     timeRequired: "2-3 min",
   },
   {
     id: "4",
-    username: "tech_reviewer",
-    platform: "YouTube",
-    contentType: "video",
-    title: "Latest Tech Gadgets Review",
-    points: 20,
-    timeRequired: "5-7 min",
+    username: "mobile_dev",
+    platform: "TikTok",
+    contentType: "Short",
+    title: "Swift UI Animation Tutorial",
+    points: 30,
+    timeRequired: "1-2 min",
   },
   {
     id: "5",
-    username: "fitness_guru",
-    platform: "TikTok",
-    contentType: "video",
-    title: "Quick Home Workout Routine",
-    points: 8,
-    timeRequired: "2-3 min",
-  }
+    username: "web_wizard",
+    platform: "LinkedIn",
+    contentType: "Article",
+    title: "The Future of Web Development",
+    points: 35,
+    timeRequired: "8-10 min",
+  },
 ];
 
-// Sample completed engagements
-const completedEngagements: Engagement[] = [
+const mockEngagements: Engagement[] = [
   {
-    id: "c1",
-    username: "travel_vlogger",
+    id: "e1",
+    username: "tech_reviewer",
     platform: "YouTube",
-    contentType: "video",
-    title: "Amazing Places in Europe",
-    points: 15,
-    completedAt: "2023-05-07T13:24:00",
-    status: "verified"
+    contentType: "Video",
+    title: "Top 10 VSCode Extensions for Developers",
+    points: 45,
+    completedAt: "2023-05-15T10:30:00Z",
+    status: "verified",
   },
   {
-    id: "c2",
-    username: "cooking_master",
+    id: "e2",
+    username: "ui_designer",
     platform: "Instagram",
-    contentType: "post",
-    title: "Easy 10-Minute Recipes",
-    points: 10, 
-    completedAt: "2023-05-06T17:45:00",
-    status: "verified"
+    contentType: "Story",
+    title: "Color Theory for Digital Designers",
+    points: 20,
+    completedAt: "2023-05-10T14:45:00Z",
+    status: "pending",
   },
   {
-    id: "c3",
-    username: "digital_artist",
+    id: "e3",
+    username: "js_developer",
     platform: "Twitter",
-    contentType: "tweet",
-    title: "Digital Art Creation Process",
-    points: 5,
-    completedAt: "2023-05-05T09:30:00",
-    status: "verified"
-  }
+    contentType: "Tweet",
+    title: "Why You Should Learn React in 2023",
+    points: 15,
+    completedAt: "2023-05-05T09:15:00Z",
+    status: "rejected",
+  },
 ];
 
 const EngagementPage = () => {
-  const [activeTab, setActiveTab] = useState("opportunities");
-  const [opportunities, setOpportunities] = useState(engagementOpportunities);
-  const [completed, setCompleted] = useState(completedEngagements);
-  const [totalPoints, setTotalPoints] = useState(780);
-  
-  const handleEngagement = (id: string) => {
-    // Find the opportunity
-    const opportunity = opportunities.find(opp => opp.id === id);
-    if (!opportunity) return;
+  const { toast } = useToast();
+  const [opportunities, setOpportunities] = useState(mockOpportunities);
+  const [engagements] = useState(mockEngagements);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    // Remove from opportunities
-    setOpportunities(opportunities.filter(opp => opp.id !== id));
+  // Filter handling
+  const handleFilterChange = ({ platforms, contentTypes }: any) => {
+    // Apply filters to opportunities
+    let filtered = [...mockOpportunities];
     
-    // Add to completed
-    const newCompleted: Engagement = {
-      ...opportunity,
-      completedAt: new Date().toISOString(),
-      status: "pending"
-    };
+    if (platforms.length > 0) {
+      filtered = filtered.filter(opp => platforms.includes(opp.platform.toLowerCase()));
+    }
     
-    setCompleted([newCompleted, ...completed]);
+    if (contentTypes.length > 0) {
+      filtered = filtered.filter(opp => contentTypes.includes(opp.contentType.toLowerCase()));
+    }
     
-    // After a delay, update to verified (simulating verification process)
-    setTimeout(() => {
-      setCompleted(prev => prev.map(eng => 
-        eng.id === id ? {...eng, status: "verified"} : eng
-      ));
-      
-      // Update points
-      setTotalPoints(prev => prev + opportunity.points);
-      
+    if (searchTerm) {
+      filtered = filtered.filter(opp => 
+        opp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        opp.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    setOpportunities(filtered);
+  };
+  
+  // Search handling
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (!value.trim()) {
+      setOpportunities(mockOpportunities);
+      return;
+    }
+    
+    const filtered = mockOpportunities.filter(opp => 
+      opp.title.toLowerCase().includes(value.toLowerCase()) ||
+      opp.username.toLowerCase().includes(value.toLowerCase())
+    );
+    
+    setOpportunities(filtered);
+  };
+
+  const handleEngage = (opportunityId: string) => {
+    const opportunity = opportunities.find((opp) => opp.id === opportunityId);
+    
+    if (opportunity) {
       toast({
-        title: "Engagement Verified",
-        description: `You earned ${opportunity.points} points for engaging with ${opportunity.title}.`,
+        title: "Engagement Started",
+        description: `You're now engaging with ${opportunity.username}'s content.`
       });
-    }, 3000);
-    
-    toast({
-      title: "Engagement Submitted",
-      description: "Your engagement is being verified. Points will be awarded soon.",
-    });
+      
+      // In a real app, this would trigger an API call
+      console.log(`Engaging with opportunity: ${opportunityId}`);
+    }
   };
 
   return (
-    <DashboardLayout title="Engagement">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Engagement Hub</h1>
-        <p className="text-muted-foreground">
-          Engage with other creators' content, earn points, and grow together.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Points</CardTitle>
-            <Award className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalPoints}</div>
-            <p className="text-xs text-muted-foreground">
-              +45 points since last week
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Engagements</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{completed.length}</div>
-            <p className="text-xs text-muted-foreground">
-              +3 engagements since last week
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Engagement Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">18.2%</div>
-            <p className="text-xs text-muted-foreground">
-              +2.4% since last week
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="opportunities" className="mb-8">
-        <TabsList className="mb-4">
-          <TabsTrigger 
-            value="opportunities"
-            onClick={() => setActiveTab("opportunities")}
-          >
-            Engagement Opportunities
-          </TabsTrigger>
-          <TabsTrigger 
-            value="history"
-            onClick={() => setActiveTab("history")}
-          >
-            Engagement History
-          </TabsTrigger>
-          <TabsTrigger 
-            value="points"
-            onClick={() => setActiveTab("points")}
-          >
-            Points History
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="opportunities" className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Available Opportunities</h2>
-            <Button size="sm" variant="outline">
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
-          </div>
-          
-          <div className="grid gap-4">
-            {opportunities.map((opp) => (
-              <EngagementOpportunity 
-                key={opp.id}
-                opportunity={opp}
-                onEngage={handleEngagement}
+    <DashboardLayout title="Engagement Hub">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold tracking-tight">Engagement Hub</h1>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search opportunities..."
+                className="w-[200px] pl-8 sm:w-[300px]"
+                value={searchTerm}
+                onChange={handleSearch}
               />
-            ))}
+            </div>
+            <EngagementFilter onFilterChange={handleFilterChange} />
           </div>
-        </TabsContent>
+        </div>
         
-        <TabsContent value="history">
-          <EngagementTable engagements={completed} />
-        </TabsContent>
-        
-        <TabsContent value="points">
-          <PointsHistory />
-        </TabsContent>
-      </Tabs>
+        <Tabs defaultValue="opportunities">
+          <TabsList className="mb-4">
+            <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+            <TabsTrigger value="history">Engagement History</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="opportunities" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {opportunities.length > 0 ? (
+                opportunities.map((opportunity) => (
+                  <EngagementOpportunity
+                    key={opportunity.id}
+                    opportunity={opportunity}
+                    onEngage={handleEngage}
+                  />
+                ))
+              ) : (
+                <div className="col-span-full flex flex-col items-center justify-center py-12">
+                  <p className="text-muted-foreground mb-2">No opportunities found</p>
+                  <Button onClick={() => setOpportunities(mockOpportunities)}>
+                    Reset Filters
+                  </Button>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="history">
+            <EngagementTable engagements={engagements} />
+          </TabsContent>
+          
+          <TabsContent value="analytics">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <EngagementChart title="Weekly Engagement Activity" />
+              <EngagementChart title="Points Earned Over Time" />
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </DashboardLayout>
   );
 };

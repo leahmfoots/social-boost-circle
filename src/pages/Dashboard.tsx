@@ -1,209 +1,283 @@
 
+import { useState } from "react";
+import DashboardLayout from "@/components/DashboardLayout";
+import DashboardStatsGrid from "@/components/DashboardStatsGrid";
+import EngagementChart from "@/components/analytics/EngagementChart";
+import RewardsProgress from "@/components/rewards/RewardsProgress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { 
-  ChartBar, 
-  Link, 
-  Settings, 
-  Star, 
-  TrendingUp, 
-  User,
-  Users
-} from "lucide-react";
-import { Link as RouterLink } from "react-router-dom";
-import { 
-  SidebarProvider, 
-  Sidebar, 
-  SidebarContent,
-  SidebarTrigger,
-  SidebarHeader,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarFooter
-} from "@/components/ui/sidebar";
+import { Activity, Award, CheckCircle, Link, MessageSquare, TrendingUp } from "lucide-react";
+import { Reward } from "@/types/rewards";
+import { Engagement } from "@/types/engagement";
+
+// Mock data
+const mockRewards: Reward[] = [
+  {
+    id: "r1",
+    title: "$5 Amazon Gift Card",
+    description: "Redeem your points for an Amazon gift card",
+    pointsRequired: 500,
+    image: "/gift-card.png",
+    category: "Gift Card"
+  },
+  {
+    id: "r2",
+    title: "Premium Account (1 Month)",
+    description: "Upgrade to premium features for one month",
+    pointsRequired: 800,
+    image: "/premium.png",
+    category: "Subscription"
+  }
+];
+
+const mockEngagements: Engagement[] = [
+  {
+    id: "e1",
+    username: "tech_reviewer",
+    platform: "YouTube",
+    contentType: "Video",
+    title: "Top 10 VSCode Extensions for Developers",
+    points: 45,
+    completedAt: "2023-05-15T10:30:00Z",
+    status: "verified",
+  },
+  {
+    id: "e2",
+    username: "ui_designer",
+    platform: "Instagram",
+    contentType: "Story",
+    title: "Color Theory for Digital Designers",
+    points: 20,
+    completedAt: "2023-05-10T14:45:00Z",
+    status: "pending",
+  }
+];
 
 const Dashboard = () => {
+  const [userPoints] = useState(350);
+  
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center gap-2 px-4">
-              <div className="h-8 w-8 rounded-full gradient-bg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">R</span>
-              </div>
-              <span className="font-bold text-xl">RoundAbout</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Main</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard">
-                        <ChartBar />
-                        <span>Dashboard</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/accounts">
-                        <Link />
-                        <span>Social Accounts</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/engagement">
-                        <TrendingUp />
-                        <span>Engagement</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/rewards">
-                        <Star />
-                        <span>Rewards</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-            
-            <SidebarGroup>
-              <SidebarGroupLabel>Account</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/profile">
-                        <User />
-                        <span>Profile</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/community">
-                        <Users />
-                        <span>Community</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <RouterLink to="/dashboard/settings">
-                        <Settings />
-                        <span>Settings</span>
-                      </RouterLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter>
-            <div className="p-4">
-              <div className="flex items-center gap-3 border-t pt-4">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-5 w-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-sm">Demo User</p>
-                  <p className="text-xs text-muted-foreground">demo@roundabout.com</p>
-                </div>
-              </div>
-            </div>
-          </SidebarFooter>
-        </Sidebar>
+    <DashboardLayout title="Dashboard">
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-muted-foreground">Welcome back! Here's an overview of your activity</p>
+          </div>
+          <Button>
+            <Activity className="mr-2 h-4 w-4" />
+            Weekly Report
+          </Button>
+        </div>
         
-        <div className="flex-1">
-          <header className="border-b bg-white">
-            <div className="container py-4 flex items-center gap-4">
-              <SidebarTrigger />
-              <h1 className="font-semibold text-xl">Dashboard</h1>
-            </div>
-          </header>
-          
-          <main className="container py-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {[
-                { label: "Total Points", value: "1,250", change: "+24%" },
-                { label: "Engagement Rate", value: "18.2%", change: "+5.3%" },
-                { label: "Content Growth", value: "37%", change: "+12%" },
-              ].map((stat, i) => (
-                <div key={i} className="bg-white p-6 rounded-xl border shadow-sm">
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                  <div className="text-3xl font-semibold mt-1">{stat.value}</div>
-                  <div className="text-xs text-green-600 mt-1">{stat.change} from last month</div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl border shadow-sm">
-                <h2 className="font-semibold text-lg mb-4">Engagement Overview</h2>
-                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                  <p className="text-muted-foreground">Engagement chart will be displayed here</p>
-                </div>
+        <DashboardStatsGrid stats={{ 
+          totalPoints: userPoints,
+          engagements: 5,
+          engagementRate: "18.2%"
+        }} />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <EngagementChart />
+          <RewardsProgress rewards={mockRewards} userPoints={userPoints} />
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle>Recent Engagements</CardTitle>
+                <Button variant="ghost" size="sm">View All</Button>
               </div>
-              
-              <div className="bg-white p-6 rounded-xl border shadow-sm">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="font-semibold text-lg">Recent Activity</h2>
-                  <Button variant="outline" size="sm">View All</Button>
-                </div>
-                <div className="space-y-4">
-                  {[
-                    "User1 commented on your YouTube video",
-                    "User2 liked your Instagram post",
-                    "User3 followed your Twitter account",
-                    "User4 shared your LinkedIn post",
-                  ].map((activity, i) => (
-                    <div key={i} className="flex items-center gap-3 py-2 border-b last:border-b-0">
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <User className="h-4 w-4 text-primary" />
+              <CardDescription>Your recent engagement activities</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {mockEngagements.map(engagement => (
+                  <div key={engagement.id} className="flex justify-between items-center">
+                    <div className="flex items-start gap-3">
+                      <div className={`h-10 w-10 rounded-full bg-muted flex items-center justify-center`}>
+                        <Link className="h-5 w-5" />
                       </div>
-                      <p className="text-sm">{activity}</p>
+                      <div>
+                        <p className="font-medium text-sm">{engagement.title}</p>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <span>@{engagement.username}</span>
+                          <span>•</span>
+                          <span>{engagement.platform}</span>
+                        </div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="mt-8 bg-white p-6 rounded-xl border shadow-sm">
-              <h2 className="font-semibold text-lg mb-4">Connect Your Social Accounts</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  { name: "YouTube", connected: false },
-                  { name: "Instagram", connected: false },
-                  { name: "Twitter", connected: true },
-                  { name: "TikTok", connected: false },
-                  { name: "LinkedIn", connected: true },
-                  { name: "Facebook", connected: false },
-                ].map((platform, i) => (
-                  <div key={i} className="border rounded-lg p-4 flex justify-between items-center">
-                    <span className="font-medium">{platform.name}</span>
-                    <Button variant={platform.connected ? "outline" : "default"} size="sm">
-                      {platform.connected ? "Connected" : "Connect"}
-                    </Button>
+                    <div className="text-right">
+                      <div className="flex items-center gap-1 text-sm font-medium text-primary">
+                        <Award className="h-4 w-4" />
+                        <span>+{engagement.points}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {new Date(engagement.completedAt).toLocaleDateString()}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </main>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Top Creators</CardTitle>
+              <CardDescription>Creators with high engagement rates</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback>C{i}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <p className="font-medium text-sm">Creator {i}</p>
+                          {i <= 2 && <CheckCircle className="h-3 w-3 text-blue-500 fill-blue-500" />}
+                        </div>
+                        <p className="text-xs text-muted-foreground">@creator_{i}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 text-xs">
+                        <MessageSquare className="h-3 w-3" />
+                        <span>{120 - (i * 20)}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs">
+                        <TrendingUp className="h-3 w-3" />
+                        <span>{8 - i}%</span>
+                      </div>
+                      <Button variant="outline" size="sm" className="h-7 text-xs">
+                        Follow
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
+        
+        <Tabs defaultValue="recommended">
+          <div className="flex justify-between items-center mb-4">
+            <TabsList>
+              <TabsTrigger value="recommended">Recommended</TabsTrigger>
+              <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="for-you">For You</TabsTrigger>
+            </TabsList>
+          </div>
+          
+          <TabsContent value="recommended" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <Card key={i}>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>R{i}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">Recommended #{i}</p>
+                          <p className="text-xs text-muted-foreground">@recommended_{i}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm mb-3">Check out this amazing content from @recommended_{i}!</p>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Award className="h-4 w-4" />
+                        <span>{25 + (i * 5)} points possible</span>
+                      </div>
+                      <Button size="sm">
+                        Engage
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="trending" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <Card key={i}>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>T{i}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">Trending #{i}</p>
+                          <p className="text-xs text-muted-foreground">@trending_{i}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm mb-3">This content is trending right now!</p>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <TrendingUp className="h-4 w-4" />
+                        <span>{100 + (i * 50)} engagements</span>
+                      </div>
+                      <Button size="sm">
+                        Engage
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="for-you" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <Card key={i}>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>F{i}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">For You #{i}</p>
+                          <p className="text-xs text-muted-foreground">@foryou_{i}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm mb-3">Personalized content based on your interests!</p>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <MessageSquare className="h-4 w-4" />
+                        <span>{10 + (i * 15)} comments</span>
+                      </div>
+                      <Button size="sm">
+                        Engage
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
-    </SidebarProvider>
+    </DashboardLayout>
   );
 };
 

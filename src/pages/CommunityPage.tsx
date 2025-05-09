@@ -1,298 +1,489 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Users, MessageSquare, Award, Check } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { 
+  ArrowRight, 
+  CheckCircle, 
+  Heart, 
+  MessageSquare, 
+  MoreHorizontal, 
+  Search, 
+  Share2, 
+  Star, 
+  Users
+} from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-// Sample creators data
-const creatorsData = [
+interface Creator {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  bio: string;
+  platforms: string[];
+  followers: number;
+  following: boolean;
+  verified: boolean;
+}
+
+interface Post {
+  id: string;
+  creator: Creator;
+  content: string;
+  image?: string;
+  likes: number;
+  comments: number;
+  timestamp: string;
+  liked: boolean;
+}
+
+const mockCreators: Creator[] = [
   {
-    id: "1",
-    name: "Alex Johnson",
-    username: "alexcreative",
-    avatar: "/placeholder.svg",
-    points: 2450,
-    followers: 12500,
-    bio: "Digital content creator specializing in tech reviews and tutorials.",
-    platforms: ["YouTube", "Instagram", "Twitter"],
-    tags: ["Tech", "Reviews", "Tutorials"],
-    isFollowing: true
+    id: "c1",
+    name: "Sarah Johnson",
+    username: "design_sarah",
+    avatar: "/creator1.jpg",
+    bio: "UX/UI Designer | Creating beautiful digital experiences",
+    platforms: ["Instagram", "Behance"],
+    followers: 2543,
+    following: true,
+    verified: true
   },
   {
-    id: "2",
-    name: "Samantha Lee",
-    username: "samcreates",
-    avatar: "/placeholder.svg",
-    points: 1890,
-    followers: 8700,
-    bio: "Lifestyle blogger sharing travel, fashion, and food experiences.",
+    id: "c2",
+    name: "Mike Chen",
+    username: "mike_codes",
+    avatar: "/creator2.jpg",
+    bio: "Software Engineer | React & TypeScript enthusiast",
+    platforms: ["Twitter", "YouTube"],
+    followers: 1876,
+    following: false,
+    verified: false
+  },
+  {
+    id: "c3",
+    name: "Emma Wilson",
+    username: "emma_creates",
+    avatar: "/creator3.jpg",
+    bio: "Digital Artist | Motion Graphics | Animation",
     platforms: ["Instagram", "TikTok"],
-    tags: ["Lifestyle", "Travel", "Fashion"],
-    isFollowing: false
+    followers: 5432,
+    following: true,
+    verified: true
   },
   {
-    id: "3",
-    name: "Marcus Williams",
-    username: "marcusfilm",
-    avatar: "/placeholder.svg",
-    points: 3200,
-    followers: 15800,
-    bio: "Filmmaker and photographer telling stories through visual media.",
-    platforms: ["YouTube", "Instagram"],
-    tags: ["Film", "Photography", "Storytelling"],
-    isFollowing: false
-  },
-  {
-    id: "4",
-    name: "Priya Patel",
-    username: "priyacooks",
-    avatar: "/placeholder.svg",
-    points: 1650,
-    followers: 7300,
-    bio: "Cooking enthusiast sharing quick and easy recipes for busy people.",
-    platforms: ["YouTube", "TikTok", "Instagram"],
-    tags: ["Cooking", "Recipes", "Food"],
-    isFollowing: true
-  },
-  {
-    id: "5",
-    name: "David Chen",
-    username: "davetechguy",
-    avatar: "/placeholder.svg",
-    points: 2780,
-    followers: 9400,
-    bio: "Software developer creating coding tutorials and tech insights.",
+    id: "c4",
+    name: "Alex Rodriguez",
+    username: "tech_alex",
+    avatar: "/creator4.jpg",
+    bio: "Tech Reviewer | Gadget Enthusiast | Web Developer",
     platforms: ["YouTube", "Twitter"],
-    tags: ["Coding", "Tech", "Software"],
-    isFollowing: false
+    followers: 10200,
+    following: false,
+    verified: true
   },
   {
-    id: "6",
-    name: "Olivia Martinez",
-    username: "livfitness",
-    avatar: "/placeholder.svg",
-    points: 2100,
-    followers: 13200,
-    bio: "Personal trainer sharing workouts and wellness tips for all levels.",
-    platforms: ["Instagram", "YouTube", "TikTok"],
-    tags: ["Fitness", "Wellness", "Health"],
-    isFollowing: false
+    id: "c5",
+    name: "Jordan Taylor",
+    username: "j_taylor",
+    avatar: "/creator5.jpg",
+    bio: "Content Creator | Photography | Travel Vlogs",
+    platforms: ["Instagram", "YouTube"],
+    followers: 3678,
+    following: false,
+    verified: false
   }
 ];
 
-// Sample discussions data
-const discussionsData = [
+const mockPosts: Post[] = [
   {
-    id: "d1",
-    title: "Best practices for growing your YouTube channel in 2023",
-    author: {
-      name: "Alex Johnson",
-      username: "alexcreative",
-      avatar: "/placeholder.svg"
-    },
-    replies: 24,
-    views: 156,
-    lastActive: "2023-05-07T13:45:00Z",
-    tags: ["YouTube", "Growth", "Strategy"]
+    id: "p1",
+    creator: mockCreators[0],
+    content: "Just launched my new portfolio website! Check it out and let me know your thoughts 🚀 #WebDesign #Portfolio",
+    likes: 48,
+    comments: 12,
+    timestamp: "2023-05-18T14:32:00Z",
+    liked: true
   },
   {
-    id: "d2",
-    title: "How are you handling Instagram's new algorithm changes?",
-    author: {
-      name: "Samantha Lee",
-      username: "samcreates",
-      avatar: "/placeholder.svg"
-    },
-    replies: 37,
-    views: 215,
-    lastActive: "2023-05-06T09:22:00Z",
-    tags: ["Instagram", "Algorithm", "Strategy"]
+    id: "p2",
+    creator: mockCreators[2],
+    content: "New animation project in the works. Here's a sneak peek! #Animation #MotionGraphics",
+    image: "/post-image1.jpg",
+    likes: 126,
+    comments: 24,
+    timestamp: "2023-05-17T09:15:00Z",
+    liked: false
   },
   {
-    id: "d3",
-    title: "Let's share our content calendars and planning strategies",
-    author: {
-      name: "Priya Patel",
-      username: "priyacooks",
-      avatar: "/placeholder.svg"
-    },
-    replies: 18,
-    views: 94,
-    lastActive: "2023-05-05T17:10:00Z",
-    tags: ["Planning", "Content Calendar", "Organization"]
+    id: "p3",
+    creator: mockCreators[3],
+    content: "Reviewing the latest MacBook Pro. Is it worth the upgrade? Full video on my channel now! #TechReview #Apple",
+    likes: 87,
+    comments: 31,
+    timestamp: "2023-05-16T18:45:00Z",
+    liked: true
   }
 ];
 
 const CommunityPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [creators, setCreators] = useState(creatorsData);
-  const [discussions, setDiscussions] = useState(discussionsData);
+  const [creators, setCreators] = useState(mockCreators);
+  const [posts, setPosts] = useState(mockPosts);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("all");
   
-  const handleFollow = (creatorId: string) => {
-    setCreators(creators.map(creator => 
-      creator.id === creatorId 
-        ? { ...creator, isFollowing: !creator.isFollowing } 
-        : creator
-    ));
+  const handleFollowToggle = (creatorId: string) => {
+    setCreators(prev => 
+      prev.map(creator => 
+        creator.id === creatorId 
+          ? { ...creator, following: !creator.following } 
+          : creator
+      )
+    );
   };
   
-  const filteredCreators = creators.filter(creator => 
-    creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    creator.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    creator.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const handleLikePost = (postId: string) => {
+    setPosts(prev => 
+      prev.map(post => 
+        post.id === postId 
+          ? { 
+              ...post, 
+              liked: !post.liked,
+              likes: post.liked ? post.likes - 1 : post.likes + 1 
+            } 
+          : post
+      )
+    );
+  };
+  
+  const filteredCreators = creators.filter(creator => {
+    if (searchTerm) {
+      return (
+        creator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        creator.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    if (filter === "following") {
+      return creator.following;
+    }
+    
+    if (filter === "verified") {
+      return creator.verified;
+    }
+    
+    return true;
+  });
+  
+  const formatTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    
+    if (diffMins < 60) {
+      return `${diffMins}m ago`;
+    } else if (diffMins < 24 * 60) {
+      return `${Math.floor(diffMins / 60)}h ago`;
+    } else {
+      return `${Math.floor(diffMins / (60 * 24))}d ago`;
+    }
+  };
 
   return (
     <DashboardLayout title="Community">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Creator Community</h1>
-        <p className="text-muted-foreground">
-          Connect with other content creators, share insights, and grow together.
-        </p>
-      </div>
-      
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input 
-            placeholder="Search creators by name, username, or interest" 
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Community</h1>
+            <p className="text-muted-foreground">Connect with other creators and engage with their content</p>
+          </div>
         </div>
-      </div>
-      
-      <Tabs defaultValue="creators">
-        <TabsList className="mb-6">
-          <TabsTrigger value="creators">Top Creators</TabsTrigger>
-          <TabsTrigger value="discussions">Discussions</TabsTrigger>
-          <TabsTrigger value="events">Events</TabsTrigger>
-        </TabsList>
         
-        <TabsContent value="creators">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCreators.map(creator => (
-              <Card key={creator.id}>
+        <Tabs defaultValue="discover" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <TabsList>
+              <TabsTrigger value="discover">Discover</TabsTrigger>
+              <TabsTrigger value="feed">Feed</TabsTrigger>
+              <TabsTrigger value="groups">Groups</TabsTrigger>
+            </TabsList>
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search creators..."
+                className="w-[200px] pl-8 sm:w-[300px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+          
+          <TabsContent value="discover">
+            <div className="mb-4">
+              <ToggleGroup type="single" value={filter} onValueChange={(value) => value && setFilter(value)}>
+                <ToggleGroupItem value="all" className="text-sm">All Creators</ToggleGroupItem>
+                <ToggleGroupItem value="following" className="text-sm">Following</ToggleGroupItem>
+                <ToggleGroupItem value="verified" className="text-sm">Verified</ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {filteredCreators.length > 0 ? (
+                filteredCreators.map((creator) => (
+                  <Card key={creator.id}>
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between">
+                        <div className="flex items-start gap-3">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage src={creator.avatar} alt={creator.name} />
+                            <AvatarFallback>{creator.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="flex items-center gap-1">
+                              <CardTitle className="text-base">{creator.name}</CardTitle>
+                              {creator.verified && (
+                                <CheckCircle className="h-4 w-4 text-blue-500 fill-blue-500" />
+                              )}
+                            </div>
+                            <CardDescription>@{creator.username}</CardDescription>
+                          </div>
+                        </div>
+                        <Button 
+                          variant={creator.following ? "outline" : "default"} 
+                          size="sm"
+                          className="text-xs h-8"
+                          onClick={() => handleFollowToggle(creator.id)}
+                        >
+                          {creator.following ? "Following" : "Follow"}
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm mb-3">{creator.bio}</p>
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {creator.platforms.map((platform) => (
+                          <Badge key={platform} variant="secondary" className="text-xs">
+                            {platform}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Users className="h-4 w-4" />
+                        <span>{creator.followers.toLocaleString()} followers</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center">
+                  <p className="text-muted-foreground">No creators found</p>
+                  {searchTerm && (
+                    <Button variant="ghost" onClick={() => setSearchTerm("")} className="mt-2">
+                      Clear search
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="feed">
+            <div className="space-y-6">
+              {posts.map((post) => (
+                <Card key={post.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={post.creator.avatar} alt={post.creator.name} />
+                          <AvatarFallback>{post.creator.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="flex items-center gap-1">
+                            <CardTitle className="text-sm font-medium">{post.creator.name}</CardTitle>
+                            {post.creator.verified && (
+                              <CheckCircle className="h-4 w-4 text-blue-500 fill-blue-500" />
+                            )}
+                          </div>
+                          <CardDescription className="text-xs">@{post.creator.username}</CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-xs text-muted-foreground">{formatTime(post.timestamp)}</span>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-3">
+                    <p className="text-sm mb-3">{post.content}</p>
+                    {post.image && (
+                      <div className="rounded-md overflow-hidden mb-3">
+                        <img src={post.image} alt="Post" className="w-full h-auto" />
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs h-8 gap-1"
+                          onClick={() => handleLikePost(post.id)}
+                        >
+                          <Heart 
+                            className={`h-4 w-4 ${post.liked ? "fill-red-500 text-red-500" : ""}`} 
+                          />
+                          <span>{post.likes}</span>
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-xs h-8 gap-1">
+                          <MessageSquare className="h-4 w-4" />
+                          <span>{post.comments}</span>
+                        </Button>
+                      </div>
+                      <div>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="groups">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Card>
                 <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src={creator.avatar} alt={creator.name} />
-                      <AvatarFallback>{creator.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{creator.name}</CardTitle>
-                      <CardDescription>@{creator.username}</CardDescription>
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Star className="h-4 w-4 text-primary" />
                     </div>
-                    <div>
-                      <Button 
-                        size="sm" 
-                        variant={creator.isFollowing ? "outline" : "default"}
-                        onClick={() => handleFollow(creator.id)}
-                      >
-                        {creator.isFollowing ? (
-                          <><Check className="h-4 w-4 mr-1" /> Following</>
-                        ) : "Follow"}
-                      </Button>
-                    </div>
+                    <CardTitle className="text-base">UX/UI Designers</CardTitle>
                   </div>
+                  <CardDescription>A community for UX/UI designers to share work and feedback</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-3">{creator.bio}</p>
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {creator.tags.map((tag, i) => (
-                      <span key={i} className="text-xs bg-muted px-2 py-1 rounded">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      <span>{creator.followers.toLocaleString()} followers</span>
+                <CardContent className="pb-3">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
+                          <AvatarFallback className="text-xs">U{i}</AvatarFallback>
+                        </Avatar>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Award className="h-4 w-4" />
-                      <span>{creator.points.toLocaleString()} points</span>
-                    </div>
+                    <span className="text-xs text-muted-foreground">1.2k members</span>
                   </div>
+                  <Button className="w-full">
+                    Join Group
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="discussions">
-          {discussions.map(discussion => (
-            <Card key={discussion.id} className="mb-4">
-              <CardHeader>
-                <div className="flex justify-between">
-                  <CardTitle>{discussion.title}</CardTitle>
-                  <div className="flex gap-2">
-                    {discussion.tags.map((tag, i) => (
-                      <span key={i} className="text-xs bg-muted px-2 py-1 rounded">
-                        {tag}
-                      </span>
-                    ))}
+              
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Code className="h-4 w-4 text-primary" />
+                    </div>
+                    <CardTitle className="text-base">Frontend Developers</CardTitle>
                   </div>
-                </div>
-                <CardDescription className="flex items-center gap-2">
-                  <Avatar className="h-5 w-5">
-                    <AvatarImage src={discussion.author.avatar} alt={discussion.author.name} />
-                    <AvatarFallback>{discussion.author.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <span>Started by {discussion.author.name}</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <div className="flex items-center gap-6">
-                    <span className="flex items-center gap-1">
-                      <MessageSquare className="h-4 w-4" />
-                      {discussion.replies} replies
-                    </span>
-                    <span>
-                      {discussion.views} views
-                    </span>
+                  <CardDescription>Share tips, resources, and help each other with code</CardDescription>
+                </CardHeader>
+                <CardContent className="pb-3">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3].map((i) => (
+                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
+                          <AvatarFallback className="text-xs">F{i}</AvatarFallback>
+                        </Avatar>
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">876 members</span>
                   </div>
-                  <span>
-                    Last active {new Date(discussion.lastActive).toLocaleDateString()}
-                  </span>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">View Discussion</Button>
-              </CardFooter>
-            </Card>
-          ))}
-          
-          <div className="mt-6 text-center">
-            <Button variant="outline">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Start New Discussion
-            </Button>
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="events">
-          <div className="p-8 text-center">
-            <div className="h-20 w-20 rounded-full bg-muted mx-auto mb-4 flex items-center justify-center">
-              <Users className="h-10 w-10 text-muted-foreground" />
+                  <Button className="w-full">
+                    Join Group
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Video className="h-4 w-4 text-primary" />
+                    </div>
+                    <CardTitle className="text-base">Content Creators</CardTitle>
+                  </div>
+                  <CardDescription>For video creators to collaborate and share tips</CardDescription>
+                </CardHeader>
+                <CardContent className="pb-3">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
+                          <AvatarFallback className="text-xs">C{i}</AvatarFallback>
+                        </Avatar>
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">2.5k members</span>
+                  </div>
+                  <Button className="w-full">
+                    Join Group
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
-            <h3 className="text-lg font-medium mb-1">Community Events Coming Soon</h3>
-            <p className="text-muted-foreground mb-6">
-              We're working on bringing virtual and in-person events for content creators.
-            </p>
-            <Button variant="outline">Get Notified</Button>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+        </Tabs>
+      </div>
     </DashboardLayout>
   );
 };
+
+// Import the Code and Video icons for the groups
+const Code = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <polyline points="16 18 22 12 16 6"></polyline>
+    <polyline points="8 6 2 12 8 18"></polyline>
+  </svg>
+);
+
+const Video = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+    <path d="m22 8-6 4 6 4V8Z"></path>
+  </svg>
+);
 
 export default CommunityPage;
