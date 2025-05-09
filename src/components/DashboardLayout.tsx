@@ -1,5 +1,6 @@
 
 import { ReactNode } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -14,8 +15,10 @@ import {
   SidebarMenuButton,
   SidebarFooter
 } from "@/components/ui/sidebar";
-import { ChartBar, Link, Settings, Star, TrendingUp, User, Users } from "lucide-react";
-import { Link as RouterLink } from "react-router-dom";
+import { ChartBar, Link, Settings, Star, TrendingUp, User, Users, Bell } from "lucide-react";
+import { Button } from "./ui/button";
+import NotificationCenter from "./layout/NotificationCenter";
+import SearchBar from "./layout/SearchBar";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -98,6 +101,14 @@ const DashboardLayout = ({ children, title = "Dashboard" }: DashboardLayoutProps
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
+                      <RouterLink to="/dashboard/notifications">
+                        <Bell />
+                        <span>Notifications</span>
+                      </RouterLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
                       <RouterLink to="/dashboard/settings">
                         <Settings />
                         <span>Settings</span>
@@ -125,9 +136,23 @@ const DashboardLayout = ({ children, title = "Dashboard" }: DashboardLayoutProps
         
         <div className="flex-1">
           <header className="border-b bg-white">
-            <div className="container py-4 flex items-center gap-4">
-              <SidebarTrigger />
-              <h1 className="font-semibold text-xl">{title}</h1>
+            <div className="container py-4 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <h1 className="font-semibold text-xl">{title}</h1>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="hidden md:block w-72">
+                  <SearchBar />
+                </div>
+                <NotificationCenter />
+                <Button variant="ghost" size="icon" asChild>
+                  <RouterLink to="/dashboard/profile">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Profile</span>
+                  </RouterLink>
+                </Button>
+              </div>
             </div>
           </header>
           
