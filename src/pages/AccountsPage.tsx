@@ -40,19 +40,34 @@ const mockAccounts: SocialAccount[] = [
     id: "3",
     name: "YouTube",
     icon: <Youtube className="h-5 w-5 text-red-600" />,
-    connected: false
+    connected: false,
+    stats: {
+      followers: 0,
+      posts: 0,
+      engagement: 0
+    }
   },
   {
     id: "4",
     name: "LinkedIn",
     icon: <Linkedin className="h-5 w-5 text-blue-700" />,
-    connected: false
+    connected: false,
+    stats: {
+      followers: 0,
+      posts: 0,
+      engagement: 0
+    }
   },
   {
     id: "5",
     name: "Facebook",
     icon: <Facebook className="h-5 w-5 text-blue-600" />,
-    connected: false
+    connected: false,
+    stats: {
+      followers: 0,
+      posts: 0,
+      engagement: 0
+    }
   }
 ];
 

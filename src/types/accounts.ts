@@ -1,8 +1,10 @@
 
+import { ReactNode } from "react";
+
 export interface SocialAccount {
   id: string;
   name: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   connected: boolean;
   username?: string;
   stats: {
