@@ -52,6 +52,15 @@ export interface Group {
   category: string;
   isJoined: boolean;
   createdAt: string;
+  admin?: {
+    id: string;
+    name: string;
+    username: string;
+    avatar?: string;
+  };
+  lastActivity?: string;
+  isPinned?: boolean;
+  tags?: string[];
 }
 
 export interface Comment {
@@ -66,4 +75,13 @@ export interface Comment {
   createdAt: string;
   likes: number;
   isLiked: boolean;
+  replies?: Comment[];
+}
+
+export interface GroupDetail extends Group {
+  members: GroupMember[];
+  posts: GroupPost[];
+  isAdmin: boolean;
+  isModerator: boolean;
+  rules?: string[];
 }
