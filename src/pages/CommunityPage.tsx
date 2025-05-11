@@ -1,199 +1,324 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ArrowRight, 
-  CheckCircle, 
-  Heart, 
-  MessageSquare, 
-  MoreHorizontal, 
-  Search, 
-  Share2, 
-  Star, 
-  Users
-} from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search, Filter, Users, MessageSquare, Plus } from "lucide-react";
+import { Group, CreatorProfile, GroupPost as GroupPostType } from "@/types/user";
+import CreatorCard from "@/components/community/CreatorCard";
+import GroupCard from "@/components/community/GroupCard";
+import GroupPost from "@/components/community/GroupPost";
 
-interface Creator {
-  id: string;
-  name: string;
-  username: string;
-  avatar: string;
-  bio: string;
-  platforms: string[];
-  followers: number;
-  following: boolean;
-  verified: boolean;
-}
-
-interface Post {
-  id: string;
-  creator: Creator;
-  content: string;
-  image?: string;
-  likes: number;
-  comments: number;
-  timestamp: string;
-  liked: boolean;
-}
-
-const mockCreators: Creator[] = [
+// Mock data for creators
+const mockCreators: CreatorProfile[] = [
   {
-    id: "c1",
-    name: "Sarah Johnson",
-    username: "design_sarah",
-    avatar: "/creator1.jpg",
-    bio: "UX/UI Designer | Creating beautiful digital experiences",
-    platforms: ["Instagram", "Behance"],
-    followers: 2543,
-    following: true,
-    verified: true
-  },
-  {
-    id: "c2",
-    name: "Mike Chen",
-    username: "mike_codes",
-    avatar: "/creator2.jpg",
-    bio: "Software Engineer | React & TypeScript enthusiast",
-    platforms: ["Twitter", "YouTube"],
-    followers: 1876,
-    following: false,
-    verified: false
-  },
-  {
-    id: "c3",
+    id: "creator1",
     name: "Emma Wilson",
-    username: "emma_creates",
-    avatar: "/creator3.jpg",
-    bio: "Digital Artist | Motion Graphics | Animation",
-    platforms: ["Instagram", "TikTok"],
-    followers: 5432,
-    following: true,
-    verified: true
+    username: "design_emma",
+    email: "emma@example.com",
+    bio: "UX/UI Designer | Creating beautiful digital experiences",
+    avatar: undefined,
+    followers: 2543,
+    following: 345,
+    platforms: ["Instagram", "Behance", "Dribbble"],
+    verified: true,
+    isFollowing: false,
+    points: 1250,
+    createdAt: "2023-01-15T10:30:00Z"
   },
   {
-    id: "c4",
-    name: "Alex Rodriguez",
-    username: "tech_alex",
-    avatar: "/creator4.jpg",
-    bio: "Tech Reviewer | Gadget Enthusiast | Web Developer",
-    platforms: ["YouTube", "Twitter"],
-    followers: 10200,
-    following: false,
-    verified: true
+    id: "creator2",
+    name: "Alex Chen",
+    username: "alex_codes",
+    email: "alex@example.com",
+    bio: "Software Engineer | React & TypeScript enthusiast",
+    avatar: undefined,
+    followers: 1876,
+    following: 230,
+    platforms: ["Twitter", "GitHub", "YouTube"],
+    verified: false,
+    isFollowing: true,
+    points: 980,
+    createdAt: "2023-02-10T14:45:00Z"
   },
   {
-    id: "c5",
-    name: "Jordan Taylor",
-    username: "j_taylor",
-    avatar: "/creator5.jpg",
-    bio: "Content Creator | Photography | Travel Vlogs",
-    platforms: ["Instagram", "YouTube"],
-    followers: 3678,
-    following: false,
-    verified: false
+    id: "creator3",
+    name: "Sarah Johnson",
+    username: "social_sarah",
+    email: "sarah@example.com",
+    bio: "Social Media Manager | Content Creator | Photography Lover",
+    avatar: undefined,
+    followers: 5230,
+    following: 625,
+    platforms: ["Instagram", "TikTok", "YouTube"],
+    verified: true,
+    isFollowing: false,
+    points: 2150,
+    createdAt: "2023-03-05T09:15:00Z"
+  },
+  {
+    id: "creator4",
+    name: "Michael Brown",
+    username: "mike_writes",
+    email: "michael@example.com",
+    bio: "Content Writer | Storyteller | Book Enthusiast",
+    avatar: undefined,
+    followers: 1230,
+    following: 540,
+    platforms: ["LinkedIn", "Twitter", "Medium"],
+    verified: false,
+    isFollowing: false,
+    points: 760,
+    createdAt: "2023-04-20T16:30:00Z"
+  },
+  {
+    id: "creator5",
+    name: "Jennifer Lee",
+    username: "jen_videos",
+    email: "jennifer@example.com",
+    bio: "Video Creator | Editor | Animation Expert",
+    avatar: undefined,
+    followers: 8450,
+    following: 310,
+    platforms: ["YouTube", "TikTok", "Instagram"],
+    verified: true,
+    isFollowing: true,
+    points: 3240,
+    createdAt: "2023-01-25T11:20:00Z"
+  },
+  {
+    id: "creator6",
+    name: "David Moore",
+    username: "dave_tech",
+    email: "david@example.com",
+    bio: "Tech Reviewer | Gadget Enthusiast | Programmer",
+    avatar: undefined,
+    followers: 4120,
+    following: 215,
+    platforms: ["YouTube", "Twitter", "GitHub"],
+    verified: false,
+    isFollowing: false,
+    points: 1870,
+    createdAt: "2023-02-18T08:40:00Z"
   }
 ];
 
-const mockPosts: Post[] = [
+// Mock data for groups
+const mockGroups: Group[] = [
   {
-    id: "p1",
-    creator: mockCreators[0],
-    content: "Just launched my new portfolio website! Check it out and let me know your thoughts 🚀 #WebDesign #Portfolio",
-    likes: 48,
+    id: "group1",
+    name: "UX/UI Design Community",
+    description: "A community for UX/UI designers to share work, get feedback, and discuss design trends.",
+    memberCount: 2458,
+    postCount: 342,
+    category: "Design",
+    isJoined: true,
+    createdAt: "2023-01-10T08:30:00Z"
+  },
+  {
+    id: "group2",
+    name: "React Developers",
+    description: "Connect with fellow React developers. Share projects, ask questions, and collaborate.",
+    memberCount: 3672,
+    postCount: 563,
+    category: "Development",
+    isJoined: false,
+    createdAt: "2023-02-05T14:20:00Z"
+  },
+  {
+    id: "group3",
+    name: "Content Creator Hub",
+    description: "For content creators across all platforms to network, share tips, and grow together.",
+    memberCount: 5241,
+    postCount: 872,
+    category: "Content Creation",
+    isJoined: false,
+    createdAt: "2023-03-15T10:45:00Z"
+  },
+  {
+    id: "group4",
+    name: "Social Media Strategies",
+    description: "Discuss effective social media strategies, algorithms, and growth tactics.",
+    memberCount: 1872,
+    postCount: 293,
+    category: "Marketing",
+    isJoined: true,
+    createdAt: "2023-04-01T09:10:00Z"
+  },
+  {
+    id: "group5",
+    name: "Freelance Network",
+    description: "A community for freelancers to share opportunities, advice, and support.",
+    memberCount: 2134,
+    postCount: 415,
+    category: "Freelancing",
+    isJoined: false,
+    createdAt: "2023-02-20T15:30:00Z"
+  },
+  {
+    id: "group6",
+    name: "Tech Industry Insights",
+    description: "Stay updated on tech industry trends, news, and career opportunities.",
+    memberCount: 4287,
+    postCount: 632,
+    category: "Technology",
+    isJoined: true,
+    createdAt: "2023-01-30T11:15:00Z"
+  }
+];
+
+// Mock data for feed posts
+const mockFeedPosts: GroupPostType[] = [
+  {
+    id: "post1",
+    content: "Just published a new tutorial on React hooks! Check it out and let me know what you think. This covers useState, useEffect, useContext, and some custom hooks patterns that have been really useful in my projects.\n\nhttps://example.com/react-hooks-tutorial",
+    author: {
+      id: "creator2",
+      name: "Alex Chen",
+      username: "alex_codes",
+      avatar: undefined
+    },
+    createdAt: "2023-05-18T09:30:00Z",
+    likes: 45,
     comments: 12,
-    timestamp: "2023-05-18T14:32:00Z",
-    liked: true
+    isLiked: false
   },
   {
-    id: "p2",
-    creator: mockCreators[2],
-    content: "New animation project in the works. Here's a sneak peek! #Animation #MotionGraphics",
-    image: "/post-image1.jpg",
-    likes: 126,
-    comments: 24,
-    timestamp: "2023-05-17T09:15:00Z",
-    liked: false
+    id: "post2",
+    content: "Excited to share my latest UI design project! I've been working on a new dashboard interface for a productivity app. Would love to get some feedback from fellow designers.",
+    author: {
+      id: "creator1",
+      name: "Emma Wilson",
+      username: "design_emma",
+      avatar: undefined
+    },
+    createdAt: "2023-05-17T14:45:00Z",
+    likes: 72,
+    comments: 23,
+    isLiked: true
   },
   {
-    id: "p3",
-    creator: mockCreators[3],
-    content: "Reviewing the latest MacBook Pro. Is it worth the upgrade? Full video on my channel now! #TechReview #Apple",
-    likes: 87,
-    comments: 31,
-    timestamp: "2023-05-16T18:45:00Z",
-    liked: true
+    id: "post3",
+    content: "What's your favorite tool for video editing? I've been using Adobe Premiere Pro for years but I'm curious if there are better alternatives out there for content creators.",
+    author: {
+      id: "creator5",
+      name: "Jennifer Lee",
+      username: "jen_videos",
+      avatar: undefined
+    },
+    createdAt: "2023-05-16T16:20:00Z",
+    likes: 31,
+    comments: 45,
+    isLiked: false
+  },
+  {
+    id: "post4",
+    content: "Just hit 5,000 followers on Twitter! Thank you to everyone who's supported my content. Here are 5 lessons I've learned on this journey:\n\n1. Consistency is key\n2. Engage with your audience\n3. Provide value before asking for anything\n4. Collaborate with others\n5. Stay authentic to your voice",
+    author: {
+      id: "creator3",
+      name: "Sarah Johnson",
+      username: "social_sarah",
+      avatar: undefined
+    },
+    createdAt: "2023-05-15T11:10:00Z",
+    likes: 124,
+    comments: 37,
+    isLiked: true
   }
 ];
 
 const CommunityPage = () => {
-  const [creators, setCreators] = useState(mockCreators);
-  const [posts, setPosts] = useState(mockPosts);
+  const [activeTab, setActiveTab] = useState("feed");
+  const [creators, setCreators] = useState<CreatorProfile[]>(mockCreators);
+  const [groups, setGroups] = useState<Group[]>(mockGroups);
+  const [feedPosts, setFeedPosts] = useState<GroupPostType[]>(mockFeedPosts);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [creatorFilter, setCreatorFilter] = useState("all");
+  const [groupFilter, setGroupFilter] = useState("all");
+  const [isLoading, setIsLoading] = useState(false);
   
-  const handleFollowToggle = (creatorId: string) => {
+  useEffect(() => {
+    // Filter creators based on search term and filter
+    const filteredCreators = mockCreators.filter(creator => {
+      const matchesSearch = 
+        creator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        creator.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        creator.bio?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesFilter = 
+        creatorFilter === "all" ||
+        (creatorFilter === "following" && creator.isFollowing) ||
+        (creatorFilter === "verified" && creator.verified);
+      
+      return matchesSearch && matchesFilter;
+    });
+    
+    setCreators(filteredCreators);
+  }, [searchTerm, creatorFilter]);
+  
+  useEffect(() => {
+    // Filter groups based on search term and filter
+    const filteredGroups = mockGroups.filter(group => {
+      const matchesSearch = 
+        group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.category.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesFilter = 
+        groupFilter === "all" ||
+        (groupFilter === "joined" && group.isJoined);
+      
+      return matchesSearch && matchesFilter;
+    });
+    
+    setGroups(filteredGroups);
+  }, [searchTerm, groupFilter]);
+  
+  const handleFollowToggle = (creatorId: string, isFollowing: boolean) => {
     setCreators(prev => 
       prev.map(creator => 
         creator.id === creatorId 
-          ? { ...creator, following: !creator.following } 
+          ? { ...creator, isFollowing }
           : creator
       )
     );
   };
   
-  const handleLikePost = (postId: string) => {
-    setPosts(prev => 
+  const handleJoinToggle = (groupId: string, isJoined: boolean) => {
+    setGroups(prev => 
+      prev.map(group => 
+        group.id === groupId 
+          ? { ...group, isJoined }
+          : group
+      )
+    );
+  };
+  
+  const handleLikePost = (postId: string, isLiked: boolean) => {
+    setFeedPosts(prev => 
       prev.map(post => 
         post.id === postId 
           ? { 
               ...post, 
-              liked: !post.liked,
-              likes: post.liked ? post.likes - 1 : post.likes + 1 
-            } 
+              isLiked,
+              likes: isLiked ? post.likes + 1 : post.likes - 1 
+            }
           : post
       )
     );
   };
   
-  const filteredCreators = creators.filter(creator => {
-    if (searchTerm) {
-      return (
-        creator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        creator.username.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+  const handleLoadMore = async () => {
+    setIsLoading(true);
     
-    if (filter === "following") {
-      return creator.following;
-    }
+    // Simulate loading more content
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    if (filter === "verified") {
-      return creator.verified;
-    }
-    
-    return true;
-  });
-  
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    
-    if (diffMins < 60) {
-      return `${diffMins}m ago`;
-    } else if (diffMins < 24 * 60) {
-      return `${Math.floor(diffMins / 60)}h ago`;
-    } else {
-      return `${Math.floor(diffMins / (60 * 24))}d ago`;
-    }
+    setIsLoading(false);
   };
 
   return (
@@ -202,288 +327,243 @@ const CommunityPage = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Community</h1>
-            <p className="text-muted-foreground">Connect with other creators and engage with their content</p>
+            <p className="text-muted-foreground">
+              Connect with creators, join groups, and share your thoughts
+            </p>
           </div>
-        </div>
-        
-        <Tabs defaultValue="discover" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <TabsList>
-              <TabsTrigger value="discover">Discover</TabsTrigger>
-              <TabsTrigger value="feed">Feed</TabsTrigger>
-              <TabsTrigger value="groups">Groups</TabsTrigger>
-            </TabsList>
+          
+          <div className="flex items-center gap-3">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search creators..."
-                className="w-[200px] pl-8 sm:w-[300px]"
+                placeholder="Search community..."
+                className="w-[200px] sm:w-[300px] pl-8"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
+        </div>
+        
+        <Tabs defaultValue="feed" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="feed">Feed</TabsTrigger>
+            <TabsTrigger value="creators">Creators</TabsTrigger>
+            <TabsTrigger value="groups">Groups</TabsTrigger>
+          </TabsList>
           
-          <TabsContent value="discover">
-            <div className="mb-4">
-              <ToggleGroup type="single" value={filter} onValueChange={(value) => value && setFilter(value)}>
-                <ToggleGroupItem value="all" className="text-sm">All Creators</ToggleGroupItem>
-                <ToggleGroupItem value="following" className="text-sm">Following</ToggleGroupItem>
-                <ToggleGroupItem value="verified" className="text-sm">Verified</ToggleGroupItem>
-              </ToggleGroup>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {filteredCreators.length > 0 ? (
-                filteredCreators.map((creator) => (
-                  <Card key={creator.id}>
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between">
-                        <div className="flex items-start gap-3">
-                          <Avatar className="h-12 w-12">
-                            <AvatarImage src={creator.avatar} alt={creator.name} />
-                            <AvatarFallback>{creator.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-1">
-                              <CardTitle className="text-base">{creator.name}</CardTitle>
-                              {creator.verified && (
-                                <CheckCircle className="h-4 w-4 text-blue-500 fill-blue-500" />
-                              )}
-                            </div>
-                            <CardDescription>@{creator.username}</CardDescription>
-                          </div>
-                        </div>
-                        <Button 
-                          variant={creator.following ? "outline" : "default"} 
-                          size="sm"
-                          className="text-xs h-8"
-                          onClick={() => handleFollowToggle(creator.id)}
-                        >
-                          {creator.following ? "Following" : "Follow"}
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm mb-3">{creator.bio}</p>
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {creator.platforms.map((platform) => (
-                          <Badge key={platform} variant="secondary" className="text-xs">
-                            {platform}
-                          </Badge>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Users className="h-4 w-4" />
-                        <span>{creator.followers.toLocaleString()} followers</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <div className="col-span-full py-12 text-center">
-                  <p className="text-muted-foreground">No creators found</p>
-                  {searchTerm && (
-                    <Button variant="ghost" onClick={() => setSearchTerm("")} className="mt-2">
-                      Clear search
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="feed">
-            <div className="space-y-6">
-              {posts.map((post) => (
-                <Card key={post.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between">
-                      <div className="flex items-start gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={post.creator.avatar} alt={post.creator.name} />
-                          <AvatarFallback>{post.creator.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-1">
-                            <CardTitle className="text-sm font-medium">{post.creator.name}</CardTitle>
-                            {post.creator.verified && (
-                              <CheckCircle className="h-4 w-4 text-blue-500 fill-blue-500" />
-                            )}
-                          </div>
-                          <CardDescription className="text-xs">@{post.creator.username}</CardDescription>
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-xs text-muted-foreground">{formatTime(post.timestamp)}</span>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pb-3">
-                    <p className="text-sm mb-3">{post.content}</p>
-                    {post.image && (
-                      <div className="rounded-md overflow-hidden mb-3">
-                        <img src={post.image} alt="Post" className="w-full h-auto" />
-                      </div>
+          <div className="mt-4">
+            <TabsContent value="feed" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Your Feed</h2>
+                <Button size="sm">
+                  <Plus className="h-4 w-4 mr-1" />
+                  Create Post
+                </Button>
+              </div>
+              
+              {feedPosts.length > 0 ? (
+                <div className="grid gap-4">
+                  {feedPosts.map(post => (
+                    <GroupPost 
+                      key={post.id}
+                      post={post}
+                      onLike={handleLikePost}
+                    />
+                  ))}
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={handleLoadMore}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin mr-2 h-4 w-4 border-2 border-b-transparent rounded-full"></div>
+                        Loading...
+                      </>
+                    ) : (
+                      "Load More"
                     )}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-xs h-8 gap-1"
-                          onClick={() => handleLikePost(post.id)}
-                        >
-                          <Heart 
-                            className={`h-4 w-4 ${post.liked ? "fill-red-500 text-red-500" : ""}`} 
-                          />
-                          <span>{post.likes}</span>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-xs h-8 gap-1">
-                          <MessageSquare className="h-4 w-4" />
-                          <span>{post.comments}</span>
-                        </Button>
-                      </div>
-                      <div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Share2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                  </Button>
+                </div>
+              ) : (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <MessageSquare className="h-10 w-10 text-muted-foreground mb-2" />
+                    <h3 className="text-lg font-medium">No posts yet</h3>
+                    <p className="text-muted-foreground text-center mt-1">
+                      Follow creators or join groups to see content in your feed
+                    </p>
+                    <div className="flex mt-4 gap-2">
+                      <Button onClick={() => setActiveTab("creators")}>Find Creators</Button>
+                      <Button variant="outline" onClick={() => setActiveTab("groups")}>
+                        Join Groups
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="groups">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Star className="h-4 w-4 text-primary" />
-                    </div>
-                    <CardTitle className="text-base">UX/UI Designers</CardTitle>
-                  </div>
-                  <CardDescription>A community for UX/UI designers to share work and feedback</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-3">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex -space-x-2">
-                      {[1, 2, 3, 4].map((i) => (
-                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
-                          <AvatarFallback className="text-xs">U{i}</AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                    <span className="text-xs text-muted-foreground">1.2k members</span>
-                  </div>
-                  <Button className="w-full">
-                    Join Group
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="creators">
+              <div className="flex flex-col-reverse sm:flex-row gap-4 mb-6">
+                <div className="flex flex-wrap gap-2">
+                  <Badge 
+                    variant={creatorFilter === "all" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setCreatorFilter("all")}
+                  >
+                    All Creators
+                  </Badge>
+                  <Badge 
+                    variant={creatorFilter === "following" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setCreatorFilter("following")}
+                  >
+                    Following
+                  </Badge>
+                  <Badge 
+                    variant={creatorFilter === "verified" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setCreatorFilter("verified")}
+                  >
+                    Verified
+                  </Badge>
+                </div>
+                
+                <div className="ml-auto">
+                  <Select defaultValue="suggested">
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="suggested">Suggested</SelectItem>
+                      <SelectItem value="popular">Most Popular</SelectItem>
+                      <SelectItem value="recent">Recently Joined</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
               
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Code className="h-4 w-4 text-primary" />
-                    </div>
-                    <CardTitle className="text-base">Frontend Developers</CardTitle>
-                  </div>
-                  <CardDescription>Share tips, resources, and help each other with code</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-3">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex -space-x-2">
-                      {[1, 2, 3].map((i) => (
-                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
-                          <AvatarFallback className="text-xs">F{i}</AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                    <span className="text-xs text-muted-foreground">876 members</span>
-                  </div>
-                  <Button className="w-full">
-                    Join Group
-                    <ArrowRight className="h-4 w-4 ml-2" />
+              {creators.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {creators.map(creator => (
+                    <CreatorCard 
+                      key={creator.id} 
+                      creator={creator} 
+                      onFollowToggle={handleFollowToggle}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <Users className="h-10 w-10 text-muted-foreground mb-2" />
+                    <h3 className="text-lg font-medium">No creators found</h3>
+                    <p className="text-muted-foreground text-center mt-1">
+                      {searchTerm 
+                        ? "Try adjusting your search or filters"
+                        : "We couldn't find any creators matching your filters"}
+                    </p>
+                    {(searchTerm || creatorFilter !== "all") && (
+                      <Button 
+                        variant="outline" 
+                        className="mt-4"
+                        onClick={() => {
+                          setSearchTerm("");
+                          setCreatorFilter("all");
+                        }}
+                      >
+                        Clear Filters
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="groups">
+              <div className="flex flex-col-reverse sm:flex-row gap-4 mb-6">
+                <div className="flex flex-wrap gap-2">
+                  <Badge 
+                    variant={groupFilter === "all" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setGroupFilter("all")}
+                  >
+                    All Groups
+                  </Badge>
+                  <Badge 
+                    variant={groupFilter === "joined" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setGroupFilter("joined")}
+                  >
+                    Joined
+                  </Badge>
+                </div>
+                
+                <div className="ml-auto flex gap-2">
+                  <Select defaultValue="popular">
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="popular">Most Popular</SelectItem>
+                      <SelectItem value="active">Most Active</SelectItem>
+                      <SelectItem value="new">Newest</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Button>
+                    <Plus className="h-4 w-4 mr-1" />
+                    Create Group
                   </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
               
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Video className="h-4 w-4 text-primary" />
-                    </div>
-                    <CardTitle className="text-base">Content Creators</CardTitle>
-                  </div>
-                  <CardDescription>For video creators to collaborate and share tips</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-3">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex -space-x-2">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Avatar key={i} className="h-7 w-7 border-2 border-background">
-                          <AvatarFallback className="text-xs">C{i}</AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                    <span className="text-xs text-muted-foreground">2.5k members</span>
-                  </div>
-                  <Button className="w-full">
-                    Join Group
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+              {groups.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {groups.map(group => (
+                    <GroupCard 
+                      key={group.id} 
+                      group={group} 
+                      onJoinToggle={handleJoinToggle}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <Users className="h-10 w-10 text-muted-foreground mb-2" />
+                    <h3 className="text-lg font-medium">No groups found</h3>
+                    <p className="text-muted-foreground text-center mt-1">
+                      {searchTerm 
+                        ? "Try adjusting your search or filters"
+                        : "We couldn't find any groups matching your filters"}
+                    </p>
+                    {(searchTerm || groupFilter !== "all") && (
+                      <Button 
+                        variant="outline" 
+                        className="mt-4"
+                        onClick={() => {
+                          setSearchTerm("");
+                          setGroupFilter("all");
+                        }}
+                      >
+                        Clear Filters
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </DashboardLayout>
   );
 };
-
-// Import the Code and Video icons for the groups
-const Code = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <polyline points="16 18 22 12 16 6"></polyline>
-    <polyline points="8 6 2 12 8 18"></polyline>
-  </svg>
-);
-
-const Video = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
-    <path d="m22 8-6 4 6 4V8Z"></path>
-  </svg>
-);
 
 export default CommunityPage;
