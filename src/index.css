@@ -120,7 +120,7 @@
 
 /* Button enhancements */
 .btn-primary {
-  @apply bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:from-opacity-90 hover:to-purple-600 hover:to-opacity-90 text-white shadow-lg hover:shadow-xl transition-all duration-200;
+  @apply bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all duration-200;
 }
 
 /* Enhanced animations */
@@ -182,7 +182,7 @@
 }
 
 .interactive-card:hover {
-  @apply bg-gradient-to-br from-white from-opacity-95 to-blue-50 to-opacity-95 dark:from-gray-800 dark:from-opacity-95 dark:to-gray-700 dark:to-opacity-95;
+  @apply bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-700;
 }
 
 /* Notification styles */
@@ -192,7 +192,7 @@
 
 /* Progress bar enhancements */
 .progress-bar {
-  @apply bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full overflow-hidden;
+  @apply bg-gradient-to-r from-primary from-opacity-20 to-secondary to-opacity-20 rounded-full overflow-hidden;
 }
 
 .progress-fill {
