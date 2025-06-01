@@ -1,45 +1,42 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// Pages
-import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
+import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import AccountsPage from "./pages/AccountsPage";
 import EngagementPage from "./pages/EngagementPage";
 import RewardsPage from "./pages/RewardsPage";
 import CommunityPage from "./pages/CommunityPage";
-import SettingsPage from "./pages/SettingsPage";
-import NotFound from "./pages/NotFound";
+import AccountsPage from "./pages/AccountsPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import CreatorProfilePage from "./pages/CreatorProfilePage";
+import MessagingPage from "./pages/MessagingPage";
+import GroupDetailsPage from "./pages/GroupDetailsPage";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-background">
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/accounts" element={<AccountsPage />} />
-          <Route path="/dashboard/engagement" element={<EngagementPage />} />
-          <Route path="/dashboard/rewards" element={<RewardsPage />} />
-          <Route path="/dashboard/community" element={<CommunityPage />} />
-          <Route path="/dashboard/settings" element={<SettingsPage />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="engagement" element={<EngagementPage />} />
+            <Route path="rewards" element={<RewardsPage />} />
+            <Route path="community" element={<CommunityPage />} />
+            <Route path="community/profile/:id" element={<CreatorProfilePage />} />
+            <Route path="community/messages" element={<MessagingPage />} />
+            <Route path="community/messages/:id" element={<MessagingPage />} />
+            <Route path="community/groups/:id" element={<GroupDetailsPage />} />
+            <Route path="accounts" element={<AccountsPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+          </Route>
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        <Toaster />
+      </div>
+    </Router>
+  );
+}
 
 export default App;
