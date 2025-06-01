@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -192,7 +193,7 @@
 
 /* Progress bar enhancements */
 .progress-bar {
-  @apply bg-gradient-to-r from-primary from-opacity-20 to-secondary to-opacity-20 rounded-full overflow-hidden;
+  @apply bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full overflow-hidden;
 }
 
 .progress-fill {
