@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import GroupPost from "@/components/community/GroupPost";
 import GroupMemberList from "@/components/community/GroupMemberList";
+import { GroupPost as GroupPostType, GroupMember } from "@/types/user";
 
 interface GroupDetails {
   id: string;
@@ -28,21 +29,6 @@ interface GroupDetails {
   joinedAt?: string;
   isMember: boolean;
   isAdmin: boolean;
-}
-
-interface Post {
-  id: string;
-  author: {
-    id: string;
-    username: string;
-    avatar?: string;
-    isVerified: boolean;
-  };
-  content: string;
-  timestamp: string;
-  likes: number;
-  comments: number;
-  isLiked: boolean;
 }
 
 const mockGroup: GroupDetails = {
@@ -62,17 +48,17 @@ const mockGroup: GroupDetails = {
   isAdmin: false
 };
 
-const mockPosts: Post[] = [
+const mockPosts: GroupPostType[] = [
   {
     id: "p1",
     author: {
       id: "u1",
+      name: "Video Creator",
       username: "video_creator",
-      avatar: "/user1.jpg",
-      isVerified: true
+      avatar: "/user1.jpg"
     },
     content: "Just hit 10k subscribers! 🎉 Here are my top 5 tips for growing your YouTube channel: 1) Consistency is key 2) Engage with your audience 3) Quality over quantity 4) Use trending hashtags 5) Collaborate with others",
-    timestamp: "2023-05-15T14:30:00Z",
+    createdAt: "2023-05-15T14:30:00Z",
     likes: 45,
     comments: 12,
     isLiked: false
@@ -81,15 +67,41 @@ const mockPosts: Post[] = [
     id: "p2",
     author: {
       id: "u2",
+      name: "Design Guru",
       username: "design_guru",
-      avatar: "/user2.jpg",
-      isVerified: false
+      avatar: "/user2.jpg"
     },
     content: "Quick question for the community: What's your favorite tool for creating thumbnails? I've been using Canva but looking for alternatives that might offer more flexibility.",
-    timestamp: "2023-05-15T11:15:00Z",
+    createdAt: "2023-05-15T11:15:00Z",
     likes: 23,
     comments: 8,
     isLiked: true
+  }
+];
+
+const mockMembers: GroupMember[] = [
+  {
+    id: "u1",
+    name: "Video Creator",
+    username: "video_creator",
+    avatar: "/user1.jpg",
+    role: "admin",
+    joinedAt: "2023-04-15T10:00:00Z"
+  },
+  {
+    id: "u2",
+    name: "Design Guru",
+    username: "design_guru",
+    avatar: "/user2.jpg",
+    role: "moderator",
+    joinedAt: "2023-04-20T14:30:00Z"
+  },
+  {
+    id: "u3",
+    name: "Content Master",
+    username: "content_master",
+    role: "member",
+    joinedAt: "2023-05-01T09:15:00Z"
   }
 ];
 
@@ -97,6 +109,7 @@ const GroupDetailsPage = () => {
   const { id } = useParams();
   const [group] = useState(mockGroup);
   const [posts, setPosts] = useState(mockPosts);
+  const [members] = useState(mockMembers);
   const [newPost, setNewPost] = useState("");
   const [isMember, setIsMember] = useState(group.isMember);
 
@@ -113,15 +126,15 @@ const GroupDetailsPage = () => {
   const handlePostSubmit = () => {
     if (!newPost.trim()) return;
     
-    const post: Post = {
+    const post: GroupPostType = {
       id: `p${posts.length + 1}`,
       author: {
         id: "current_user",
-        username: "you",
-        isVerified: false
+        name: "You",
+        username: "you"
       },
       content: newPost,
-      timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       likes: 0,
       comments: 0,
       isLiked: false
@@ -144,6 +157,14 @@ const GroupDetailsPage = () => {
           : post
       )
     );
+  };
+
+  const handleRemoveMember = (memberId: string) => {
+    toast.success("Member removed from group");
+  };
+
+  const handlePromoteMember = (memberId: string, role: 'member' | 'moderator' | 'admin') => {
+    toast.success(`Member promoted to ${role}`);
   };
 
   return (
@@ -251,7 +272,12 @@ const GroupDetailsPage = () => {
           </TabsContent>
 
           <TabsContent value="members">
-            <GroupMemberList groupId={group.id} />
+            <GroupMemberList 
+              members={members}
+              isAdmin={group.isAdmin}
+              onRemoveMember={handleRemoveMember}
+              onPromoteMember={handlePromoteMember}
+            />
           </TabsContent>
 
           <TabsContent value="about">

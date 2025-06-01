@@ -12,6 +12,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage";
 import MessagingPage from "./pages/MessagingPage";
 import GroupDetailsPage from "./pages/GroupDetailsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="accounts" element={<AccountsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Routes>
         <Toaster />
