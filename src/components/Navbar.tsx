@@ -3,19 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
+    <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full gradient-bg flex items-center justify-center">
               <span className="text-white font-bold text-xl">R</span>
             </div>
-            <span className="font-bold text-xl">RoundAbout</span>
+            <span className="font-bold text-xl gradient-text">RoundAbout</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -31,18 +32,20 @@ const Navbar = () => {
                 How It Works
               </Link>
             </div>
-            <div className="flex gap-4">
-              <Link to="/login">
-                <Button variant="outline">Log in</Button>
+            <div className="flex gap-4 items-center">
+              <ThemeToggle />
+              <Link to="/dashboard">
+                <Button variant="outline">Dashboard</Button>
               </Link>
-              <Link to="/signup">
-                <Button>Sign up</Button>
+              <Link to="/dashboard">
+                <Button>Get Started</Button>
               </Link>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
             <Button 
               variant="ghost" 
               size="icon"
@@ -79,11 +82,11 @@ const Navbar = () => {
                 How It Works
               </Link>
               <div className="flex flex-col gap-2 pt-2">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Log in</Button>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">Dashboard</Button>
                 </Link>
-                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full">Sign up</Button>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="w-full">Get Started</Button>
                 </Link>
               </div>
             </div>

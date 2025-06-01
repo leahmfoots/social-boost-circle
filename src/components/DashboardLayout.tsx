@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { 
@@ -19,6 +18,7 @@ import { ChartBar, Link, Settings, Star, TrendingUp, User, Users, Bell } from "l
 import { Button } from "./ui/button";
 import NotificationCenter from "./layout/NotificationCenter";
 import SearchBar from "./layout/SearchBar";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -28,8 +28,8 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children, title = "Dashboard" }: DashboardLayoutProps) => {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-blue-50">
-        <Sidebar className="sidebar">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+        <Sidebar className="sidebar dark:bg-gray-900/95">
           <SidebarHeader>
             <div className="flex items-center gap-2 px-4">
               <div className="h-8 w-8 rounded-full gradient-bg flex items-center justify-center shadow-lg">
@@ -135,7 +135,7 @@ const DashboardLayout = ({ children, title = "Dashboard" }: DashboardLayoutProps
         </Sidebar>
         
         <div className="flex-1">
-          <header className="border-b bg-white/80 backdrop-blur-md shadow-sm">
+          <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm">
             <div className="container py-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
@@ -145,6 +145,7 @@ const DashboardLayout = ({ children, title = "Dashboard" }: DashboardLayoutProps
                 <div className="hidden md:block w-72">
                   <SearchBar />
                 </div>
+                <ThemeToggle />
                 <NotificationCenter />
                 <Button variant="ghost" size="icon" asChild className="hover-glow">
                   <RouterLink to="/dashboard/profile">
