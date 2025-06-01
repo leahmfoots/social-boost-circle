@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import DashboardStatsGrid from "@/components/DashboardStatsGrid";
@@ -11,7 +12,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Activity, Search, Trophy, Crown } from "lucide-react";
+import { 
+  Activity, 
+  Search, 
+  Trophy, 
+  Crown, 
+  Link, 
+  Award, 
+  CheckCircle, 
+  MessageSquare, 
+  TrendingUp 
+} from "lucide-react";
 import { Reward } from "@/types/rewards";
 import { Engagement } from "@/types/engagement";
 
