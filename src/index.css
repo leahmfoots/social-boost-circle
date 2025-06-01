@@ -104,27 +104,27 @@
   @apply bg-gradient-to-r from-primary via-purple-500 to-secondary;
 }
 
-/* Custom card styling */
-.card {
-  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 shadow-lg;
-}
-
 /* Enhanced glassmorphism effects */
 .glass-card {
-  @apply bg-white/10 dark:bg-gray-800/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 shadow-xl;
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-white/20 dark:border-gray-700/20 shadow-2xl;
+}
+
+/* Card styling with enhanced depth */
+.card {
+  @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg border border-white/30 dark:border-gray-700/30 shadow-xl;
 }
 
 /* Sidebar improvements */
 .sidebar {
-  @apply bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-r border-white/20 dark:border-gray-700/20;
+  @apply bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl border-r border-white/30 dark:border-gray-700/30;
 }
 
 /* Button enhancements */
 .btn-primary {
-  @apply bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-lg;
+  @apply bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-lg hover:shadow-xl transition-all duration-200;
 }
 
-/* Animation utilities */
+/* Enhanced animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -147,19 +147,103 @@
   }
 }
 
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+}
+
 .animate-fade-in {
-  animation: fade-in 0.3s ease-out;
+  animation: fade-in 0.5s ease-out;
 }
 
 .animate-slide-in {
-  animation: slide-in 0.3s ease-out;
+  animation: slide-in 0.5s ease-out;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
 }
 
 /* Improved hover effects */
 .hover-lift {
-  @apply transition-all duration-200 hover:scale-105 hover:shadow-xl;
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:-translate-y-1;
 }
 
 .hover-glow {
-  @apply transition-all duration-200 hover:shadow-lg hover:shadow-primary/25;
+  @apply transition-all duration-300 hover:shadow-2xl hover:shadow-primary/30;
+}
+
+/* Enhanced interactive elements */
+.interactive-card {
+  @apply hover-lift cursor-pointer transform transition-all duration-300;
+}
+
+.interactive-card:hover {
+  @apply bg-gradient-to-br from-white/95 to-blue-50/95 dark:from-gray-800/95 dark:to-gray-700/95;
+}
+
+/* Notification styles */
+.notification-dot {
+  @apply animate-pulse-glow;
+}
+
+/* Progress bar enhancements */
+.progress-bar {
+  @apply bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out;
+}
+
+/* PWA install prompt styles */
+.pwa-install-prompt {
+  @apply fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-lg shadow-2xl p-4 transform transition-all duration-300;
+}
+
+/* Search autocomplete styles */
+.search-dropdown {
+  @apply absolute top-full left-0 right-0 z-50 mt-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-lg shadow-2xl max-h-60 overflow-y-auto;
+}
+
+/* Real-time status indicators */
+.status-online {
+  @apply bg-green-500 animate-pulse;
+}
+
+.status-offline {
+  @apply bg-red-500;
+}
+
+.status-connecting {
+  @apply bg-yellow-500 animate-ping;
+}
+
+/* Mobile responsive enhancements */
+@media (max-width: 768px) {
+  .glass-card {
+    @apply mx-2 rounded-xl;
+  }
+  
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border-t border-white/30 dark:border-gray-700/30 p-2;
+  }
+}
+
+/* Premium feature highlights */
+.premium-feature {
+  @apply relative overflow-hidden;
+}
+
+.premium-feature::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full bg-gradient-to-r from-yellow-400/10 to-orange-500/10 pointer-events-none;
+}
+
+.premium-badge {
+  @apply bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full;
 }

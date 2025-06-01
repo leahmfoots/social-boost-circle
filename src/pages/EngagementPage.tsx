@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -8,9 +7,10 @@ import EngagementOpportunity from "@/components/EngagementOpportunity";
 import EngagementTable from "@/components/EngagementTable";
 import EngagementChart from "@/components/analytics/EngagementChart";
 import EngagementFilter from "@/components/engagement/EngagementFilter";
+import { ContentSuggestions } from "@/components/ai/ContentSuggestions";
 import { Engagement, Opportunity } from "@/types/engagement";
 import { Input } from "@/components/ui/input";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, Lightbulb } from "lucide-react";
 
 // Mock data for opportunities and engagements
 const mockOpportunities: Opportunity[] = [
@@ -180,6 +180,10 @@ const EngagementPage = () => {
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
             <TabsTrigger value="history">Engagement History</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="ai-insights" className="flex items-center gap-1">
+              <Lightbulb className="w-4 h-4" />
+              AI Insights
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="opportunities" className="space-y-6">
@@ -212,6 +216,10 @@ const EngagementPage = () => {
               <EngagementChart title="Weekly Engagement Activity" />
               <EngagementChart title="Points Earned Over Time" />
             </div>
+          </TabsContent>
+
+          <TabsContent value="ai-insights">
+            <ContentSuggestions />
           </TabsContent>
         </Tabs>
       </div>
