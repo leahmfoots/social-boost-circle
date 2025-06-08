@@ -1,44 +1,38 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "sonner";
-import Layout from "./components/Layout";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import EngagementPage from "./pages/EngagementPage";
-import RewardsPage from "./pages/RewardsPage";
-import CommunityPage from "./pages/CommunityPage";
-import AccountsPage from "./pages/AccountsPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import CreatorProfilePage from "./pages/CreatorProfilePage";
-import MessagingPage from "./pages/MessagingPage";
-import GroupDetailsPage from "./pages/GroupDetailsPage";
-import SettingsPage from "./pages/SettingsPage";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { StripeProvider } from '@/components/payment/StripeProvider';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { Toaster } from '@/components/ui/toaster';
+import Dashboard from '@/pages/Dashboard';
+import Auth from '@/pages/Auth';
+import Premium from '@/pages/Premium';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-background">
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="engagement" element={<EngagementPage />} />
-            <Route path="rewards" element={<RewardsPage />} />
-            <Route path="community" element={<CommunityPage />} />
-            <Route path="community/profile/:id" element={<CreatorProfilePage />} />
-            <Route path="community/messages" element={<MessagingPage />} />
-            <Route path="community/messages/:id" element={<MessagingPage />} />
-            <Route path="community/groups/:id" element={<GroupDetailsPage />} />
-            <Route path="accounts" element={<AccountsPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-        </Routes>
-        <Toaster />
-      </div>
-    </Router>
+    <AuthProvider>
+      <StripeProvider>
+        <Router>
+          <div className="min-h-screen">
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/premium" element={
+                <ProtectedRoute>
+                  <Premium />
+                </ProtectedRoute>
+              } />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </div>
+          <Toaster />
+        </Router>
+      </StripeProvider>
+    </AuthProvider>
   );
 }
 
