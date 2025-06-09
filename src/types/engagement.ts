@@ -12,6 +12,10 @@ export interface Opportunity {
 }
 
 export interface Engagement extends Omit<Opportunity, "timeRequired"> {
-  completedAt: string;
+  user_id: string;
+  content_url: string;
+  points_value: number;
+  submitted_at: string;
+  completedAt?: string;
   status: EngagementStatus;
 }
