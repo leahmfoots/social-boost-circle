@@ -29,7 +29,7 @@ import { supabase } from "@/lib/supabase";
 import { Reward } from "@/types/rewards";
 import { Engagement } from "@/types/engagement";
 
-// Mock data
+// Mock data with correct properties
 const mockRewards: Reward[] = [
   {
     id: "r1",
@@ -52,21 +52,29 @@ const mockRewards: Reward[] = [
 const mockEngagements: Engagement[] = [
   {
     id: "e1",
+    user_id: "user1",
     username: "tech_reviewer",
     platform: "YouTube",
     contentType: "Video",
     title: "Top 10 VSCode Extensions for Developers",
     points: 45,
+    content_url: "https://youtube.com/watch?v=example1",
+    points_value: 45,
+    submitted_at: "2023-05-15T10:30:00Z",
     completedAt: "2023-05-15T10:30:00Z",
     status: "verified",
   },
   {
     id: "e2",
+    user_id: "user1",
     username: "ui_designer",
     platform: "Instagram",
     contentType: "Story",
     title: "Color Theory for Digital Designers",
     points: 20,
+    content_url: "https://instagram.com/p/example2",
+    points_value: 20,
+    submitted_at: "2023-05-10T14:45:00Z",
     completedAt: "2023-05-10T14:45:00Z",
     status: "pending",
   }
@@ -261,19 +269,7 @@ const Dashboard = () => {
                           <p className="text-xs text-muted-foreground">@creator_{i}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1 text-xs">
-                          <MessageSquare className="h-3 w-3" />
-                          <span>{120 - (i * 20)}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs">
-                          <TrendingUp className="h-3 w-3" />
-                          <span>{8 - i}%</span>
-                        </div>
-                        <Button variant="outline" size="sm" className="h-7 text-xs">
-                          Follow
-                        </Button>
-                      </div>
+                      <Button variant="outline" size="sm">Follow</Button>
                     </div>
                   ))}
                 </div>

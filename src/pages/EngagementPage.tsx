@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -64,31 +65,43 @@ const mockOpportunities: Opportunity[] = [
 const mockEngagements: Engagement[] = [
   {
     id: "e1",
+    user_id: "user1",
     username: "tech_reviewer",
     platform: "YouTube",
     contentType: "Video",
     title: "Top 10 VSCode Extensions for Developers",
     points: 45,
+    content_url: "https://youtube.com/watch?v=example1",
+    points_value: 45,
+    submitted_at: "2023-05-15T10:30:00Z",
     completedAt: "2023-05-15T10:30:00Z",
     status: "verified",
   },
   {
     id: "e2",
+    user_id: "user1",
     username: "ui_designer",
     platform: "Instagram",
     contentType: "Story",
     title: "Color Theory for Digital Designers",
     points: 20,
+    content_url: "https://instagram.com/p/example2",
+    points_value: 20,
+    submitted_at: "2023-05-10T14:45:00Z",
     completedAt: "2023-05-10T14:45:00Z",
     status: "pending",
   },
   {
     id: "e3",
+    user_id: "user1",
     username: "js_developer",
     platform: "Twitter",
     contentType: "Tweet",
     title: "Why You Should Learn React in 2023",
     points: 15,
+    content_url: "https://twitter.com/example/status/123",
+    points_value: 15,
+    submitted_at: "2023-05-05T09:15:00Z",
     completedAt: "2023-05-05T09:15:00Z",
     status: "rejected",
   },
