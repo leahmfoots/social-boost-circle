@@ -1,202 +1,288 @@
 
-# Frequently Asked Questions
+# Frequently Asked Questions (FAQ)
 
 ## General Questions
 
 ### What is RoundAbout?
+RoundAbout is a comprehensive creator engagement platform that helps content creators track their performance across multiple social media platforms, earn rewards through engagement activities, and connect with a community of like-minded creators.
 
-RoundAbout is a platform designed for content creators to track engagement across multiple social media platforms, earn rewards for their activity, and connect with a vibrant creator community.
+### How much does RoundAbout cost?
+RoundAbout offers both free and premium subscription plans:
+- **Free Plan**: Basic engagement tracking, limited social accounts, community access
+- **Premium Plan**: Advanced analytics, unlimited social accounts, priority support, exclusive rewards
+- **Enterprise Plan**: Team collaboration, white-label options, dedicated support
 
-### Is RoundAbout free to use?
-
-Yes, RoundAbout offers a free tier that includes basic functionality such as connecting social accounts, tracking engagement metrics, and participating in the community. Premium features are available through subscription plans or by earning points within the platform.
-
-### Which social media platforms can I connect?
-
-Currently, RoundAbout supports the following platforms:
+### Which social media platforms are supported?
+Currently supported platforms include:
 - Instagram
 - Twitter/X
 - YouTube
-- LinkedIn
 - Facebook
+- LinkedIn
+- TikTok (Beta)
+- Pinterest (Beta)
 
-We're continuously working to add more platforms based on user demand.
+We're continuously adding support for new platforms based on user demand.
 
-### How does RoundAbout keep my account information secure?
-
-RoundAbout uses OAuth for secure authentication with social platforms, meaning we never store your social media passwords. We employ industry-standard encryption for all data and comply with data protection regulations. For more details, please see our [Security Documentation](./09_Auth_And_Security.md).
-
-## Account & Profile
+## Account Management
 
 ### How do I create an account?
+1. Visit the RoundAbout website
+2. Click "Sign Up" in the top right corner
+3. Enter your email address and create a password
+4. Verify your email address through the confirmation link
+5. Complete your profile setup
+6. Connect your social media accounts
 
-Visit our website at [roundabout.com](https://roundabout.com) and click the "Sign Up" button. You can register using your email address and create a password. After registration, you'll need to verify your email before you can start using all features.
+### How do I connect my social media accounts?
+1. Navigate to your Dashboard
+2. Click on "Connect Account" or go to Settings > Social Accounts
+3. Select the platform you want to connect
+4. Authorize RoundAbout to access your account data
+5. Your account will appear in your connected accounts list
 
-### Can I delete my account?
+### Can I disconnect a social media account?
+Yes, you can disconnect any social media account at any time:
+1. Go to Settings > Social Accounts
+2. Find the account you want to disconnect
+3. Click the "Disconnect" button
+4. Confirm your choice in the popup dialog
 
-Yes. To delete your account, go to Settings > Account > Delete Account. Please note that account deletion is permanent and will remove all your data from our system after a 30-day grace period.
+### I forgot my password. How do I reset it?
+1. Go to the login page
+2. Click "Forgot Password"
+3. Enter your email address
+4. Check your email for a reset link
+5. Follow the instructions to create a new password
 
-### Can I change my username?
+## Engagement and Points
 
-Yes, you can change your username once every 30 days. Go to Settings > Profile and update the username field. Note that if you change your username, your profile URL will also change.
+### How does the points system work?
+You earn points by completing engagement activities such as:
+- Liking posts from other creators
+- Commenting on content
+- Sharing posts
+- Following other creators
+- Creating quality content that receives engagement
 
-### What information is public on my profile?
+Points are awarded based on the type and quality of engagement, with verification processes to ensure authenticity.
 
-By default, your profile shows your name, username, bio, connected social platforms (but not account details), and any achievements you've earned. You can adjust your privacy settings to control what information is visible to other users.
+### How are engagement activities verified?
+Our verification system uses a combination of:
+- Automated checks against social platform APIs
+- Community reporting and moderation
+- Machine learning algorithms to detect suspicious activity
+- Manual review for flagged activities
 
-## Social Accounts
-
-### What data does RoundAbout collect from my social accounts?
-
-RoundAbout collects:
-- Follower counts
-- Post metrics (views, likes, comments)
-- Engagement rates
-- Content categories
-
-We do NOT collect:
-- Private messages
-- Contact lists
-- Personal data of your followers
-- Financial information
-
-### Can I temporarily disconnect an account?
-
-Yes, you can disconnect a social account at any time from the Accounts page. Your historical data for that account will be retained but marked as inactive until you reconnect it.
-
-### Will RoundAbout post on my behalf?
-
-No. RoundAbout is designed to analyze and track your social media performance, not to post content. We never post to your accounts without your explicit permission.
-
-### Why am I seeing different metrics on RoundAbout compared to my native platform analytics?
-
-There may be slight discrepancies due to:
-- Different calculation methodologies for engagement rates
-- API limitations from some platforms
-- Timing differences in data refreshes
-
-We strive for accuracy, but platform-specific analytics should be considered the source of truth.
-
-## Points & Rewards
-
-### How do I earn points on RoundAbout?
-
-Points can be earned through various activities:
-- Completing engagement opportunities (15-50 points each)
-- Connecting social accounts (25 points per platform)
-- Unlocking achievements (25-150 points each)
-- Daily login streaks (5 points per day, with bonuses)
-- Community participation (5-20 points for quality contributions)
+Most engagements are verified within 24 hours.
 
 ### What can I do with my points?
-
 Points can be redeemed for various rewards including:
-- Gift cards for popular retailers
-- Premium RoundAbout features
-- Profile boosts for increased visibility
-- Custom profile badges
-- Cash payouts (for eligible accounts)
+- Gift cards (Amazon, iTunes, Google Play, etc.)
+- Premium subscription upgrades
+- Exclusive creator tools and resources
+- Physical merchandise
+- Access to special events and workshops
 
-### How long does it take for my engagement to be verified?
+### Why was my engagement rejected?
+Common reasons for engagement rejection include:
+- The engagement wasn't completed as required
+- Suspicious or fraudulent activity detected
+- Technical issues with verification
+- Violation of platform or community guidelines
 
-Most engagements are verified within 24 hours. Complex engagements may take up to 48 hours. If your engagement remains in "pending" status for more than 48 hours, please contact support.
+You can appeal rejected engagements through the support system.
 
-### Do points expire?
+## Technical Issues
 
-Points earned through regular activity do not expire as long as your account remains active. However, promotional or bonus points may have expiration dates, which will be clearly indicated when you receive them.
+### Why can't I connect my social media account?
+Common solutions for connection issues:
+1. Ensure you're logged into the correct social media account
+2. Clear your browser cache and cookies
+3. Disable browser extensions that might interfere
+4. Try connecting from an incognito/private browsing window
+5. Check if the social platform is experiencing outages
 
-## Engagement Opportunities
+If issues persist, contact our support team.
 
-### How are engagement opportunities selected for me?
+### The app is loading slowly. What can I do?
+To improve performance:
+1. Check your internet connection
+2. Close unnecessary browser tabs
+3. Clear your browser cache
+4. Disable unused browser extensions
+5. Try using a different browser
+6. Restart your device
 
-Engagement opportunities are matched to you based on:
-- Your connected social platforms
-- Your content niche and interests
-- Your previous engagement history
-- Your stated preferences
+### I'm not receiving email notifications. What should I check?
+1. Check your spam/junk folder
+2. Ensure notifications are enabled in your account settings
+3. Verify your email address is correct in your profile
+4. Add our email domain to your safe sender list
+5. Check if your email provider is blocking our emails
 
-You can further refine recommendations through filters in the Engagement Hub.
+### The mobile app isn't working properly. How do I fix it?
+1. Force close and restart the app
+2. Check for app updates in your app store
+3. Restart your device
+4. Clear the app cache (Android) or reinstall (iOS)
+5. Ensure you have a stable internet connection
 
-### What happens if my engagement is rejected?
+## Community and Safety
 
-If your engagement is rejected, you'll receive a notification explaining why. Common reasons include:
-- Insufficient engagement (e.g., comments too short)
-- Engagement not matching the requirements
-- Unable to verify your engagement
-- Suspicious activity patterns
+### How do I report inappropriate content or behavior?
+1. Click the "Report" button on the content or user profile
+2. Select the reason for reporting
+3. Provide additional details if necessary
+4. Submit the report
 
-You can appeal rejected engagements through your Engagement History page.
+Our moderation team reviews all reports within 24 hours.
 
-### Is there a limit to how many engagements I can complete?
+### What are the community guidelines?
+Our community guidelines prohibit:
+- Spam or fake engagement
+- Harassment or bullying
+- Hate speech or discrimination
+- Adult or inappropriate content
+- Sharing personal information
+- Manipulating the points system
 
-There's no hard limit on the number of engagements you can complete. However, to maintain quality, we employ a fair use policy that monitors for unusual patterns. Focus on meaningful interactions rather than quantity.
+Full guidelines are available in our Terms of Service.
 
-### Can I suggest content for engagement opportunities?
+### How do I block or mute another user?
+1. Go to the user's profile
+2. Click the three-dot menu
+3. Select "Block" or "Mute"
+4. Confirm your choice
 
-Yes! Content creators can submit their own content for engagement through the "Create Opportunity" feature in the Engagement Hub. Submissions are reviewed to ensure they meet our community guidelines before being published.
+Blocked users cannot see your content or interact with you.
 
-## Community Features
+### Can I make my profile private?
+Yes, you can adjust your privacy settings:
+1. Go to Settings > Privacy
+2. Choose your preferred privacy level
+3. Customize who can see your activity and profile information
+4. Save your changes
 
-### How do I find creators in my niche?
+## Billing and Subscriptions
 
-Visit the Community section and use the search filters to find creators in your niche. You can filter by:
-- Content category
-- Platform focus
-- Location
-- Follower count range
+### How do I upgrade to a premium subscription?
+1. Go to Settings > Subscription or click "Upgrade" anywhere in the app
+2. Choose your preferred plan
+3. Enter your payment information
+4. Confirm your subscription
 
-You can also check out the "Recommended for You" section for personalized suggestions.
+Your premium features will be activated immediately.
 
-### Are there rules for community participation?
+### Can I cancel my subscription?
+Yes, you can cancel anytime:
+1. Go to Settings > Subscription
+2. Click "Manage Subscription"
+3. Select "Cancel Subscription"
+4. Follow the confirmation steps
 
-Yes, we maintain a [Community Guidelines](https://roundabout.com/guidelines) document that outlines acceptable behavior. Key principles include:
-- Be respectful and constructive
-- No spam or self-promotion outside designated areas
-- No harassment, hate speech, or discriminatory content
-- Only share content you have rights to share
+You'll retain premium features until the end of your billing period.
 
-### What are Groups and how do I join them?
+### Do you offer refunds?
+We offer refunds within 14 days of purchase for annual subscriptions and within 7 days for monthly subscriptions. Contact our support team to request a refund.
 
-Groups are communities centered around specific topics or interests. To join:
-1. Navigate to the Community section
-2. Select the "Groups" tab
-3. Browse available groups or search for specific topics
-4. Click "Join Group" on any group you're interested in
+### Which payment methods do you accept?
+We accept:
+- Credit cards (Visa, MasterCard, American Express)
+- Debit cards
+- PayPal
+- Apple Pay (mobile)
+- Google Pay (mobile)
 
-Some groups may require approval from moderators before joining.
+## Data and Privacy
 
-## Technical Support
+### What data do you collect from my social media accounts?
+We only collect publicly available data including:
+- Basic profile information (name, username, follower count)
+- Public post metrics (likes, comments, shares)
+- Engagement activities you perform through our platform
 
-### The platform is running slowly. What can I do?
+We never access or store private messages or personal data.
 
-Try these troubleshooting steps:
-1. Clear your browser cache and cookies
-2. Try a different browser
-3. Disable browser extensions
-4. Check your internet connection
-5. If using a mobile device, try the desktop version
+### How is my data protected?
+We use industry-standard security measures including:
+- Encryption of data in transit and at rest
+- Regular security audits and penetration testing
+- Secure authentication protocols
+- Limited access controls for our team
+- Compliance with GDPR and other privacy regulations
 
-If problems persist, please contact our support team.
+### Can I export my data?
+Yes, you can request a complete export of your data:
+1. Go to Settings > Privacy
+2. Click "Export Data"
+3. Choose what data to include
+4. We'll email you a download link within 24 hours
 
-### How do I report a bug?
+### How do I delete my account?
+To permanently delete your account:
+1. Go to Settings > Account
+2. Click "Delete Account"
+3. Confirm your password
+4. Select a reason for leaving (optional)
+5. Confirm deletion
 
-If you encounter a bug:
-1. Go to Settings > Help & Support
-2. Click "Report a Bug"
-3. Fill out the form with as much detail as possible
-4. Include screenshots if applicable
-5. Submit the report
+This action cannot be undone, and all your data will be permanently removed.
 
-Our team will investigate and respond as soon as possible.
+## Troubleshooting
 
-### How can I contact support?
+### Common error messages and solutions:
 
-You can reach our support team through:
-- In-app chat (during business hours)
-- Email: support@roundabout.com
-- Help Center: help.roundabout.com
-- Community forum: community.roundabout.com
+**"Authentication failed"**
+- Check your login credentials
+- Reset your password if needed
+- Clear browser cache and try again
 
-### Does RoundAbout offer an API?
+**"Social account connection failed"**
+- Ensure you're logged into the correct social account
+- Try connecting from an incognito window
+- Check if the platform is experiencing issues
 
-We currently offer API access for premium users and partners. If you're interested in API access, please contact our partnerships team at partnerships@roundabout.com for more information.
+**"Verification pending for too long"**
+- Check if the engagement was completed correctly
+- Ensure the post/account is still public
+- Contact support if it's been over 48 hours
+
+**"Points not appearing"**
+- Wait for verification to complete
+- Check that the engagement meets requirements
+- Look for any rejection notifications
+
+### Still need help?
+If you can't find the answer to your question:
+1. Check our Help Center for detailed guides
+2. Contact our support team through the in-app chat
+3. Email us at support@roundabout.com
+4. Follow @RoundAboutSupport on Twitter for updates
+
+Our support team typically responds within 24 hours during business days.
+
+## Feature Requests and Feedback
+
+### How can I suggest new features?
+We love hearing from our users! You can:
+1. Use the feedback form in the app (Settings > Feedback)
+2. Email us at feedback@roundabout.com
+3. Join our Discord community for discussions
+4. Participate in our monthly user surveys
+
+### How do I stay updated on new features?
+- Follow our blog for feature announcements
+- Enable push notifications in your app settings
+- Follow us on social media
+- Subscribe to our newsletter
+- Check the "What's New" section in the app
+
+### Can I participate in beta testing?
+Yes! We regularly recruit beta testers:
+1. Go to Settings > Beta Program
+2. Opt in to beta testing
+3. You'll receive invitations to test new features
+4. Provide feedback to help us improve
+
+Beta testers often get early access to premium features and exclusive rewards.

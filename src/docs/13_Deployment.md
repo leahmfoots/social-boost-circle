@@ -1,91 +1,103 @@
 
 # Deployment Guide
 
-## Overview
+This document provides comprehensive instructions for deploying the RoundAbout platform across different environments, from development to production.
 
-This guide covers the complete deployment process for RoundAbout, including environment setup, build configuration, deployment strategies, and monitoring. The application uses modern deployment practices with automated CI/CD pipelines.
+## Deployment Overview
 
-## Deployment Architecture
+The RoundAbout platform uses a modern deployment stack:
+- **Frontend**: React application built with Vite
+- **Backend**: Supabase (Database, Authentication, Edge Functions)
+- **Hosting**: Lovable platform for staging, optional custom hosting for production
+- **CDN**: Integrated content delivery for static assets
+- **Domain**: Custom domain support available
 
-### Infrastructure Overview
-- **Frontend**: Static site hosting (Vercel/Netlify)
-- **Backend**: Supabase managed services
-- **Database**: PostgreSQL (Supabase)
-- **Authentication**: Supabase Auth
-- **Storage**: Supabase Storage
-- **CDN**: Global content delivery network
-- **Monitoring**: Error tracking and performance monitoring
+## Prerequisites
 
-### Environment Strategy
-- **Development**: Local development environment
-- **Staging**: Pre-production testing environment
-- **Production**: Live user-facing environment
+### Required Accounts and Services
+- [ ] Supabase account and project
+- [ ] Stripe account (for payments)
+- [ ] Custom domain (optional, for production)
+- [ ] Email service provider (for notifications)
 
-## Pre-Deployment Checklist
-
-### Code Quality
-- [ ] All tests passing (unit, integration, e2e)
-- [ ] Code coverage meets minimum threshold (80%)
-- [ ] No TypeScript errors or warnings
-- [ ] ESLint and Prettier checks passing
-- [ ] Security audit complete (npm audit)
-
-### Configuration
+### Environment Setup
+- [ ] Node.js 18+ installed
+- [ ] Git repository configured
 - [ ] Environment variables configured
-- [ ] API keys and secrets properly set
-- [ ] Database migrations ready
-- [ ] Supabase project configured
-- [ ] Stripe integration tested
-
-### Performance
-- [ ] Bundle size optimized
-- [ ] Images optimized and compressed
-- [ ] Performance budget met
-- [ ] Lighthouse scores acceptable
-- [ ] Core Web Vitals passing
-
-### Security
-- [ ] Authentication flows tested
-- [ ] Authorization rules verified
-- [ ] CORS policies configured
-- [ ] Content Security Policy set
-- [ ] HTTPS enforced
+- [ ] SSL certificates (for custom domains)
 
 ## Environment Configuration
 
 ### Development Environment
 ```bash
-# .env.local
-VITE_SUPABASE_URL=https://your-dev-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-dev-anon-key
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-test-key
-VITE_APP_URL=http://localhost:5173
-VITE_ENVIRONMENT=development
+# Local development setup
+npm install
+npm run dev
+
+# Environment variables (.env.local)
+VITE_SUPABASE_URL=your-development-supabase-url
+VITE_SUPABASE_ANON_KEY=your-development-anon-key
 ```
 
 ### Staging Environment
 ```bash
-# .env.staging
-VITE_SUPABASE_URL=https://your-staging-project.supabase.co
+# Staging configuration
+VITE_SUPABASE_URL=your-staging-supabase-url
 VITE_SUPABASE_ANON_KEY=your-staging-anon-key
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-test-key
-VITE_APP_URL=https://staging.roundabout.app
-VITE_ENVIRONMENT=staging
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 ```
 
 ### Production Environment
 ```bash
-# .env.production
-VITE_SUPABASE_URL=https://your-prod-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-prod-anon-key
-VITE_STRIPE_PUBLISHABLE_KEY=pk_live_your-live-key
-VITE_APP_URL=https://app.roundabout.com
-VITE_ENVIRONMENT=production
+# Production configuration
+VITE_SUPABASE_URL=your-production-supabase-url
+VITE_SUPABASE_ANON_KEY=your-production-anon-key
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_...
 ```
 
-## Build Process
+## Supabase Setup
 
-### Production Build
+### Database Migration
+```sql
+-- Run migrations in order
+\i supabase/migrations/001_initial_schema.sql
+\i supabase/migrations/002_add_social_accounts.sql
+\i supabase/migrations/003_add_engagement_system.sql
+```
+
+### Edge Functions Deployment
+```bash
+# Deploy all edge functions
+supabase functions deploy create-subscription
+supabase functions deploy check-subscription
+supabase functions deploy customer-portal
+supabase functions deploy connect-social-account
+
+# Set environment variables
+supabase secrets set STRIPE_SECRET_KEY=sk_...
+supabase secrets set INSTAGRAM_CLIENT_SECRET=...
+supabase secrets set TWITTER_CLIENT_SECRET=...
+```
+
+### Row Level Security (RLS) Setup
+```sql
+-- Enable RLS on all tables
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_accounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE engagements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscribers ENABLE ROW LEVEL SECURITY;
+
+-- Create security policies
+CREATE POLICY "Users can view own profile" ON profiles
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON profiles
+  FOR UPDATE USING (auth.uid() = id);
+```
+
+## Frontend Deployment
+
+### Build Process
 ```bash
 # Install dependencies
 npm ci
@@ -93,61 +105,61 @@ npm ci
 # Run tests
 npm run test
 
-# Type checking
-npm run type-check
-
 # Build for production
 npm run build
 
-# Verify build
+# Preview build locally
 npm run preview
 ```
 
-### Build Configuration
+### Build Optimization
 ```typescript
-// vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-
+// vite.config.ts optimization
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  },
   build: {
-    outDir: 'dist',
-    sourcemap: process.env.NODE_ENV === 'development',
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dropdown-menu', '@radix-ui/react-dialog'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
           charts: ['recharts'],
-          stripe: ['@stripe/stripe-js', '@stripe/react-stripe-js']
-        }
-      }
+        },
+      },
     },
-    chunkSizeWarningLimit: 1000
+    sourcemap: true,
+    minify: 'terser',
   },
-  server: {
-    port: 5173,
-    host: true
-  },
-  preview: {
-    port: 4173,
-    host: true
-  }
 });
 ```
 
-## Deployment Platforms
+### Lovable Platform Deployment
+```bash
+# Automatic deployment on Lovable
+# 1. Click "Publish" button in Lovable interface
+# 2. Choose deployment settings
+# 3. Configure custom domain (if needed)
+# 4. Deploy to staging or production
+```
 
-### Vercel Deployment
+### Custom Hosting Deployment
 
-#### Vercel Configuration
+#### Netlify Deployment
+```toml
+# netlify.toml
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+```
+
+#### Vercel Deployment
 ```json
 {
   "version": 2,
@@ -155,532 +167,383 @@ export default defineConfig({
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "env": {
-    "VITE_SUPABASE_URL": "@supabase-url",
-    "VITE_SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "VITE_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key"
-  },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
-    }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
 ```
 
-#### Deployment Commands
+#### AWS S3 + CloudFront
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+# Build and deploy to S3
+npm run build
+aws s3 sync dist/ s3://your-bucket-name --delete
 
-# Login to Vercel
-vercel login
-
-# Deploy to staging
-vercel --env .env.staging
-
-# Deploy to production
-vercel --prod --env .env.production
-```
-
-### Netlify Deployment
-
-#### Netlify Configuration
-```toml
-# netlify.toml
-[build]
-  publish = "dist"
-  command = "npm run build"
-
-[build.environment]
-  NODE_VERSION = "18"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-[context.production.environment]
-  VITE_ENVIRONMENT = "production"
-
-[context.deploy-preview.environment]
-  VITE_ENVIRONMENT = "staging"
-```
-
-#### Deployment Process
-```bash
-# Install Netlify CLI
-npm install -g netlify-cli
-
-# Login to Netlify
-netlify login
-
-# Build and deploy
-netlify build
-netlify deploy --prod
+# Invalidate CloudFront cache
+aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
 ```
 
 ## Database Deployment
 
-### Supabase Setup
-
-#### Migration Process
-```bash
-# Install Supabase CLI
-npm install -g supabase
-
-# Login to Supabase
-supabase login
-
-# Link to project
-supabase link --project-ref your-project-ref
-
-# Run migrations
-supabase db push
-
-# Deploy edge functions
-supabase functions deploy
-```
-
-#### Database Migrations
+### Production Database Setup
 ```sql
--- Migration: 001_initial_schema.sql
--- Create profiles table
-CREATE TABLE public.profiles (
-  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-  email TEXT UNIQUE NOT NULL,
-  first_name TEXT,
-  last_name TEXT,
-  avatar_url TEXT,
-  points INTEGER DEFAULT 0,
-  subscription_tier TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+-- Create production database
+CREATE DATABASE roundabout_production;
 
--- Enable RLS
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+-- Run all migrations
+\i migrations/001_initial_schema.sql
+\i migrations/002_add_indexes.sql
+\i migrations/003_add_rls_policies.sql
 
--- Create RLS policies
-CREATE POLICY "Users can view own profile" ON public.profiles
-  FOR SELECT USING (auth.uid() = id);
-
-CREATE POLICY "Users can update own profile" ON public.profiles
-  FOR UPDATE USING (auth.uid() = id);
+-- Create database backups
+pg_dump roundabout_production > backup_$(date +%Y%m%d).sql
 ```
 
-#### Edge Functions Deployment
+### Connection Pooling
+```javascript
+// Supabase connection configuration
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  db: {
+    schema: 'public',
+  },
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10,
+    },
+  },
+});
+```
+
+## API Deployment
+
+### Edge Functions Configuration
+```typescript
+// Function environment configuration
+const corsHeaders = {
+  'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGINS || '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+// Rate limiting configuration
+const rateLimiter = {
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+};
+```
+
+### API Monitoring
+```typescript
+// Health check endpoint
+export const healthCheck = async (req: Request) => {
+  const checks = {
+    database: await checkDatabase(),
+    stripe: await checkStripe(),
+    socialAPIs: await checkSocialAPIs(),
+  };
+  
+  const isHealthy = Object.values(checks).every(check => check.status === 'ok');
+  
+  return new Response(JSON.stringify({
+    status: isHealthy ? 'healthy' : 'unhealthy',
+    checks,
+    timestamp: new Date().toISOString(),
+  }), {
+    status: isHealthy ? 200 : 503,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+```
+
+## SSL and Security
+
+### SSL Certificate Setup
 ```bash
-# Deploy individual function
-supabase functions deploy check-subscription
+# For custom domains, configure SSL
+# Let's Encrypt with Certbot
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 
-# Deploy all functions
-supabase functions deploy
-
-# Set secrets
-supabase secrets set STRIPE_SECRET_KEY=sk_live_your_secret_key
+# Verify SSL configuration
+openssl s_client -connect yourdomain.com:443 -servername yourdomain.com
 ```
 
-## CI/CD Pipeline
+### Security Headers
+```nginx
+# Nginx security headers
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';" always;
+```
 
-### GitHub Actions Workflow
+## CDN Configuration
+
+### CloudFront Setup
+```json
+{
+  "DistributionConfig": {
+    "Origins": [{
+      "DomainName": "your-origin-domain.com",
+      "Id": "S3-roundabout-assets",
+      "CustomOriginConfig": {
+        "HTTPPort": 443,
+        "OriginProtocolPolicy": "https-only"
+      }
+    }],
+    "DefaultCacheBehavior": {
+      "TargetOriginId": "S3-roundabout-assets",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "Compress": true,
+      "CachePolicyId": "managed-caching-optimized"
+    }
+  }
+}
+```
+
+## Monitoring and Logging
+
+### Application Monitoring
+```typescript
+// Error tracking setup
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  dsn: process.env.VITE_SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  integrations: [
+    new Sentry.BrowserTracing(),
+  ],
+  tracesSampleRate: 1.0,
+});
+```
+
+### Performance Monitoring
+```typescript
+// Performance tracking
+const trackPageLoad = () => {
+  window.addEventListener('load', () => {
+    const perfData = performance.getEntriesByType('navigation')[0];
+    analytics.track('Page Load Time', {
+      loadTime: perfData.loadEventEnd - perfData.loadEventStart,
+      domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+    });
+  });
+};
+```
+
+### Log Aggregation
+```bash
+# Centralized logging setup
+# Configure log shipping to aggregation service
+tail -f /var/log/nginx/access.log | your-log-shipper
+```
+
+## Backup and Recovery
+
+### Database Backups
+```bash
+# Automated daily backups
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+pg_dump $DATABASE_URL > "backup_$DATE.sql"
+aws s3 cp "backup_$DATE.sql" s3://your-backup-bucket/
+rm "backup_$DATE.sql"
+```
+
+### Application Backups
+```bash
+# Code and configuration backup
+git archive --format=tar.gz HEAD > "app_backup_$(date +%Y%m%d).tar.gz"
+aws s3 cp "app_backup_$(date +%Y%m%d).tar.gz" s3://your-backup-bucket/code/
+```
+
+### Recovery Procedures
+```bash
+# Database recovery
+pg_restore --clean --if-exists -d $DATABASE_URL backup_file.sql
+
+# Application recovery
+git checkout main
+npm ci
+npm run build
+```
+
+## Deployment Pipeline
+
+### CI/CD with GitHub Actions
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy
-
+name: Deploy to Production
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-
-env:
-  NODE_VERSION: '18'
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          node-version: '18'
+      - run: npm ci
+      - run: npm run test
+      - run: npm run build
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Run type check
-        run: npm run type-check
-
-      - name: Run tests
-        run: npm run test:coverage
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-
-  build:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist/
-
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    environment: staging
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: dist/
-
-      - name: Deploy to Vercel (Staging)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_TEAM_ID }}
-
-  deploy-production:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    environment: production
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: dist/
-
-      - name: Deploy to Vercel (Production)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_TEAM_ID }}
-
-      - name: Deploy Supabase Functions
+      - uses: actions/checkout@v3
+      - name: Deploy to Production
         run: |
-          npm install -g supabase
-          supabase login --token ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          supabase functions deploy --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+          npm run build
+          # Deploy to your hosting platform
 ```
 
-## Security Configuration
+### Blue-Green Deployment
+```bash
+# Blue-green deployment script
+#!/bin/bash
+CURRENT_ENV=$(get_current_environment)
+NEW_ENV=$([ "$CURRENT_ENV" = "blue" ] && echo "green" || echo "blue")
 
-### Content Security Policy
-```html
-<!-- In index.html -->
-<meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' https://js.stripe.com;
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src 'self' https://fonts.gstatic.com;
-  img-src 'self' data: https:;
-  connect-src 'self' https://*.supabase.co https://api.stripe.com;
-  frame-src https://js.stripe.com;
-">
-```
+# Deploy to new environment
+deploy_to_environment $NEW_ENV
 
-### Environment Security
-```typescript
-// src/lib/config.ts
-const requiredEnvVars = [
-  'VITE_SUPABASE_URL',
-  'VITE_SUPABASE_ANON_KEY',
-  'VITE_STRIPE_PUBLISHABLE_KEY'
-];
-
-// Validate environment variables
-requiredEnvVars.forEach(envVar => {
-  if (!import.meta.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
-  }
-});
-
-export const config = {
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  stripePublishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
-  appUrl: import.meta.env.VITE_APP_URL,
-  environment: import.meta.env.VITE_ENVIRONMENT || 'development'
-} as const;
-```
-
-## Monitoring and Logging
-
-### Error Tracking Setup
-```typescript
-// src/lib/monitoring.ts
-import * as Sentry from '@sentry/react';
-
-if (import.meta.env.PROD) {
-  Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: import.meta.env.VITE_ENVIRONMENT,
-    integrations: [
-      new Sentry.BrowserTracing(),
-      new Sentry.Replay()
-    ],
-    tracesSampleRate: 1.0,
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0
-  });
-}
-```
-
-### Performance Monitoring
-```typescript
-// src/lib/analytics.ts
-export const trackPageView = (path: string) => {
-  if (typeof gtag !== 'undefined') {
-    gtag('config', 'GA_MEASUREMENT_ID', {
-      page_path: path
-    });
-  }
-};
-
-export const trackEvent = (action: string, parameters?: any) => {
-  if (typeof gtag !== 'undefined') {
-    gtag('event', action, parameters);
-  }
-};
-```
-
-### Health Checks
-```typescript
-// src/lib/health.ts
-export const healthCheck = async (): Promise<boolean> => {
-  try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('id')
-      .limit(1);
-    
-    return !error;
-  } catch (error) {
-    console.error('Health check failed:', error);
-    return false;
-  }
-};
+# Run health checks
+if health_check $NEW_ENV; then
+  # Switch traffic
+  switch_traffic_to $NEW_ENV
+  echo "Deployment successful to $NEW_ENV"
+else
+  echo "Health check failed, rolling back"
+  exit 1
+fi
 ```
 
 ## Performance Optimization
 
-### Bundle Analysis
-```bash
-# Analyze bundle size
-npm run build -- --analyze
-
-# Check bundle composition
-npx vite-bundle-analyzer dist
-```
-
-### Image Optimization
+### Asset Optimization
 ```typescript
-// vite.config.ts - Add image optimization
+// Bundle analysis
 import { defineConfig } from 'vite';
-import { imageOptimize } from 'vite-plugin-imagemin';
+import { Bundle } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   plugins: [
-    react(),
-    imageOptimize({
-      gifsicle: { optimizationLevel: 7 },
-      mozjpeg: { quality: 80 },
-      pngquant: { quality: [0.6, 0.8] },
-      svgo: {
-        plugins: [
-          { name: 'removeViewBox', active: false }
-        ]
-      }
-    })
-  ]
+    Bundle({
+      filename: 'dist/stats.html',
+      open: true,
+    }),
+  ],
 });
 ```
 
 ### Caching Strategy
-```typescript
-// public/_headers (Netlify) or vercel.json (Vercel)
-/*
-  Cache-Control: public, max-age=31536000, immutable
+```nginx
+# Nginx caching configuration
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+  expires 1y;
+  add_header Cache-Control "public, immutable";
+}
 
-/index.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
+location /api/ {
+  add_header Cache-Control "no-cache, no-store, must-revalidate";
+}
 ```
 
-## Rollback Strategy
+## Rollback Procedures
 
-### Automated Rollback
+### Application Rollback
 ```bash
-# Vercel rollback
-vercel rollback [deployment-url]
-
-# Netlify rollback
-netlify deploy --restore [deploy-id]
-
-# Manual rollback
-git revert [commit-hash]
-git push origin main
+# Quick rollback script
+#!/bin/bash
+PREVIOUS_VERSION=$(git rev-parse HEAD~1)
+git checkout $PREVIOUS_VERSION
+npm ci
+npm run build
+deploy_to_production
 ```
 
 ### Database Rollback
-```bash
-# Supabase migration rollback
-supabase migration down
-
-# Manual SQL rollback
-supabase db reset --db-url [connection-string]
+```sql
+-- Database rollback procedure
+BEGIN;
+-- Apply reverse migration
+-- Verify data integrity
+-- COMMIT or ROLLBACK based on verification
 ```
 
-## Post-Deployment Verification
+## Post-Deployment Checklist
 
-### Automated Checks
+### Immediate Verification
+- [ ] Application loads successfully
+- [ ] User authentication works
+- [ ] Database connections are stable
+- [ ] API endpoints respond correctly
+- [ ] Payment processing functions
+- [ ] Social media integrations work
+
+### Performance Verification
+- [ ] Page load times meet targets
+- [ ] API response times are acceptable
+- [ ] Database queries perform efficiently
+- [ ] CDN is serving assets correctly
+
+### Security Verification
+- [ ] SSL certificates are valid
+- [ ] Security headers are present
+- [ ] Authentication is enforced
+- [ ] Data encryption is active
+
+### Monitoring Setup
+- [ ] Error tracking is configured
+- [ ] Performance monitoring is active
+- [ ] Uptime monitoring is running
+- [ ] Log aggregation is working
+- [ ] Alerts are configured
+
+## Troubleshooting
+
+### Common Deployment Issues
+
+**Build Failures**
 ```bash
-# Health check script
-#!/bin/bash
-echo "Running post-deployment checks..."
-
-# Check application is responding
-curl -f https://app.roundabout.com/health || exit 1
-
-# Check authentication endpoint
-curl -f https://app.roundabout.com/api/auth/status || exit 1
-
-# Check database connectivity
-curl -f https://app.roundabout.com/api/health/db || exit 1
-
-echo "All checks passed!"
-```
-
-### Manual Verification
-- [ ] Homepage loads correctly
-- [ ] User registration works
-- [ ] Login/logout functionality
-- [ ] Dashboard displays data
-- [ ] Payment flow functions
-- [ ] Social account connections work
-- [ ] Mobile responsiveness
-- [ ] Performance metrics acceptable
-
-## Deployment Troubleshooting
-
-### Common Issues
-
-#### Build Failures
-```bash
-# Clear cache and reinstall
+# Clear cache and rebuild
 rm -rf node_modules package-lock.json
 npm install
+npm run build
+```
 
-# Check TypeScript errors
-npm run type-check
-
+**Environment Variable Issues**
+```bash
 # Verify environment variables
 echo $VITE_SUPABASE_URL
+echo $VITE_STRIPE_PUBLISHABLE_KEY
 ```
 
-#### Runtime Errors
+**Database Connection Issues**
+```sql
+-- Test database connectivity
+SELECT 1;
+-- Check active connections
+SELECT count(*) FROM pg_stat_activity;
+```
+
+**Performance Issues**
 ```bash
-# Check browser console for errors
-# Verify API endpoints are accessible
-# Check CORS configuration
-# Validate environment variables
+# Check resource usage
+top
+df -h
+free -m
 ```
 
-#### Performance Issues
-```bash
-# Analyze bundle size
-npm run build -- --analyze
-
-# Check lighthouse scores
-lighthouse https://your-domain.com
-
-# Monitor Core Web Vitals
-# Check CDN configuration
-```
-
-### Support Contacts
-- **DevOps Team**: devops@roundabout.com
-- **On-call Engineer**: +1-xxx-xxx-xxxx
-- **Incident Response**: incidents@roundabout.com
-
-This deployment guide ensures reliable, secure, and performant deployments of the RoundAbout platform across all environments.
+This deployment guide ensures a smooth, secure, and reliable deployment process for the RoundAbout platform across all environments.

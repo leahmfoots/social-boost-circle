@@ -1,388 +1,414 @@
 
 # Getting Started Guide
 
-## Welcome to RoundAbout! 🎉
+Welcome to RoundAbout! This guide will help you get started with our creator engagement platform and make the most of your experience.
 
-RoundAbout is your all-in-one platform for managing social media engagement, tracking performance across multiple platforms, and earning rewards for your activity. This guide will help you get started and make the most of our features.
+## What is RoundAbout?
+
+RoundAbout is a comprehensive platform designed for content creators to:
+- Track engagement across multiple social media platforms
+- Earn points through authentic engagement activities
+- Connect with a community of fellow creators
+- Redeem rewards and access premium features
+- Gain insights into your social media performance
 
 ## Quick Start (5 Minutes)
 
 ### Step 1: Create Your Account
-1. Visit [app.roundabout.com](https://app.roundabout.com)
-2. Click **"Sign Up"** in the top right corner
+1. Visit [roundabout.com](https://roundabout.com)
+2. Click the "Sign Up" button in the top right corner
 3. Enter your email address and create a secure password
-4. Verify your email address (check your inbox)
-5. Complete your profile setup
+4. Click "Create Account"
+5. Check your email and click the verification link
 
-### Step 2: Connect Your Social Accounts
-1. Navigate to **Dashboard → Accounts**
-2. Click **"Connect Account"** for each platform you use:
-   - Instagram
-   - YouTube
-   - Twitter/X
-   - LinkedIn
-   - Facebook
-3. Follow the OAuth flow to securely connect each account
-4. Your account data will automatically sync within minutes
+### Step 2: Set Up Your Profile
+1. Add your first and last name
+2. Upload a profile picture (optional but recommended)
+3. Write a brief bio about yourself and your content
+4. Select your primary content categories
+5. Click "Save Profile"
 
-### Step 3: Explore Your Dashboard
-1. View your **engagement metrics** and **points balance**
-2. Check your **recent activity** and **connected accounts**
-3. Browse available **rewards** you can earn
-4. Discover **engagement opportunities** from other creators
+### Step 3: Connect Your Social Accounts
+1. Go to your Dashboard
+2. Click "Connect Account" or navigate to Settings > Social Accounts
+3. Choose your first platform (we recommend starting with your most active account)
+4. Authorize RoundAbout to access your public data
+5. Repeat for additional platforms
 
-### Step 4: Start Engaging
-1. Go to **Engagement Hub → Opportunities**
-2. Browse available engagement opportunities
-3. Click **"Engage"** on content that interests you
-4. Complete the engagement (like, comment, share)
-5. Earn points when your engagement is verified!
+### Step 4: Complete Your First Engagement
+1. Visit the Engagement Hub
+2. Browse available opportunities
+3. Choose an engagement that interests you
+4. Follow the instructions (like, comment, or share)
+5. Submit your engagement for verification
+6. Earn your first points!
+
+### Step 5: Explore the Community
+1. Browse other creators' profiles
+2. Follow creators whose content you enjoy
+3. Participate in community discussions
+4. Join relevant creator groups
 
 ## Detailed Setup Guide
 
-### Account Registration
+### Account Security
+Your account security is important to us. Here's how to keep it safe:
 
-#### Creating Your Profile
-After signing up, you'll be prompted to complete your profile:
+**Strong Password Requirements:**
+- At least 8 characters long
+- Include uppercase and lowercase letters
+- Include at least one number
+- Include at least one special character
 
-```
-Profile Information:
-- First Name: Your first name
-- Last Name: Your last name
-- Display Name: How you want to appear to other users
-- Bio: A brief description of yourself (optional)
-- Profile Picture: Upload an avatar (optional)
-```
+**Additional Security:**
+- Never share your password with anyone
+- Log out when using public computers
+- Report suspicious activity immediately
 
-#### Profile Privacy Settings
-Control what information is visible to other users:
-- **Public Profile**: Your name, bio, and achievements
-- **Connected Platforms**: Which social accounts you've connected
-- **Activity Status**: Whether you're currently active
-- **Points Balance**: Your total earned points
+### Profile Optimization
+A complete profile helps you connect with other creators and increases your engagement opportunities.
 
-### Connecting Social Media Accounts
+**Profile Photo:**
+- Use a clear, professional headshot
+- Ensure good lighting and image quality
+- Keep it recent and recognizable
+- Maximum file size: 5MB
 
-#### Supported Platforms
+**Bio Guidelines:**
+- Describe your content niche and style
+- Mention your goals and interests
+- Keep it concise but informative
+- Use relevant keywords for discoverability
 
-**Instagram**
-- Personal and Business accounts supported
-- Syncs: Followers, posts, stories, engagement metrics
-- Required permissions: Basic profile, media insights
+**Categories:**
+Choose up to 5 categories that best describe your content:
+- Lifestyle & Fashion
+- Technology & Gaming
+- Food & Cooking
+- Travel & Adventure
+- Fitness & Health
+- Business & Finance
+- Arts & Crafts
+- Music & Entertainment
+- Education & Learning
+- Beauty & Skincare
 
-**YouTube**
-- Personal channels and brand accounts
-- Syncs: Subscribers, videos, watch time, comments
-- Required permissions: Channel analytics, video management
+### Connecting Social Accounts
 
-**Twitter/X**
-- Personal and professional accounts
-- Syncs: Followers, tweets, engagement, analytics
-- Required permissions: Read tweets, user data
+#### Instagram
+1. Click "Connect Instagram"
+2. Log into your Instagram account
+3. Authorize RoundAbout to access:
+   - Basic profile information
+   - Public posts and engagement metrics
+   - Follower count and demographics
+4. Your Instagram data will sync within minutes
 
-**LinkedIn**
-- Personal and company pages
-- Syncs: Connections, posts, article performance
-- Required permissions: Profile data, company insights
+#### Twitter/X
+1. Click "Connect Twitter"
+2. Log into your Twitter account
+3. Authorize RoundAbout to access:
+   - Profile information and tweets
+   - Follower metrics
+   - Engagement statistics
+4. Data synchronization is instant
 
-**Facebook**
-- Personal profiles and business pages
-- Syncs: Friends/followers, posts, page insights
-- Required permissions: Public profile, page management
+#### YouTube
+1. Click "Connect YouTube"
+2. Log into your Google account
+3. Select the YouTube channel to connect
+4. Authorize access to:
+   - Channel statistics
+   - Video performance metrics
+   - Subscriber information
+5. Initial sync may take up to 30 minutes
 
-#### Connection Process
-1. **Click "Connect Account"** for your desired platform
-2. **Authorize RoundAbout** through the platform's OAuth flow
-3. **Grant permissions** for data access (read-only)
-4. **Wait for sync** - initial data import takes 2-5 minutes
-5. **Verify connection** - check that your metrics appear correctly
+#### Other Platforms
+- **Facebook**: Connect your Facebook Page (personal profiles are not supported)
+- **LinkedIn**: Connect your professional profile or company page
+- **TikTok**: Currently in beta - limited functionality
+- **Pinterest**: Currently in beta - limited functionality
 
-#### Troubleshooting Connections
-- **Connection Failed**: Check you're logged into the correct account
-- **Missing Data**: Some platforms have delayed API responses
-- **Permission Errors**: Ensure you've granted all required permissions
-- **Sync Issues**: Try disconnecting and reconnecting the account
+### Understanding the Points System
 
-### Understanding Your Dashboard
+#### How to Earn Points
+Points are earned through verified engagement activities:
 
-#### Main Dashboard Sections
+**Engagement Types and Points:**
+- Like a post: 1-5 points (varies by platform)
+- Comment on a post: 3-10 points (quality-dependent)
+- Share/retweet content: 5-15 points
+- Follow a creator: 2-8 points
+- Create quality content: 10-50 points (based on engagement received)
 
-**Overview Cards**
-- **Total Points**: Your current point balance
-- **Engagements**: Number of completed engagements this month
-- **Engagement Rate**: Your average engagement rate across platforms
-- **Active Challenges**: Current challenges you're participating in
+**Bonus Point Opportunities:**
+- Daily login: 5 points
+- Complete profile: 25 points (one-time)
+- First social account connection: 50 points (one-time)
+- Weekly engagement streak: 10-100 points
+- Community participation: 5-25 points
 
-**Recent Activity Feed**
-- Latest engagements you've completed
-- Points earned and verification status
-- Engagement opportunities from your network
-- Achievement unlocks and milestone celebrations
+#### Point Verification Process
+All engagements are verified to ensure authenticity:
 
-**Performance Charts**
-- Weekly engagement activity trends
-- Points earned over time
-- Platform-specific performance metrics
-- Growth tracking across all connected accounts
+1. **Automatic Verification (90% of cases):**
+   - Completed within minutes
+   - Uses API checks and algorithms
+   - Points awarded immediately upon verification
 
-**Quick Actions**
-- Find new engagement opportunities
-- Redeem points for rewards
-- Connect additional social accounts
-- Access premium features
+2. **Manual Review (10% of cases):**
+   - Takes 24-48 hours
+   - Human moderators review the engagement
+   - Additional verification for high-point activities
 
-#### Account Management
-Access account settings through the user menu:
-- **Profile Settings**: Update personal information
-- **Privacy Controls**: Manage visibility settings
-- **Notification Preferences**: Choose what alerts you receive
-- **Connected Accounts**: Manage social media connections
-- **Subscription**: View and manage premium features
+3. **Verification Status:**
+   - ✅ **Verified**: Points awarded
+   - ⏳ **Pending**: Under review
+   - ❌ **Rejected**: Did not meet requirements
 
-### Earning Your First Points
+#### Common Rejection Reasons
+- Engagement was not completed as required
+- Content violated platform or community guidelines
+- Suspicious or automated activity detected
+- Technical issues with verification
+- Engagement was removed after submission
 
-#### Engagement Opportunities
-The Engagement Hub shows opportunities to engage with other creators' content:
+## Navigating the Dashboard
 
-**How It Works:**
-1. **Browse opportunities** filtered by platform and content type
-2. **Review requirements** - each opportunity shows exactly what's needed
-3. **Complete engagement** - like, comment, share, or view as requested
-4. **Submit proof** - provide links or screenshots of your engagement
-5. **Earn points** - receive points once your engagement is verified
+### Dashboard Overview
+Your dashboard is your command center, displaying:
 
-**Point Values:**
-- **Instagram Like**: 5-10 points
-- **Instagram Comment**: 10-15 points
-- **YouTube Video View**: 15-25 points
-- **YouTube Comment**: 20-30 points
-- **Twitter Retweet**: 5-10 points
-- **LinkedIn Share**: 15-25 points
+**Key Metrics:**
+- Total points earned
+- Current point balance
+- Weekly engagement summary
+- Connected accounts status
+- Recent activity feed
 
-#### Daily Activities
-Earn points through regular platform activities:
-- **Daily Login**: 5 points
-- **Profile Updates**: 10 points
-- **Achievement Unlocks**: 25-100 points
-- **Challenge Participation**: 50-200 points
-- **Content Uploads**: Variable based on performance
+**Quick Actions:**
+- Browse new engagement opportunities
+- Check verification status
+- View available rewards
+- Access community features
 
-#### Verification Process
-All engagements go through verification:
-1. **Automatic Check**: System verifies basic engagement within 30 minutes
-2. **Manual Review**: Complex engagements reviewed within 24 hours
-3. **Approval**: Points credited to your account
-4. **Rejection**: Feedback provided if engagement doesn't meet requirements
+### Main Navigation
+- **Dashboard**: Overview and quick stats
+- **Engagement Hub**: Find and complete opportunities
+- **Analytics**: Detailed performance insights
+- **Rewards**: Browse and redeem available rewards
+- **Community**: Connect with other creators
+- **Profile**: Manage your account and settings
 
-### Redeeming Rewards
+## Engagement Hub Guide
 
-#### Available Rewards
+### Finding Opportunities
+The Engagement Hub shows opportunities tailored to your interests:
 
-**Gift Cards**
-- Amazon: $5 (500 points), $10 (900 points), $25 (2,200 points)
-- Starbucks: $5 (550 points), $10 (1,000 points)
-- iTunes/Google Play: $10 (950 points), $25 (2,300 points)
+**Filtering Options:**
+- Platform (Instagram, Twitter, YouTube, etc.)
+- Content type (Post, Video, Story, etc.)
+- Points value (1-10, 11-25, 26-50, 50+)
+- Time required (1-2 min, 3-5 min, 5+ min)
+- Category (matching your interests)
 
-**Platform Credits**
-- Instagram Ad Credits: $25 (2,000 points)
-- YouTube Creator Studio: $50 (4,500 points)
-- LinkedIn Premium: 1 month (800 points)
+**Sorting Options:**
+- Newest first
+- Highest points first
+- Ending soon
+- Best match for you
 
-**Premium Features**
-- Advanced Analytics: 1 month (600 points)
-- Priority Support: 3 months (400 points)
-- Custom Profile Badge: Permanent (1,200 points)
+### Completing Engagements
 
-**Cash Rewards** (Premium accounts only)
-- PayPal: $10 (1,100 points), $25 (2,600 points), $50 (5,000 points)
-- Bank Transfer: $100 (9,500 points)
+#### Before You Engage:
+1. Read the full description
+2. Check the requirements
+3. Ensure you can complete the task authentically
+4. Note the deadline (if any)
 
-#### Redemption Process
-1. **Navigate to Rewards** section in your dashboard
-2. **Browse catalog** and filter by category or points required
-3. **Click "Redeem"** on your chosen reward
-4. **Confirm redemption** - points will be deducted immediately
-5. **Receive reward** - digital rewards delivered within 24 hours
+#### During Engagement:
+1. Click "Start Engagement"
+2. Complete the required action on the social platform
+3. Return to RoundAbout
+4. Click "Submit for Verification"
+5. Provide any required proof (screenshot, link, etc.)
 
-### Understanding Premium Features
+#### After Submission:
+1. Check verification status regularly
+2. Points are awarded upon verification
+3. Engage responsibly and authentically
 
-#### Free vs Premium
+### Best Practices for Engagement
+- Only engage with content you genuinely appreciate
+- Leave thoughtful, meaningful comments
+- Follow creators whose content interests you
+- Share content that resonates with your audience
+- Be respectful and constructive in all interactions
 
-**Free Account Includes:**
-- Connect up to 3 social accounts
-- Basic engagement opportunities
-- Standard point earning rates
-- Basic analytics dashboard
-- Community access
+## Rewards and Redemption
 
-**Premium Account Adds:**
-- Unlimited social account connections
-- Priority engagement opportunities
-- 2x point multiplier on select activities
-- Advanced analytics and insights
-- Custom dashboard themes
+### Available Rewards
+Points can be redeemed for various rewards:
+
+**Digital Rewards:**
+- Amazon gift cards ($5, $10, $25, $50)
+- iTunes/Apple gift cards
+- Google Play credit
+- Spotify premium subscriptions
+- Adobe Creative Suite subscriptions
+
+**Platform Rewards:**
+- Premium RoundAbout features
+- Account verification badges
 - Priority customer support
 - Early access to new features
+- Additional analytics insights
 
-#### Upgrading to Premium
-1. **Click "Upgrade"** on any premium feature
-2. **Choose subscription plan**: Monthly ($9.99) or Annual ($99.99)
-3. **Enter payment information** securely through Stripe
-4. **Enjoy premium features** immediately after payment
+**Physical Rewards:**
+- RoundAbout merchandise
+- Creator equipment (ring lights, microphones)
+- Books and educational materials
+- Custom branded items
+
+### Redemption Process
+1. Navigate to the Rewards section
+2. Browse available rewards
+3. Check point requirements
+4. Click "Redeem" on your chosen reward
+5. Confirm your selection
+6. Provide necessary information (email, shipping address)
+7. Receive confirmation and tracking information
+
+### Reward Delivery
+- **Digital rewards**: Delivered within 24 hours via email
+- **Subscriptions**: Activated within 48 hours
+- **Physical items**: Shipped within 5-7 business days
+- **Premium features**: Activated immediately
 
 ## Community Features
 
-### Groups and Challenges
+### Connecting with Creators
+- **Discover**: Browse creator profiles by category, location, or follower count
+- **Follow**: Follow creators to see their activity in your feed
+- **Message**: Send direct messages to connected creators
+- **Collaborate**: Find and propose collaboration opportunities
 
-#### Joining Groups
-1. **Navigate to Community → Groups**
-2. **Browse categories**: Photography, Tech, Business, Lifestyle, etc.
-3. **Click "Join Group"** on groups that match your interests
-4. **Participate in discussions** and group-specific challenges
+### Groups and Communities
+- **Interest-based Groups**: Join groups focused on your content niche
+- **Local Communities**: Connect with creators in your area
+- **Skill Sharing**: Participate in knowledge exchange groups
+- **Challenges**: Join community-wide engagement challenges
 
-#### Group Challenges
-- **Weekly Themes**: Specific content creation challenges
-- **Engagement Goals**: Collective engagement targets
-- **Skill Building**: Learn new techniques and strategies
-- **Networking**: Connect with like-minded creators
+### Community Guidelines
+- Be respectful and supportive of fellow creators
+- Share knowledge and experiences generously
+- Avoid spam or self-promotional content
+- Report inappropriate behavior or content
+- Maintain authenticity in all interactions
 
-### Creator Discovery
+## Analytics and Insights
 
-#### Finding Creators
-Use the search and discovery features:
-- **Browse by Category**: Find creators in your niche
-- **Filter by Platform**: Discover platform-specific creators
-- **Sort by Activity**: See most active community members
-- **Location-Based**: Connect with local creators
+### Performance Metrics
+Track your growth across platforms:
 
-#### Networking Features
-- **Follow Creators**: Stay updated on their content
-- **Direct Messages**: Connect privately with other users
-- **Collaboration Requests**: Propose joint projects
-- **Mentorship**: Find mentors or become one yourself
+**Growth Metrics:**
+- Follower growth over time
+- Engagement rate trends
+- Content performance analysis
+- Cross-platform comparison
 
-## Mobile Experience
+**Engagement Analytics:**
+- Best posting times for your audience
+- Content types that perform best
+- Audience demographics and interests
+- Engagement quality scores
 
-### Progressive Web App (PWA)
-RoundAbout works seamlessly on mobile devices:
+**Points Analytics:**
+- Points earned over time
+- Top-performing engagement types
+- Verification success rate
+- Comparison with similar creators
 
-#### Installation
-1. **Visit app.roundabout.com** on your mobile browser
-2. **Look for "Add to Home Screen"** prompt
-3. **Install the app** for native-like experience
-4. **Access offline features** when internet is limited
-
-#### Mobile-Optimized Features
-- **Touch-friendly interface** designed for mobile interaction
-- **Swipe gestures** for navigation and engagement
-- **Push notifications** for important updates
-- **Mobile camera integration** for easy content capture
-
-### Notifications
-
-#### Types of Notifications
-- **Engagement Verified**: When your engagement earns points
-- **New Opportunities**: Fresh engagement opportunities in your niche
-- **Points Milestones**: Celebrating point achievements
-- **Reward Reminders**: When you have enough points for desired rewards
-- **Community Updates**: New group activities and challenges
-
-#### Notification Settings
-Customize your notification preferences:
-1. **Go to Settings → Notifications**
-2. **Choose delivery methods**: Email, Push, In-app
-3. **Select frequency**: Immediate, Daily digest, Weekly summary
-4. **Set quiet hours**: Specify when not to receive notifications
-
-## Best Practices for Success
-
-### Maximizing Your Points
-
-#### Engagement Strategy
-- **Quality over quantity**: Meaningful engagement earns more points
-- **Consistency**: Daily activity maintains streak bonuses
-- **Diversify platforms**: Engage across multiple platforms for variety
-- **Follow guidelines**: Ensure all engagements meet platform requirements
-
-#### Community Participation
-- **Join relevant groups**: Focus on your niche for better opportunities
-- **Participate in challenges**: Group challenges offer bonus points
-- **Help other creators**: Mutual support builds lasting connections
-- **Share knowledge**: Contributing to discussions earns recognition
-
-### Growing Your Network
-
-#### Profile Optimization
-- **Complete your profile**: Full profiles get more engagement opportunities
-- **Use relevant keywords**: Help others discover you through search
-- **Showcase your best work**: Link to your top content
-- **Regular updates**: Keep your profile fresh and current
-
-#### Content Strategy
-- **Cross-platform posting**: Maximize reach across all connected accounts
-- **Engage authentically**: Build genuine relationships with other creators
-- **Track performance**: Use analytics to understand what works
-- **Experiment**: Try different content types and engagement strategies
-
-### Security and Safety
-
-#### Account Security
-- **Use strong passwords**: Unique, complex passwords for all accounts
-- **Enable two-factor authentication**: Add extra security to your accounts
-- **Regular security reviews**: Check connected accounts monthly
-- **Report suspicious activity**: Alert our team to any concerning behavior
-
-#### Privacy Protection
-- **Review privacy settings**: Control what information you share
-- **Be selective with connections**: Only connect platforms you actively use
-- **Understand permissions**: Know what data you're sharing
-- **Regular audits**: Review and update permissions quarterly
+### Using Insights to Improve
+- Identify your most engaging content types
+- Optimize posting schedules based on audience activity
+- Focus on platforms where you see the best growth
+- Learn from high-performing creators in your niche
 
 ## Getting Help
 
-### Self-Service Resources
-
-#### Knowledge Base
-Access comprehensive help articles:
-- **Feature guides**: Detailed instructions for all features
-- **Video tutorials**: Step-by-step video walkthroughs
+### In-App Support
+- **Help Center**: Searchable knowledge base
+- **Live Chat**: Real-time support during business hours
+- **Contact Form**: Submit detailed support requests
 - **FAQ**: Answers to common questions
-- **Troubleshooting**: Solutions for common issues
 
-#### Community Support
-- **Community Forum**: Ask questions and share tips with other users
-- **User Groups**: Platform-specific help and discussion
-- **Creator Showcases**: Learn from successful community members
+### Community Support
+- **Creator Forums**: Ask questions and share experiences
+- **Discord Community**: Real-time chat with other creators
+- **Social Media**: Follow us for updates and tips
+  - Twitter: @RoundAboutApp
+  - Instagram: @roundaboutapp
+  - YouTube: RoundAbout Creator Hub
 
-### Direct Support
+### Response Times
+- **Live Chat**: Immediate during business hours
+- **Contact Form**: Within 24 hours
+- **Complex Issues**: 48-72 hours
+- **Community Forums**: Varies (community-driven)
 
-#### Contact Methods
-- **Live Chat**: Available during business hours (9 AM - 5 PM PST)
-- **Email Support**: support@roundabout.com (24-48 hour response)
-- **Priority Support**: Premium users get faster response times
+## Tips for Success
 
-#### What to Include in Support Requests
-- **Clear description** of the issue or question
-- **Screenshots** if relevant
-- **Account information** (email, username)
-- **Steps you've already tried**
-- **Browser and device information**
+### Maximize Your Points
+1. **Daily Habits**: Log in daily for bonus points
+2. **Quality Engagement**: Focus on meaningful interactions
+3. **Consistency**: Maintain regular engagement activity
+4. **Profile Completion**: Complete all profile sections
+5. **Community Participation**: Be active in groups and discussions
 
-### Feedback and Suggestions
+### Build Your Network
+1. **Authentic Connections**: Connect with creators who share your interests
+2. **Value First**: Provide value before asking for help
+3. **Collaboration**: Look for win-win collaboration opportunities
+4. **Mentorship**: Learn from successful creators in your niche
+5. **Support Others**: Engage with and support fellow creators
 
-#### Product Feedback
-Help us improve RoundAbout:
-- **Feature requests**: Suggest new features you'd like to see
-- **Bug reports**: Report any issues you encounter
-- **User experience feedback**: Share thoughts on design and usability
-- **Beta testing**: Join our beta program for early access to new features
+### Grow Your Social Presence
+1. **Cross-Platform Strategy**: Use insights to optimize across all platforms
+2. **Content Planning**: Plan content around engagement opportunities
+3. **Audience Engagement**: Respond to comments and messages promptly
+4. **Consistency**: Maintain regular posting schedules
+5. **Analytics**: Use data to guide your content strategy
 
-#### Ways to Provide Feedback
-- **In-app feedback widget**: Quick feedback from any page
-- **Monthly surveys**: Detailed feedback on your experience
-- **User interviews**: Participate in one-on-one sessions
-- **Community discussions**: Share ideas in the community forum
+## Next Steps
 
-Welcome to the RoundAbout community! We're excited to have you on this journey of social media growth and engagement. If you have any questions as you get started, don't hesitate to reach out to our support team.
+Now that you're set up, here's what to do next:
 
-Happy engaging! 🚀
+1. **Week 1**: Complete your profile, connect 2-3 social accounts, and earn your first 100 points
+2. **Week 2**: Join relevant community groups and complete daily engagements
+3. **Week 3**: Analyze your performance data and optimize your strategy
+4. **Week 4**: Consider upgrading to premium for advanced features
+5. **Month 2**: Set collaboration goals and start networking with other creators
+
+Welcome to the RoundAbout community! We're excited to help you grow your creator journey.
+
+## Frequently Asked Questions
+
+**Q: Is RoundAbout free to use?**
+A: Yes! RoundAbout offers a free plan with basic features. Premium plans are available for advanced analytics and features.
+
+**Q: How long does verification take?**
+A: Most engagements are verified automatically within minutes. Manual reviews take 24-48 hours.
+
+**Q: Can I disconnect social accounts?**
+A: Yes, you can disconnect any social account at any time from your settings.
+
+**Q: Are my social media passwords stored?**
+A: No, we use secure OAuth authentication. We never see or store your passwords.
+
+**Q: What happens if my engagement is rejected?**
+A: You can appeal rejections through our support system. Common issues are explained in the rejection notice.
+
+**Q: Can I use RoundAbout on mobile?**
+A: Yes! RoundAbout is fully responsive and works great on mobile browsers. Native apps are coming soon.
+
+Need more help? Contact our support team or visit our comprehensive Help Center.

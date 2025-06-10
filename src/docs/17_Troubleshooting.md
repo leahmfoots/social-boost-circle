@@ -1,591 +1,530 @@
 
 # Troubleshooting Guide
 
-## Quick Issue Resolution
-
-### Most Common Issues (90% of problems)
-
-#### 1. Login/Authentication Problems
-**Symptoms**: Can't log in, session expires, "Invalid credentials" error
-
-**Quick Fixes:**
-```bash
-# Clear browser data
-1. Clear cookies and cache for app.roundabout.com
-2. Try incognito/private browsing mode
-3. Disable browser extensions temporarily
-4. Check if Caps Lock is on for password
-```
-
-**Still not working?** → [Authentication Troubleshooting](#authentication-issues)
-
-#### 2. Social Account Not Syncing
-**Symptoms**: Data not updating, missing followers/engagement numbers, "Connection Failed"
-
-**Quick Fixes:**
-```bash
-# Refresh connection
-1. Go to Dashboard → Accounts
-2. Click refresh icon next to the account
-3. Wait 5-10 minutes for data update
-4. Check if account privacy settings changed
-```
-
-**Still not working?** → [Social Account Issues](#social-account-connection-issues)
-
-#### 3. Points Not Updating
-**Symptoms**: Completed engagement but no points awarded, points showing as "Pending"
-
-**Quick Fixes:**
-```bash
-# Check verification status
-1. Go to Engagement → History
-2. Look for engagement status (Pending/Verified/Rejected)
-3. Wait up to 24 hours for manual verification
-4. Ensure you provided proper proof/screenshots
-```
-
-**Still not working?** → [Points and Rewards Issues](#points-and-rewards-issues)
-
-## Detailed Troubleshooting
-
-### Authentication Issues
-
-#### "Invalid email or password" Error
-
-**Cause**: Incorrect login credentials or account doesn't exist
-
-**Solutions:**
-1. **Verify email address**: Check for typos in email
-2. **Reset password**:
-   ```
-   1. Click "Forgot Password" on login page
-   2. Enter email address exactly as registered
-   3. Check spam folder for reset email
-   4. Follow link to create new password
-   ```
-3. **Check account existence**: Try signing up with same email - if account exists, you'll get a message
-
-#### Session Keeps Expiring
-
-**Cause**: Browser settings, extensions, or security software
-
-**Solutions:**
-1. **Browser settings**:
-   ```
-   1. Enable cookies for app.roundabout.com
-   2. Disable "Block third-party cookies"
-   3. Add roundabout.com to trusted sites
-   ```
-2. **Extension conflicts**:
-   ```
-   1. Disable ad blockers temporarily
-   2. Turn off privacy extensions
-   3. Test in incognito mode
-   ```
-3. **Security software**: Whitelist roundabout.com in antivirus/firewall
-
-#### Two-Factor Authentication (2FA) Not Working
-
-**Cause**: Time sync issues, lost device, or app problems
-
-**Solutions:**
-1. **Time synchronization**:
-   ```
-   1. Ensure device clock is accurate
-   2. Sync time with internet time servers
-   3. Check timezone settings
-   ```
-2. **Authenticator app issues**:
-   ```
-   1. Force close and reopen authenticator app
-   2. Try backup codes from account setup
-   3. Use different authenticator app
-   ```
-3. **Lost access to 2FA device**:
-   ```
-   1. Use backup codes saved during setup
-   2. Contact support with account verification
-   3. Have alternate recovery method ready
-   ```
-
-### Social Account Connection Issues
-
-#### Instagram Connection Fails
-
-**Common Causes and Solutions:**
-
-**Private Account:**
-```
-Issue: Private accounts have limited API access
-Solution: 
-1. Switch to business account temporarily
-2. Connect account
-3. Can switch back to personal after connection
-```
-
-**Outdated Permissions:**
-```
-Issue: Instagram revoked app permissions
-Solution:
-1. Go to Instagram → Settings → Apps and Websites
-2. Remove RoundAbout if listed
-3. Try connecting again fresh
-```
-
-**Business Account Requirements:**
-```
-Issue: Business account not properly set up
-Solution:
-1. Ensure Instagram is linked to Facebook Page
-2. Verify business account conversion completed
-3. Check that page admin permissions are granted
-```
-
-#### YouTube Connection Problems
-
-**Channel Selection Issues:**
-```
-Issue: Can't select correct channel
-Solution:
-1. Ensure you're logged into correct Google account
-2. Check if you have Brand Account vs Personal Account
-3. Verify you have Creator Studio access
-```
-
-**Analytics Permission Error:**
-```
-Issue: "Insufficient permissions" error
-Solution:
-1. Go to YouTube Studio → Settings → Permissions
-2. Ensure RoundAbout has analytics access
-3. Re-authorize with expanded permissions
-```
-
-#### Twitter/X API Limitations
-
-**Rate Limiting:**
-```
-Issue: "Too many requests" error
-Solution:
-1. Wait 15 minutes before retrying
-2. Reduce frequency of manual syncs
-3. Check if account has API access limits
-```
-
-**Account Requirements:**
-```
-Issue: Can't connect new Twitter account
-Solution:
-1. Account must be 30+ days old
-2. Phone number must be verified
-3. Email address must be confirmed
-```
-
-#### LinkedIn Connection Issues
-
-**Professional vs Personal:**
-```
-Issue: Wrong account type connected
-Solution:
-1. Disconnect current connection
-2. Ensure you're logged into correct LinkedIn account
-3. Choose "Personal Profile" or "Company Page" appropriately
-```
-
-**Page Management Permissions:**
-```
-Issue: Can't access company page data
-Solution:
-1. Verify you're page admin (not just member)
-2. Check page permissions in LinkedIn
-3. Re-authorize with company page access
-```
-
-### Points and Rewards Issues
-
-#### Engagement Not Credited Points
-
-**Verification Pending:**
-```
-Status: Shows as "Pending" in engagement history
-Timeline: Automatic verification: 30 minutes
-         Manual verification: Up to 24 hours
-Action: Wait for verification process to complete
-```
-
-**Engagement Rejected:**
-```
-Common Reasons:
-1. Didn't meet minimum requirements (comment too short)
-2. Engagement removed or deleted after submission
-3. Couldn't verify engagement occurred
-4. Violated platform community guidelines
-
-Solution:
-1. Check rejection reason in engagement history
-2. Ensure future engagements meet all requirements
-3. Provide clear screenshots as proof
-4. Appeal if you believe rejection was in error
-```
-
-**Points Not Showing in Balance:**
-```
-Issue: Engagement verified but points not added
-Solution:
-1. Refresh page/app
-2. Log out and back in
-3. Check if it's a display issue vs actual missing points
-4. Contact support if points still missing after 1 hour
-```
-
-#### Reward Redemption Problems
-
-**Insufficient Points:**
-```
-Issue: Error says not enough points despite showing sufficient balance
-Solution:
-1. Check if points are still pending verification
-2. Ensure you haven't reached daily/monthly redemption limits
-3. Verify reward is still available (not sold out)
-```
-
-**Redemption Failed:**
-```
-Issue: Redemption process fails at payment/confirmation step
-Solution:
-1. Check internet connection stability
-2. Try different browser or device
-3. Ensure reward hasn't expired or sold out
-4. Contact support with error message details
-```
-
-**Didn't Receive Digital Reward:**
-```
-Timeline: Digital rewards typically delivered within 24 hours
-Solution:
-1. Check spam/junk email folders
-2. Verify email address in account settings
-3. Check redemption history for status
-4. Contact support after 48 hours if still not received
-```
-
-### Performance and Loading Issues
-
-#### App Loading Slowly
-
-**Network-Related:**
-```
-Diagnostics:
-1. Test internet speed (minimum 5 Mbps recommended)
-2. Try different network (mobile data vs WiFi)
-3. Check if other websites load normally
-
-Solutions:
-1. Clear browser cache and cookies
-2. Disable unnecessary browser extensions
-3. Close other tabs and applications
-4. Try different browser
-```
-
-**Browser-Related:**
-```
-Common Causes:
-1. Outdated browser version
-2. Too many browser extensions
-3. Insufficient device memory
-4. Hardware acceleration disabled
-
-Solutions:
-1. Update browser to latest version
-2. Disable unused extensions
-3. Clear browser data
-4. Enable hardware acceleration in browser settings
-```
-
-#### Dashboard Not Loading
-
-**Infinite Loading Screen:**
-```
-Potential Causes:
-1. JavaScript errors
-2. Ad blocker interference
-3. Network connectivity issues
-4. Server-side problems
-
-Troubleshooting Steps:
-1. Open browser developer tools (F12)
-2. Check Console tab for error messages
-3. Disable ad blockers temporarily
-4. Try loading in incognito mode
-5. Check status.roundabout.com for known issues
-```
-
-**Data Not Displaying:**
-```
-Symptoms: Dashboard loads but shows no data or "No data available"
-Solutions:
-1. Ensure social accounts are connected
-2. Check if accounts need re-authorization
-3. Verify accounts have public data available
-4. Wait for initial sync to complete (can take 5-10 minutes)
-```
-
-### Browser-Specific Issues
-
-#### Chrome Issues
-
-**Extension Conflicts:**
-```
-Common Problematic Extensions:
-- Ad blockers (uBlock Origin, AdBlock Plus)
-- Privacy tools (Ghostery, Privacy Badger)
-- Password managers (sometimes)
-- VPN extensions
-
-Solution:
-1. Disable extensions one by one
-2. Test app functionality after each
-3. Re-enable non-conflicting extensions
-```
-
-**Memory Issues:**
-```
-Symptoms: Crashes, slow performance, unresponsive tabs
-Solution:
-1. Close unnecessary tabs
-2. Clear Chrome cache: chrome://settings/clearBrowserData
-3. Disable hardware acceleration if causing issues
-4. Reset Chrome settings if problems persist
-```
-
-#### Safari Issues
-
-**Privacy Settings:**
-```
-Common Issues:
-1. Intelligent Tracking Prevention blocking connections
-2. Cross-site tracking prevention
-3. Pop-up blockers preventing OAuth flows
-
-Solutions:
-1. Disable "Prevent cross-site tracking" for roundabout.com
-2. Allow pop-ups for the site
-3. Clear website data: Safari → Preferences → Privacy
-```
-
-**Cookie Settings:**
-```
-Issue: Session not persisting
-Solution:
-1. Enable "Always allow" cookies for roundabout.com
-2. Disable "Block all cookies" in Privacy settings
-3. Clear cookies and reload page
-```
-
-#### Firefox Issues
-
-**Enhanced Tracking Protection:**
-```
-Issue: Features not working due to tracking protection
-Solution:
-1. Click shield icon in address bar
-2. Turn off Enhanced Tracking Protection for roundabout.com
-3. Reload page and test functionality
-```
-
-**Container Isolation:**
-```
-Issue: Login state not persisting with container tabs
-Solution:
-1. Disable container for social media sites
-2. Use same container for all roundabout-related browsing
-3. Allow cross-container cookies if needed
-```
-
-### Mobile-Specific Issues
-
-#### iOS Safari Issues
-
-**PWA Installation Problems:**
-```
-Issue: "Add to Home Screen" not appearing
-Solution:
-1. Ensure you're using Safari (not Chrome or other browsers)
-2. Visit app.roundabout.com directly
-3. Tap share button → Add to Home Screen
-4. Update iOS if option still missing
-```
-
-**Touch/Gesture Issues:**
-```
-Issue: Buttons not responding, scroll problems
-Solution:
-1. Enable "Touch Accommodations" in iOS settings
-2. Clear Safari cache: Settings → Safari → Clear History
-3. Restart device
-4. Try force-touch vs regular tap
-```
-
-#### Android Chrome Issues
-
-**PWA Installation:**
-```
-Issue: Install prompt not showing
-Solution:
-1. Clear Chrome app data
-2. Ensure Chrome is updated
-3. Visit site and look for install banner
-4. Use Chrome menu → Add to Home screen manually
-```
-
-**Performance Issues:**
-```
-Issue: App running slowly on mobile
-Solution:
-1. Clear Chrome app cache and data
-2. Close background apps to free memory
-3. Restart device
-4. Check available storage space
-```
-
-### API and Integration Issues
-
-#### Social Platform API Errors
-
-**Instagram API Changes:**
-```
-Error: "This endpoint is deprecated"
-Solution: 
-1. These are temporary during Instagram updates
-2. Usually resolved within 24-48 hours
-3. Check our status page for updates
-4. Historical data remains safe
-```
-
-**YouTube API Quota Exceeded:**
-```
-Error: "Quota exceeded" when syncing YouTube data
-Solution:
-1. Automatic retry after quota reset (daily)
-2. Reduce manual sync frequency
-3. Premium users get priority API access
-4. Data will update within 24 hours
-```
-
-**Twitter API Rate Limits:**
-```
-Error: "Rate limit exceeded"
-Solution:
-1. Limits reset every 15 minutes
-2. Avoid rapid manual refreshes
-3. Automatic syncing continues normally
-4. Consider upgrading for higher limits
-```
-
-### Premium Feature Issues
-
-#### Subscription Not Activating
-
-**Payment Processed but Features Locked:**
-```
-Troubleshooting:
-1. Log out and back in to refresh account status
-2. Check email for payment confirmation
-3. Verify payment with bank/card issuer
-4. Contact support with payment reference
-```
-
-**Billing Issues:**
-```
-Common Problems:
-1. Card declined or expired
-2. Billing address mismatch
-3. International payment restrictions
-4. Insufficient funds
-
-Solutions:
-1. Update payment method in account settings
-2. Try different payment method
-3. Contact card issuer about international payments
-4. Use PayPal if credit card fails
-```
-
-#### Premium Features Not Working
-
-**Advanced Analytics Missing:**
-```
-Issue: Subscribed but can't access premium analytics
-Solution:
-1. Verify subscription is active in account settings
-2. Try accessing from different browser/device
-3. Clear cache and reload
-4. Contact support if still unavailable after 24 hours
-```
-
-## Error Codes Reference
-
-### Authentication Errors
-- `AUTH_001`: Invalid credentials
-- `AUTH_002`: Account locked
-- `AUTH_003`: 2FA required
-- `AUTH_004`: Session expired
-- `AUTH_005`: Email not verified
-
-### API Errors
-- `API_001`: Rate limit exceeded
-- `API_002`: Invalid request format
-- `API_003`: Missing permissions
-- `API_004`: External API unavailable
-- `API_005`: Data sync failed
-
-### Payment Errors
-- `PAY_001`: Payment declined
-- `PAY_002`: Invalid payment method
-- `PAY_003`: Subscription expired
-- `PAY_004`: Billing address required
-- `PAY_005`: Currency not supported
+This guide helps you resolve common issues you might encounter while using RoundAbout. Issues are organized by category with step-by-step solutions.
+
+## Account and Authentication Issues
+
+### Cannot Log In
+
+**Problem**: Unable to access your account with correct credentials.
+
+**Solutions**:
+1. **Check your credentials**:
+   - Ensure Caps Lock is off
+   - Verify you're using the correct email address
+   - Try typing your password in a text editor first to verify it's correct
+
+2. **Clear browser data**:
+   - Clear cache and cookies for RoundAbout
+   - Try logging in using an incognito/private window
+   - Disable browser extensions temporarily
+
+3. **Reset your password**:
+   - Click "Forgot Password" on the login page
+   - Check your email (including spam folder)
+   - Follow the reset instructions
+
+4. **Account may be locked**:
+   - Wait 15 minutes after multiple failed attempts
+   - Contact support if the account remains locked
+
+**Still having issues?** Contact support with your email address and the exact error message.
+
+### Email Verification Not Working
+
+**Problem**: Haven't received email verification or link doesn't work.
+
+**Solutions**:
+1. **Check your email**:
+   - Look in spam/junk folder
+   - Search for emails from "noreply@roundabout.com"
+   - Check all email accounts if you have multiple
+
+2. **Request new verification email**:
+   - Go to the login page
+   - Click "Resend verification email"
+   - Wait 5-10 minutes for delivery
+
+3. **Email link expired or not working**:
+   - Verification links expire after 24 hours
+   - Request a new verification email
+   - Click the link in the most recent email
+
+4. **Email provider issues**:
+   - Add "roundabout.com" to your safe sender list
+   - Try using a different email provider (Gmail, Outlook)
+   - Contact your email provider about blocking
+
+### Account Security Issues
+
+**Problem**: Suspicious activity or unauthorized access.
+
+**Immediate Actions**:
+1. **Change your password immediately**:
+   - Use the password reset process
+   - Create a strong, unique password
+   - Don't reuse passwords from other accounts
+
+2. **Check account activity**:
+   - Go to Settings > Security > Login History
+   - Look for unfamiliar locations or devices
+   - Note any suspicious activity times
+
+3. **Secure your account**:
+   - Enable two-factor authentication (if available)
+   - Update your email password
+   - Check connected social accounts
+
+4. **Report the incident**:
+   - Contact support immediately
+   - Provide details about suspicious activity
+   - Include login history screenshots
+
+## Social Account Connection Issues
+
+### Instagram Connection Fails
+
+**Problem**: Unable to connect Instagram account to RoundAbout.
+
+**Solutions**:
+1. **Check account requirements**:
+   - Ensure your Instagram account is public or business (not private personal)
+   - Account must have at least one post
+   - Account should not be restricted or suspended
+
+2. **Clear authentication**:
+   - Log out of Instagram in your browser
+   - Clear Instagram cookies
+   - Log back into Instagram
+   - Try connecting again
+
+3. **Browser issues**:
+   - Try a different browser
+   - Disable ad blockers and privacy extensions
+   - Use incognito/private mode
+   - Allow pop-ups for RoundAbout
+
+4. **Instagram API issues**:
+   - Check if Instagram is experiencing outages
+   - Wait a few hours and try again
+   - Instagram sometimes temporarily restricts new app connections
+
+### YouTube Connection Problems
+
+**Problem**: YouTube channel not connecting or data not syncing.
+
+**Solutions**:
+1. **Google account access**:
+   - Ensure you're logged into the correct Google account
+   - YouTube channel must be associated with this Google account
+   - Try switching Google accounts if you have multiple
+
+2. **Channel requirements**:
+   - Channel must have at least one uploaded video
+   - Channel should not be terminated or suspended
+   - Ensure channel is set to public
+
+3. **Permission issues**:
+   - Revoke RoundAbout access in Google settings
+   - Try reconnecting with fresh permissions
+   - Grant all requested permissions during connection
+
+4. **Data sync delays**:
+   - YouTube data can take up to 30 minutes to sync initially
+   - Check back later if data appears incomplete
+   - Large channels may take longer to sync all data
+
+### Twitter/X Authentication Issues
+
+**Problem**: Twitter account connection fails or frequently disconnects.
+
+**Solutions**:
+1. **Twitter app permissions**:
+   - Check authorized apps in Twitter settings
+   - Revoke RoundAbout access if it exists
+   - Try connecting again with fresh authorization
+
+2. **Account status**:
+   - Ensure your Twitter account is not suspended
+   - Account should not be in limited or restricted mode
+   - Verify your Twitter account if prompted
+
+3. **Frequent disconnections**:
+   - This may be due to Twitter API changes
+   - Reconnect when prompted
+   - Check for RoundAbout updates that may fix the issue
+
+## Engagement and Points Issues
+
+### Engagements Not Verifying
+
+**Problem**: Completed engagements stuck in "pending" status.
+
+**Solutions**:
+1. **Check completion requirements**:
+   - Ensure you completed the exact action required
+   - Verify the engagement on the correct post/account
+   - Check if the original content is still available
+
+2. **Verification timeframes**:
+   - Automatic verification: Usually within minutes
+   - Manual review: Can take 24-48 hours
+   - High-value engagements may take longer
+
+3. **Common verification issues**:
+   - Engagement was removed after submission
+   - Original content was deleted or made private
+   - Platform API delays or outages
+   - Technical issues with verification system
+
+4. **When to contact support**:
+   - Engagement pending for more than 48 hours
+   - Multiple engagements failing verification
+   - Error messages during submission
+
+### Points Not Appearing
+
+**Problem**: Completed and verified engagements not showing points.
+
+**Solutions**:
+1. **Check verification status**:
+   - Go to Dashboard > My Engagements
+   - Ensure engagement shows as "Verified"
+   - Points are only awarded after verification
+
+2. **Refresh your data**:
+   - Refresh the page or app
+   - Log out and log back in
+   - Check points balance on multiple pages
+
+3. **Delayed point crediting**:
+   - Points may take a few minutes to appear
+   - Check your points history for recent additions
+   - Contact support if delays exceed 30 minutes
+
+### Cannot Complete Engagement
+
+**Problem**: Unable to start or submit an engagement.
+
+**Solutions**:
+1. **Check engagement availability**:
+   - Engagement may have expired or reached capacity
+   - Refresh the engagement list
+   - Look for newer similar opportunities
+
+2. **Platform access issues**:
+   - Ensure you're logged into the required social platform
+   - Check if you have access to the specific content
+   - Verify the content creator hasn't blocked you
+
+3. **Technical submission issues**:
+   - Clear browser cache and try again
+   - Take screenshots before and after your engagement
+   - Try submitting from a different device/browser
+
+## Performance and Loading Issues
+
+### Slow Page Loading
+
+**Problem**: RoundAbout pages load slowly or time out.
+
+**Solutions**:
+1. **Check your internet connection**:
+   - Test speed at speedtest.net
+   - Try other websites to confirm connectivity
+   - Restart your router if needed
+
+2. **Browser optimization**:
+   - Close unnecessary tabs and applications
+   - Disable heavy browser extensions
+   - Clear cache and cookies
+   - Update your browser to the latest version
+
+3. **Device performance**:
+   - Restart your device
+   - Close other applications
+   - Check available storage space
+   - Update your operating system
+
+4. **Network issues**:
+   - Try a different network (mobile data vs. WiFi)
+   - Use a VPN if network restrictions exist
+   - Contact your ISP if problems persist
+
+### App Not Loading at All
+
+**Problem**: RoundAbout website completely fails to load.
+
+**Solutions**:
+1. **Check service status**:
+   - Visit our status page (status.roundabout.com)
+   - Check our social media for service announcements
+   - Ask in community forums if others are experiencing issues
+
+2. **DNS and connectivity**:
+   - Try accessing from a different device
+   - Use a different DNS (8.8.8.8 or 1.1.1.1)
+   - Clear DNS cache on your device
+
+3. **Firewall and security software**:
+   - Temporarily disable firewall/antivirus
+   - Check if workplace/school network blocks the site
+   - Try accessing from mobile data
+
+### Data Not Updating
+
+**Problem**: Dashboard data appears outdated or not refreshing.
+
+**Solutions**:
+1. **Force refresh**:
+   - Press Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)
+   - Click refresh button in the app
+   - Log out and log back in
+
+2. **Cache issues**:
+   - Clear browser cache for RoundAbout
+   - Try incognito/private browsing mode
+   - Use a different browser temporarily
+
+3. **Sync delays**:
+   - Social media data may take time to sync
+   - Some metrics update hourly or daily
+   - Check the last updated timestamp
+
+## Mobile-Specific Issues
+
+### Mobile Browser Problems
+
+**Problem**: Issues using RoundAbout on mobile devices.
+
+**Solutions**:
+1. **Browser compatibility**:
+   - Use Chrome, Safari, or Firefox mobile
+   - Update your mobile browser
+   - Clear mobile browser data
+
+2. **Display issues**:
+   - Rotate device to landscape mode
+   - Zoom out if content appears cut off
+   - Try desktop mode in browser settings
+
+3. **Touch and interaction issues**:
+   - Ensure screen is clean and dry
+   - Try using a stylus if available
+   - Restart the browser app
+
+### Mobile Performance Issues
+
+**Problem**: Slow performance on mobile devices.
+
+**Solutions**:
+1. **Free up resources**:
+   - Close other apps running in background
+   - Restart your device
+   - Clear device cache
+
+2. **Network optimization**:
+   - Switch between WiFi and mobile data
+   - Move closer to WiFi router
+   - Check mobile data signal strength
+
+3. **Browser optimization**:
+   - Close unnecessary browser tabs
+   - Clear browser cache and data
+   - Disable auto-play videos in browser settings
+
+## Payment and Subscription Issues
+
+### Payment Fails During Subscription
+
+**Problem**: Unable to complete premium subscription purchase.
+
+**Solutions**:
+1. **Payment method verification**:
+   - Ensure card is not expired
+   - Check available credit/funds
+   - Verify billing address matches card details
+
+2. **Bank/card issuer issues**:
+   - Contact your bank about potential blocks
+   - Some cards block international transactions
+   - Try a different payment method
+
+3. **Browser and technical issues**:
+   - Disable ad blockers for payment page
+   - Use a different browser
+   - Clear cookies and try again
+
+4. **Alternative payment methods**:
+   - Try PayPal if available
+   - Use a different credit/debit card
+   - Contact support for alternative arrangements
+
+### Subscription Not Activating
+
+**Problem**: Paid for premium but features not available.
+
+**Solutions**:
+1. **Check activation timing**:
+   - Premium features activate within minutes usually
+   - Wait up to 30 minutes for activation
+   - Refresh the page or log out/in
+
+2. **Payment confirmation**:
+   - Check email for payment confirmation
+   - Verify charge appears on your payment method
+   - Check if payment is still pending
+
+3. **Account verification**:
+   - Ensure you're logged into the correct account
+   - Check Settings > Subscription for status
+   - Look for error messages in subscription section
+
+### Cannot Cancel Subscription
+
+**Problem**: Unable to cancel premium subscription.
+
+**Solutions**:
+1. **Self-service cancellation**:
+   - Go to Settings > Subscription
+   - Click "Manage Subscription" or "Cancel"
+   - Follow the cancellation flow
+
+2. **Payment provider portal**:
+   - Check your PayPal or card issuer's recurring payments
+   - Cancel from the payment provider's side
+   - Contact the payment provider for assistance
+
+3. **Contact support**:
+   - If self-service options don't work
+   - Provide your account email and payment details
+   - Request immediate cancellation
+
+## Reward and Redemption Issues
+
+### Reward Redemption Fails
+
+**Problem**: Cannot redeem rewards with sufficient points.
+
+**Solutions**:
+1. **Points verification**:
+   - Refresh your points balance
+   - Ensure you have enough points for the specific reward
+   - Check if reward is still available
+
+2. **Reward availability**:
+   - Some rewards have limited quantities
+   - Check reward description for restrictions
+   - Look for similar alternative rewards
+
+3. **Technical issues**:
+   - Try redemption from a different device
+   - Clear browser cache and try again
+   - Contact support if error messages appear
+
+### Redeemed Reward Not Received
+
+**Problem**: Redeemed reward but haven't received it.
+
+**Solutions**:
+1. **Check delivery timeframes**:
+   - Digital rewards: Usually within 24 hours
+   - Physical items: 5-7 business days shipping
+   - Subscriptions: May take 48 hours to activate
+
+2. **Email and spam folder**:
+   - Check all email folders for delivery notifications
+   - Search for emails from our rewards partner
+   - Add sender to safe list
+
+3. **Track your redemption**:
+   - Go to Dashboard > My Rewards
+   - Check redemption status and tracking info
+   - Contact support with your redemption ID
+
+## Data and Analytics Issues
+
+### Analytics Not Loading
+
+**Problem**: Analytics pages show no data or fail to load.
+
+**Solutions**:
+1. **Data availability**:
+   - Analytics require connected social accounts
+   - New accounts may take 24-48 hours to show data
+   - Ensure you have sufficient engagement history
+
+2. **Date range issues**:
+   - Try different date ranges
+   - Ensure selected period has activity
+   - Reset filters to default settings
+
+3. **Browser compatibility**:
+   - Analytics work best in modern browsers
+   - Disable ad blockers that may block charts
+   - Try a different browser if charts don't load
+
+### Incorrect or Missing Data
+
+**Problem**: Analytics show wrong information or missing data.
+
+**Solutions**:
+1. **Data sync timing**:
+   - Social media data syncs at different intervals
+   - Some platforms update daily vs. real-time
+   - Check last sync time in account settings
+
+2. **Platform permissions**:
+   - Verify social accounts are still connected
+   - Check if platform permissions have changed
+   - Reconnect accounts if necessary
+
+3. **Data discrepancies**:
+   - Different platforms measure metrics differently
+   - RoundAbout may exclude certain types of activity
+   - Contact support for clarification on specific metrics
 
 ## Getting Additional Help
 
-### Before Contacting Support
+### When to Contact Support
 
-**Gather This Information:**
-1. **Account details**: Email address, username
-2. **Browser info**: Type, version, extensions
-3. **Device info**: Operating system, model
-4. **Error details**: Exact error messages, screenshots
-5. **Steps to reproduce**: What you were doing when issue occurred
-6. **Troubleshooting tried**: What solutions you've already attempted
+Contact our support team if:
+- You've tried all troubleshooting steps
+- The issue affects your ability to use core features
+- You're experiencing account security issues
+- You need help with billing or subscription issues
+- You're encountering bugs or error messages
 
-### Contact Methods
+### How to Get Effective Support
 
-**Live Chat** (Premium users get priority):
-- Available: 9 AM - 5 PM PST, Monday-Friday
-- Access: Click chat icon in bottom right corner
-- Response time: 2-5 minutes
+**Prepare information before contacting support**:
+1. **Account details**: Your email address and account username
+2. **Issue description**: Detailed explanation of the problem
+3. **Error messages**: Exact text of any error messages
+4. **Screenshots**: Visual evidence of the issue
+5. **Device information**: Browser, operating system, device type
+6. **Steps to reproduce**: What you were doing when the issue occurred
 
-**Email Support**:
-- Address: support@roundabout.com
-- Response time: 24-48 hours (faster for premium users)
-- Include all gathered information above
+**Contact methods**:
+- **Live Chat**: Available during business hours for immediate help
+- **Email Support**: support@roundabout.com for detailed issues
+- **Help Center**: Searchable knowledge base for common questions
+- **Community Forum**: Get help from other users and moderators
 
-**Community Forum**:
-- URL: community.roundabout.com
-- Best for: General questions, feature discussions
-- Response time: Varies (community-driven)
+### Response Time Expectations
 
-**Emergency Contact** (Premium only):
-- For critical business impact issues
-- Phone support available for enterprise accounts
-- Escalation through normal support channels first
+- **Live Chat**: Immediate response during business hours
+- **Email Support**: Within 24 hours for general issues
+- **Priority Support**: Within 4 hours for premium subscribers
+- **Emergency Issues**: Immediate response for security or billing problems
 
-### Known Issues and Workarounds
+### Escalation Process
 
-Check our status page at `status.roundabout.com` for:
-- Current system status
-- Known issues and estimated resolution times
-- Planned maintenance windows
-- Workaround instructions for known problems
+If your issue isn't resolved:
+1. Ask to escalate to a senior support agent
+2. Request a case manager for complex issues
+3. Use our feedback form to report support quality
+4. Contact our leadership team for unresolved critical issues
 
-Remember: Most issues can be resolved quickly with the solutions in this guide. If you're still experiencing problems after trying the relevant troubleshooting steps, our support team is here to help!
+Remember: Our support team is here to help! Don't hesitate to reach out if you're having trouble with any aspect of RoundAbout.
