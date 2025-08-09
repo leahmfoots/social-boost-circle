@@ -1,242 +1,411 @@
 
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import DashboardLayout from "@/components/DashboardLayout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import EngagementOpportunity from "@/components/EngagementOpportunity";
-import EngagementTable from "@/components/EngagementTable";
-import EngagementChart from "@/components/analytics/EngagementChart";
-import EngagementFilter from "@/components/engagement/EngagementFilter";
-import { ContentSuggestions } from "@/components/ai/ContentSuggestions";
-import { Engagement, Opportunity } from "@/types/engagement";
-import { Input } from "@/components/ui/input";
-import { Search, SlidersHorizontal, Lightbulb } from "lucide-react";
+import { useState } from 'react';
+import Layout from '@/components/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Search, Filter, ExternalLink, Clock, CheckCircle, Award } from 'lucide-react';
 
-// Mock data for opportunities and engagements
-const mockOpportunities: Opportunity[] = [
-  {
-    id: "1",
-    username: "tech_guru",
-    platform: "YouTube",
-    contentType: "Video",
-    title: "React 18 New Features Explained",
-    points: 40,
-    timeRequired: "5-7 min",
-  },
-  {
-    id: "2",
-    username: "design_expert",
-    platform: "Instagram",
-    contentType: "Post",
-    title: "UI Design Trends for 2023",
-    points: 25,
-    timeRequired: "3-4 min",
-  },
-  {
-    id: "3",
-    username: "code_master",
-    platform: "Twitter",
-    contentType: "Thread",
-    title: "TypeScript Tips & Tricks",
-    points: 20,
-    timeRequired: "2-3 min",
-  },
-  {
-    id: "4",
-    username: "mobile_dev",
-    platform: "TikTok",
-    contentType: "Short",
-    title: "Swift UI Animation Tutorial",
-    points: 30,
-    timeRequired: "1-2 min",
-  },
-  {
-    id: "5",
-    username: "web_wizard",
-    platform: "LinkedIn",
-    contentType: "Article",
-    title: "The Future of Web Development",
-    points: 35,
-    timeRequired: "8-10 min",
-  },
-];
+interface EngagementOpportunity {
+  id: string;
+  title: string;
+  platform: string;
+  type: string;
+  description: string;
+  points: number;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  estimatedTime: string;
+  status: 'available' | 'in-progress' | 'completed' | 'expired';
+  url?: string;
+  deadline?: string;
+}
 
-const mockEngagements: Engagement[] = [
+const mockOpportunities: EngagementOpportunity[] = [
   {
-    id: "e1",
-    user_id: "user1",
-    username: "tech_reviewer",
-    platform: "YouTube",
-    contentType: "Video",
-    title: "Top 10 VSCode Extensions for Developers",
+    id: '1',
+    title: 'Like and Share Tech Tutorial',
+    platform: 'YouTube',
+    type: 'Video Engagement',
+    description: 'Engage with the latest React tutorial - like, comment, and share',
     points: 45,
-    content_url: "https://youtube.com/watch?v=example1",
-    points_value: 45,
-    submitted_at: "2023-05-15T10:30:00Z",
-    completedAt: "2023-05-15T10:30:00Z",
-    status: "verified",
+    difficulty: 'Easy',
+    estimatedTime: '5 min',
+    status: 'available',
+    url: 'https://youtube.com/watch?v=example',
+    deadline: '2024-01-20',
   },
   {
-    id: "e2",
-    user_id: "user1",
-    username: "ui_designer",
-    platform: "Instagram",
-    contentType: "Story",
-    title: "Color Theory for Digital Designers",
-    points: 20,
-    content_url: "https://instagram.com/p/example2",
-    points_value: 20,
-    submitted_at: "2023-05-10T14:45:00Z",
-    completedAt: "2023-05-10T14:45:00Z",
-    status: "pending",
+    id: '2',
+    title: 'Comment on Design Post',
+    platform: 'Instagram',
+    type: 'Post Engagement',
+    description: 'Leave a thoughtful comment on this UI/UX design showcase',
+    points: 25,
+    difficulty: 'Easy',
+    estimatedTime: '3 min',
+    status: 'completed',
+    url: 'https://instagram.com/p/example',
   },
   {
-    id: "e3",
-    user_id: "user1",
-    username: "js_developer",
-    platform: "Twitter",
-    contentType: "Tweet",
-    title: "Why You Should Learn React in 2023",
-    points: 15,
-    content_url: "https://twitter.com/example/status/123",
-    points_value: 15,
-    submitted_at: "2023-05-05T09:15:00Z",
-    completedAt: "2023-05-05T09:15:00Z",
-    status: "rejected",
+    id: '3',
+    title: 'Retweet Developer Thread',
+    platform: 'Twitter',
+    type: 'Social Sharing',
+    description: 'Retweet and add your thoughts to this JavaScript tips thread',
+    points: 35,
+    difficulty: 'Medium',
+    estimatedTime: '7 min',
+    status: 'in-progress',
+    url: 'https://twitter.com/user/status/example',
+    deadline: '2024-01-18',
+  },
+  {
+    id: '4',
+    title: 'Review Mobile App',
+    platform: 'App Store',
+    type: 'App Review',
+    description: 'Write a detailed review for this productivity app',
+    points: 100,
+    difficulty: 'Hard',
+    estimatedTime: '15 min',
+    status: 'available',
+    deadline: '2024-01-25',
   },
 ];
 
 const EngagementPage = () => {
-  const { toast } = useToast();
-  const [opportunities, setOpportunities] = useState(mockOpportunities);
-  const [engagements] = useState(mockEngagements);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [platformFilter, setPlatformFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
 
-  // Filter handling
-  const handleFilterChange = ({ platforms, contentTypes }: any) => {
-    // Apply filters to opportunities
-    let filtered = [...mockOpportunities];
+  const filteredOpportunities = mockOpportunities.filter(opp => {
+    const matchesSearch = opp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         opp.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesPlatform = platformFilter === 'all' || opp.platform.toLowerCase() === platformFilter;
+    const matchesStatus = statusFilter === 'all' || opp.status === statusFilter;
     
-    if (platforms.length > 0) {
-      filtered = filtered.filter(opp => platforms.includes(opp.platform.toLowerCase()));
-    }
-    
-    if (contentTypes.length > 0) {
-      filtered = filtered.filter(opp => contentTypes.includes(opp.contentType.toLowerCase()));
-    }
-    
-    if (searchTerm) {
-      filtered = filtered.filter(opp => 
-        opp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        opp.username.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    
-    setOpportunities(filtered);
-  };
-  
-  // Search handling
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    
-    if (!value.trim()) {
-      setOpportunities(mockOpportunities);
-      return;
-    }
-    
-    const filtered = mockOpportunities.filter(opp => 
-      opp.title.toLowerCase().includes(value.toLowerCase()) ||
-      opp.username.toLowerCase().includes(value.toLowerCase())
-    );
-    
-    setOpportunities(filtered);
+    return matchesSearch && matchesPlatform && matchesStatus;
+  });
+
+  const handleEngagement = (opportunityId: string, action: string) => {
+    console.log(`${action} opportunity:`, opportunityId);
+    // Implement engagement logic
   };
 
-  const handleEngage = (opportunityId: string) => {
-    const opportunity = opportunities.find((opp) => opp.id === opportunityId);
-    
-    if (opportunity) {
-      toast({
-        title: "Engagement Started",
-        description: `You're now engaging with ${opportunity.username}'s content.`
-      });
-      
-      // In a real app, this would trigger an API call
-      console.log(`Engaging with opportunity: ${opportunityId}`);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'default';
+      case 'in-progress':
+        return 'secondary';
+      case 'completed':
+        return 'success';
+      case 'expired':
+        return 'destructive';
+      default:
+        return 'default';
     }
+  };
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Easy':
+        return 'bg-green-100 text-green-800';
+      case 'Medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Hard':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const stats = {
+    total: mockOpportunities.length,
+    completed: mockOpportunities.filter(o => o.status === 'completed').length,
+    inProgress: mockOpportunities.filter(o => o.status === 'in-progress').length,
+    totalPoints: mockOpportunities
+      .filter(o => o.status === 'completed')
+      .reduce((sum, o) => sum + o.points, 0),
   };
 
   return (
-    <DashboardLayout title="Engagement Hub">
+    <Layout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight">Engagement Hub</h1>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search opportunities..."
-                className="w-[200px] pl-8 sm:w-[300px]"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-            </div>
-            <EngagementFilter onFilterChange={handleFilterChange} />
+          <div>
+            <h1 className="text-3xl font-bold">Engagement Opportunities</h1>
+            <p className="text-muted-foreground">
+              Complete engagement activities to earn points and grow your network
+            </p>
           </div>
         </div>
-        
-        <Tabs defaultValue="opportunities">
-          <TabsList className="mb-4">
-            <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
-            <TabsTrigger value="history">Engagement History</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="ai-insights" className="flex items-center gap-1">
-              <Lightbulb className="w-4 h-4" />
-              AI Insights
-            </TabsTrigger>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Opportunities</CardTitle>
+              <Award className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.total}</div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">{stats.inProgress}</div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Points Earned</CardTitle>
+              <Award className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-primary">{stats.totalPoints}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filters */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5" />
+              Filters & Search
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search opportunities..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              
+              <Select value={platformFilter} onValueChange={setPlatformFilter}>
+                <SelectTrigger className="w-full md:w-48">
+                  <SelectValue placeholder="Platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Platforms</SelectItem>
+                  <SelectItem value="youtube">YouTube</SelectItem>
+                  <SelectItem value="instagram">Instagram</SelectItem>
+                  <SelectItem value="twitter">Twitter</SelectItem>
+                  <SelectItem value="app store">App Store</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full md:w-48">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="available">Available</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="expired">Expired</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Opportunities List */}
+        <Tabs defaultValue="grid" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="grid">Grid View</TabsTrigger>
+            <TabsTrigger value="list">List View</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="opportunities" className="space-y-6">
+          <TabsContent value="grid">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {opportunities.length > 0 ? (
-                opportunities.map((opportunity) => (
-                  <EngagementOpportunity
-                    key={opportunity.id}
-                    opportunity={opportunity}
-                    onEngage={handleEngage}
-                  />
-                ))
-              ) : (
-                <div className="col-span-full flex flex-col items-center justify-center py-12">
-                  <p className="text-muted-foreground mb-2">No opportunities found</p>
-                  <Button onClick={() => setOpportunities(mockOpportunities)}>
-                    Reset Filters
-                  </Button>
+              {filteredOpportunities.map((opportunity) => (
+                <Card key={opportunity.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{opportunity.title}</CardTitle>
+                        <CardDescription>{opportunity.platform} • {opportunity.type}</CardDescription>
+                      </div>
+                      <Badge variant={getStatusColor(opportunity.status) as any}>
+                        {opportunity.status}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      {opportunity.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getDifficultyColor(opportunity.difficulty)}>
+                          {opportunity.difficulty}
+                        </Badge>
+                        <span className="text-sm text-muted-foreground flex items-center">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {opportunity.estimatedTime}
+                        </span>
+                      </div>
+                      <Badge variant="outline" className="font-bold">
+                        +{opportunity.points} pts
+                      </Badge>
+                    </div>
+                    
+                    {opportunity.deadline && (
+                      <div className="text-xs text-orange-600">
+                        Deadline: {new Date(opportunity.deadline).toLocaleDateString()}
+                      </div>
+                    )}
+                    
+                    <div className="flex gap-2">
+                      {opportunity.status === 'available' && (
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleEngagement(opportunity.id, 'start')}
+                          className="flex-1"
+                        >
+                          Start
+                        </Button>
+                      )}
+                      
+                      {opportunity.status === 'in-progress' && (
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleEngagement(opportunity.id, 'complete')}
+                          className="flex-1"
+                        >
+                          Mark Complete
+                        </Button>
+                      )}
+                      
+                      {opportunity.url && (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => window.open(opportunity.url, '_blank')}
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="list">
+            <Card>
+              <CardContent className="p-0">
+                <div className="divide-y">
+                  {filteredOpportunities.map((opportunity) => (
+                    <div key={opportunity.id} className="p-4 hover:bg-muted/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-medium">{opportunity.title}</h3>
+                            <Badge variant={getStatusColor(opportunity.status) as any}>
+                              {opportunity.status}
+                            </Badge>
+                            <Badge className={getDifficultyColor(opportunity.difficulty)}>
+                              {opportunity.difficulty}
+                            </Badge>
+                            <Badge variant="outline">+{opportunity.points} pts</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-1">
+                            {opportunity.description}
+                          </p>
+                          <div className="text-xs text-muted-foreground">
+                            {opportunity.platform} • {opportunity.type} • {opportunity.estimatedTime}
+                            {opportunity.deadline && ` • Deadline: ${new Date(opportunity.deadline).toLocaleDateString()}`}
+                          </div>
+                        </div>
+                        <div className="flex gap-2 ml-4">
+                          {opportunity.status === 'available' && (
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleEngagement(opportunity.id, 'start')}
+                            >
+                              Start
+                            </Button>
+                          )}
+                          
+                          {opportunity.status === 'in-progress' && (
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleEngagement(opportunity.id, 'complete')}
+                            >
+                              Complete
+                            </Button>
+                          )}
+                          
+                          {opportunity.url && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => window.open(opportunity.url, '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="history">
-            <EngagementTable engagements={engagements} />
-          </TabsContent>
-          
-          <TabsContent value="analytics">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <EngagementChart title="Weekly Engagement Activity" />
-              <EngagementChart title="Points Earned Over Time" />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="ai-insights">
-            <ContentSuggestions />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
+
+        {filteredOpportunities.length === 0 && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">No opportunities found matching your criteria.</p>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => {
+                  setSearchTerm('');
+                  setPlatformFilter('all');
+                  setStatusFilter('all');
+                }}
+              >
+                Clear Filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
-    </DashboardLayout>
+    </Layout>
   );
 };
 

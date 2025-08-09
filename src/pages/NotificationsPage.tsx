@@ -1,369 +1,352 @@
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { Bell, Check, X, Settings, Filter } from "lucide-react";
-import DashboardLayout from "@/components/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import Layout from '@/components/Layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Bell, Check, X, Settings, Mail, MessageSquare, Award, Users, Smartphone } from 'lucide-react';
 
 interface Notification {
   id: string;
-  type: "engagement" | "reward" | "system" | "community";
+  type: 'engagement' | 'reward' | 'social' | 'system';
   title: string;
   message: string;
   timestamp: string;
   read: boolean;
-  actionRequired?: boolean;
+  actionUrl?: string;
 }
 
 const mockNotifications: Notification[] = [
   {
-    id: "1",
-    type: "engagement",
-    title: "New engagement opportunity",
-    message: "A new video from @tech_guru is available for engagement",
-    timestamp: "2023-05-15T10:30:00Z",
+    id: '1',
+    type: 'engagement',
+    title: 'New Engagement Opportunity',
+    message: 'A new YouTube engagement opportunity worth 45 points is available',
+    timestamp: '2024-01-15T10:30:00Z',
     read: false,
-    actionRequired: true
+    actionUrl: '/engagement',
   },
   {
-    id: "2",
-    type: "reward",
-    title: "Points earned!",
-    message: "You earned 45 points for engaging with content",
-    timestamp: "2023-05-15T09:15:00Z",
-    read: false
+    id: '2',
+    type: 'reward',
+    title: 'Achievement Unlocked!',
+    message: 'You\'ve completed your first engagement and earned 50 points',
+    timestamp: '2024-01-14T15:45:00Z',
+    read: false,
   },
   {
-    id: "3",
-    type: "community",
-    title: "New message",
-    message: "You have a new message from @design_expert",
-    timestamp: "2023-05-14T16:20:00Z",
-    read: true
+    id: '3',
+    type: 'social',
+    title: 'New Follower',
+    message: 'Sarah Johnson started following you',
+    timestamp: '2024-01-14T12:20:00Z',
+    read: true,
+    actionUrl: '/creator/sarah-johnson',
   },
   {
-    id: "4",
-    type: "system",
-    title: "Account verification",
-    message: "Your TikTok account has been successfully verified",
-    timestamp: "2023-05-14T14:10:00Z",
-    read: true
-  }
+    id: '4',
+    type: 'system',
+    title: 'Account Connected',
+    message: 'Your Instagram account has been successfully connected',
+    timestamp: '2024-01-13T09:15:00Z',
+    read: true,
+  },
+  {
+    id: '5',
+    type: 'engagement',
+    title: 'Engagement Completed',
+    message: 'Your Instagram post engagement has been verified. +25 points earned!',
+    timestamp: '2024-01-12T16:30:00Z',
+    read: true,
+  },
 ];
 
 const NotificationsPage = () => {
   const [notifications, setNotifications] = useState(mockNotifications);
   const [settings, setSettings] = useState({
-    emailNotifications: true,
-    pushNotifications: true,
-    engagementAlerts: true,
-    rewardUpdates: true,
-    communityMessages: true
+    email: {
+      engagement: true,
+      rewards: true,
+      social: false,
+      system: true,
+    },
+    push: {
+      engagement: true,
+      rewards: true,
+      social: true,
+      system: false,
+    },
+    inApp: {
+      engagement: true,
+      rewards: true,
+      social: true,
+      system: true,
+    },
   });
 
+  const unreadCount = notifications.filter(n => !n.read).length;
+
   const markAsRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.id === id ? { ...notif, read: true } : notif
-      )
+    setNotifications(prev =>
+      prev.map(n => n.id === id ? { ...n, read: true } : n)
     );
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => 
-      prev.map(notif => ({ ...notif, read: true }))
+    setNotifications(prev =>
+      prev.map(n => ({ ...n, read: true }))
     );
-    toast.success("All notifications marked as read");
   };
 
   const deleteNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id));
-    toast.success("Notification deleted");
+    setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case "engagement": return "💼";
-      case "reward": return "🎁";
-      case "community": return "👥";
-      case "system": return "⚙️";
-      default: return "📱";
+      case 'engagement':
+        return <MessageSquare className="h-4 w-4 text-blue-500" />;
+      case 'reward':
+        return <Award className="h-4 w-4 text-yellow-500" />;
+      case 'social':
+        return <Users className="h-4 w-4 text-green-500" />;
+      case 'system':
+        return <Settings className="h-4 w-4 text-gray-500" />;
+      default:
+        return <Bell className="h-4 w-4" />;
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const updateSetting = (channel: keyof typeof settings, type: string, value: boolean) => {
+    setSettings(prev => ({
+      ...prev,
+      [channel]: {
+        ...prev[channel],
+        [type]: value,
+      },
+    }));
+  };
 
   return (
-    <DashboardLayout title="Notifications">
+    <Layout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-            <p className="text-muted-foreground">
-              Stay updated with your platform activity
-              {unreadCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {unreadCount} unread
-                </Badge>
-              )}
-            </p>
+          <div className="flex items-center gap-3">
+            <Bell className="h-8 w-8 text-primary" />
+            <div>
+              <h1 className="text-3xl font-bold">Notifications</h1>
+              <p className="text-muted-foreground">
+                Manage your notifications and communication preferences
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={markAllAsRead}>
-              <Check className="mr-2 h-4 w-4" />
-              Mark all read
-            </Button>
-            <Button variant="outline">
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
-          </div>
+          {unreadCount > 0 && (
+            <Badge variant="destructive" className="text-lg px-3 py-1">
+              {unreadCount} unread
+            </Badge>
+          )}
         </div>
 
-        <Tabs defaultValue="all">
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="unread">Unread</TabsTrigger>
-            <TabsTrigger value="engagement">Engagement</TabsTrigger>
-            <TabsTrigger value="rewards">Rewards</TabsTrigger>
+        <Tabs defaultValue="notifications" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="notifications">
+              Notifications
+              {unreadCount > 0 && (
+                <Badge variant="destructive" className="ml-2 h-5 w-5 rounded-full p-0 text-xs">
+                  {unreadCount}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
-            {notifications.map((notification) => (
-              <Card key={notification.id} className={`${!notification.read ? 'border-primary/50 bg-primary/5' : ''}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">
-                        {getNotificationIcon(notification.type)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-medium">{notification.title}</h3>
-                          <Badge variant={notification.type === 'engagement' ? 'default' : 'secondary'}>
-                            {notification.type}
-                          </Badge>
-                          {notification.actionRequired && (
-                            <Badge variant="destructive">Action required</Badge>
+          <TabsContent value="notifications" className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-semibold">Recent Notifications</h2>
+                {unreadCount > 0 && (
+                  <Button variant="outline" size="sm" onClick={markAllAsRead}>
+                    <Check className="h-4 w-4 mr-2" />
+                    Mark all as read
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <Card>
+              <ScrollArea className="h-[600px]">
+                <div className="divide-y">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`p-4 hover:bg-muted/50 transition-colors ${
+                        !notification.read ? 'bg-blue-50 dark:bg-blue-900/10 border-l-4 border-l-blue-500' : ''
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-3 flex-1">
+                          {getNotificationIcon(notification.type)}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-medium">{notification.title}</h3>
+                              {!notification.read && (
+                                <Badge variant="secondary" className="text-xs">New</Badge>
+                              )}
+                              <Badge variant="outline" className="text-xs capitalize">
+                                {notification.type}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {notification.message}
+                            </p>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <span>
+                                {new Date(notification.timestamp).toLocaleString()}
+                              </span>
+                              {notification.actionUrl && (
+                                <Button
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto p-0 text-xs"
+                                  onClick={() => window.location.href = notification.actionUrl!}
+                                >
+                                  View details
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          {!notification.read && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => markAsRead(notification.id)}
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
                           )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteNotification(notification.id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(notification.timestamp).toLocaleString()}
-                        </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {!notification.read && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => markAsRead(notification.id)}
-                        >
-                          <Check className="h-4 w-4" />
-                        </Button>
-                      )}
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => deleteNotification(notification.id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
+                  ))}
+                  
+                  {notifications.length === 0 && (
+                    <div className="text-center py-12">
+                      <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="font-medium mb-2">No notifications yet</h3>
+                      <p className="text-muted-foreground">
+                        You'll see notifications here as you engage with the platform
+                      </p>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  )}
+                </div>
+              </ScrollArea>
+            </Card>
           </TabsContent>
 
-          <TabsContent value="unread" className="space-y-4">
-            {notifications.filter(n => !n.read).map((notification) => (
-              <Card key={notification.id} className="border-primary/50 bg-primary/5">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">
-                        {getNotificationIcon(notification.type)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-medium">{notification.title}</h3>
-                          <Badge variant="default">{notification.type}</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(notification.timestamp).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => markAsRead(notification.id)}
-                      >
-                        <Check className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => deleteNotification(notification.id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-
-          <TabsContent value="engagement" className="space-y-4">
-            {notifications.filter(n => n.type === 'engagement').map((notification) => (
-              <Card key={notification.id} className={`${!notification.read ? 'border-primary/50 bg-primary/5' : ''}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">💼</div>
-                      <div className="flex-1">
-                        <h3 className="font-medium mb-1">{notification.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(notification.timestamp).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <Button size="sm">View</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-
-          <TabsContent value="rewards" className="space-y-4">
-            {notifications.filter(n => n.type === 'reward').map((notification) => (
-              <Card key={notification.id} className={`${!notification.read ? 'border-primary/50 bg-primary/5' : ''}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">🎁</div>
-                      <div className="flex-1">
-                        <h3 className="font-medium mb-1">{notification.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(notification.timestamp).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <Button size="sm">View</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-
-          <TabsContent value="settings">
+          <TabsContent value="settings" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Settings className="h-5 w-5" />
-                  Notification Settings
+                  Notification Preferences
                 </CardTitle>
-                <CardDescription>
-                  Configure how you receive notifications
-                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="email-notifications">Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive notifications via email</p>
+                {/* Email Notifications */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Mail className="h-5 w-5 text-primary" />
+                    <h3 className="font-medium">Email Notifications</h3>
                   </div>
-                  <Switch
-                    id="email-notifications"
-                    checked={settings.emailNotifications}
-                    onCheckedChange={(checked) => 
-                      setSettings(prev => ({ ...prev, emailNotifications: checked }))
-                    }
-                  />
+                  <div className="space-y-3 ml-7">
+                    {Object.entries(settings.email).map(([type, enabled]) => (
+                      <div key={type} className="flex items-center justify-between">
+                        <Label htmlFor={`email-${type}`} className="capitalize">
+                          {type} notifications
+                        </Label>
+                        <Switch
+                          id={`email-${type}`}
+                          checked={enabled}
+                          onCheckedChange={(value) => updateSetting('email', type, value)}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="push-notifications">Push Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive browser push notifications</p>
+
+                <Separator />
+
+                {/* Push Notifications */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Smartphone className="h-5 w-5 text-primary" />
+                    <h3 className="font-medium">Push Notifications</h3>
                   </div>
-                  <Switch
-                    id="push-notifications"
-                    checked={settings.pushNotifications}
-                    onCheckedChange={(checked) => 
-                      setSettings(prev => ({ ...prev, pushNotifications: checked }))
-                    }
-                  />
+                  <div className="space-y-3 ml-7">
+                    {Object.entries(settings.push).map(([type, enabled]) => (
+                      <div key={type} className="flex items-center justify-between">
+                        <Label htmlFor={`push-${type}`} className="capitalize">
+                          {type} notifications
+                        </Label>
+                        <Switch
+                          id={`push-${type}`}
+                          checked={enabled}
+                          onCheckedChange={(value) => updateSetting('push', type, value)}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="engagement-alerts">Engagement Alerts</Label>
-                    <p className="text-sm text-muted-foreground">Get notified about new engagement opportunities</p>
+
+                <Separator />
+
+                {/* In-App Notifications */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Bell className="h-5 w-5 text-primary" />
+                    <h3 className="font-medium">In-App Notifications</h3>
                   </div>
-                  <Switch
-                    id="engagement-alerts"
-                    checked={settings.engagementAlerts}
-                    onCheckedChange={(checked) => 
-                      setSettings(prev => ({ ...prev, engagementAlerts: checked }))
-                    }
-                  />
+                  <div className="space-y-3 ml-7">
+                    {Object.entries(settings.inApp).map(([type, enabled]) => (
+                      <div key={type} className="flex items-center justify-between">
+                        <Label htmlFor={`inapp-${type}`} className="capitalize">
+                          {type} notifications
+                        </Label>
+                        <Switch
+                          id={`inapp-${type}`}
+                          checked={enabled}
+                          onCheckedChange={(value) => updateSetting('inApp', type, value)}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="reward-updates">Reward Updates</Label>
-                    <p className="text-sm text-muted-foreground">Notifications about points and rewards</p>
-                  </div>
-                  <Switch
-                    id="reward-updates"
-                    checked={settings.rewardUpdates}
-                    onCheckedChange={(checked) => 
-                      setSettings(prev => ({ ...prev, rewardUpdates: checked }))
-                    }
-                  />
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="community-messages">Community Messages</Label>
-                    <p className="text-sm text-muted-foreground">Messages from other creators</p>
-                  </div>
-                  <Switch
-                    id="community-messages"
-                    checked={settings.communityMessages}
-                    onCheckedChange={(checked) => 
-                      setSettings(prev => ({ ...prev, communityMessages: checked }))
-                    }
-                  />
+
+                <Separator />
+
+                <div className="flex justify-end">
+                  <Button>Save Preferences</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </DashboardLayout>
+    </Layout>
   );
 };
 
