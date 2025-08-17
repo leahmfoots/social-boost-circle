@@ -7,6 +7,7 @@ export interface Reward {
   category: string;
   available: boolean;
   claimed?: boolean;
+  image?: string; // Added image property
 }
 
 export interface Achievement {

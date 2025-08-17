@@ -1,235 +1,362 @@
-
-import { useState } from 'react';
-import Layout from '@/components/Layout';
-import RewardsSection from '@/components/rewards/RewardsSection';
-import AchievementsSection from '@/components/rewards/AchievementsSection';
-import PointsHistory from '@/components/rewards/PointsHistory';
-import RewardsProgress from '@/components/rewards/RewardsProgress';
-import RewardClaimModal from '@/components/rewards/RewardClaimModal';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Reward, Achievement, PointsTransaction } from '@/types/rewards';
-import { Trophy, Star, Coins } from 'lucide-react';
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Gift, Trophy, Star, Clock, CheckCircle, Plus, Minus } from "lucide-react";
+import { RewardClaimModal } from "@/components/rewards/RewardClaimModal";
+import { PointsHistory } from "@/components/rewards/PointsHistory";
+import type { Reward, Achievement, PointsTransaction } from "@/types/rewards";
 
 const mockRewards: Reward[] = [
   {
-    id: '1',
-    title: '$10 Amazon Gift Card',
-    description: 'Redeem points for a $10 Amazon gift card',
-    pointsRequired: 1000,
-    category: 'Gift Cards',
-    available: true,
-  },
-  {
-    id: '2',
-    title: 'Premium Feature Access',
-    description: '1 month of premium features',
+    id: "1",
+    title: "20% Off Coupon",
+    description: "Get 20% off your next purchase",
     pointsRequired: 500,
-    category: 'Platform Benefits',
+    category: "Discounts",
     available: true,
+    image: "https://via.placeholder.com/150",
   },
   {
-    id: '3',
-    title: 'Custom Profile Badge',
-    description: 'Stand out with a unique profile badge',
-    pointsRequired: 250,
-    category: 'Customization',
+    id: "2",
+    title: "Exclusive Merchandise",
+    description: "Limited edition t-shirt",
+    pointsRequired: 1000,
+    category: "Merchandise",
     available: true,
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: "3",
+    title: "Early Access Pass",
+    description: "Get early access to new features",
+    pointsRequired: 1500,
+    category: "Access",
+    available: true,
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: "4",
+    title: "Free Coffee",
+    description: "Enjoy a free coffee at our partner cafe",
+    pointsRequired: 300,
+    category: "Food & Drink",
+    available: false,
+    image: "https://via.placeholder.com/150",
   },
 ];
 
 const mockAchievements: Achievement[] = [
   {
-    id: '1',
-    title: 'First Steps',
-    description: 'Complete your first engagement',
-    icon: '🎯',
+    id: "1",
+    title: "First Post",
+    description: "Create your first social media post",
+    icon: "edit",
     progress: 100,
     completed: true,
-    claimed: false,
+    claimed: true,
     pointsAwarded: 50,
   },
   {
-    id: '2',
-    title: 'Social Butterfly',
-    description: 'Connect 5 social media accounts',
-    icon: '🦋',
+    id: "2",
+    title: "100 Followers",
+    description: "Reach 100 followers on any platform",
+    icon: "users",
+    progress: 100,
+    completed: true,
+    claimed: true,
+    pointsAwarded: 100,
+  },
+  {
+    id: "3",
+    title: "1000 Likes",
+    description: "Get 1000 likes on your content",
+    icon: "heart",
     progress: 60,
     completed: false,
     claimed: false,
     pointsAwarded: 200,
   },
   {
-    id: '3',
-    title: 'Engagement Master',
-    description: 'Complete 100 engagement opportunities',
-    icon: '⚡',
-    progress: 45,
+    id: "4",
+    title: "Share Your First Post",
+    description: "Share your first social media post",
+    icon: "share",
+    progress: 40,
     completed: false,
     claimed: false,
-    pointsAwarded: 500,
+    pointsAwarded: 50,
   },
 ];
 
-const mockTransactions: PointsTransaction[] = [
+const mockPointsHistory: PointsTransaction[] = [
   {
-    id: '1',
-    userId: 'user1',
-    amount: 25,
-    type: 'earned',
-    description: 'Instagram post engagement',
-    source: 'Instagram',
-    createdAt: '2024-01-15T10:30:00Z',
-  },
-  {
-    id: '2',
-    userId: 'user1',
+    id: "1",
+    userId: "user123",
     amount: 50,
-    type: 'earned',
-    description: 'YouTube video share',
-    source: 'YouTube',
-    createdAt: '2024-01-14T15:45:00Z',
+    type: "earned",
+    description: "Completed 'First Post' achievement",
+    source: "Achievement",
+    createdAt: "2024-01-20T14:30:00Z",
   },
   {
-    id: '3',
-    userId: 'user1',
+    id: "2",
+    userId: "user123",
     amount: 100,
-    type: 'bonus',
-    description: 'Weekly engagement bonus',
-    source: 'System',
-    createdAt: '2024-01-13T09:00:00Z',
+    type: "earned",
+    description: "Reached 100 followers",
+    source: "Achievement",
+    createdAt: "2024-01-25T09:15:00Z",
+  },
+  {
+    id: "3",
+    userId: "user123",
+    amount: -300,
+    type: "spent",
+    description: "Redeemed 'Free Coffee' reward",
+    source: "Reward Redemption",
+    createdAt: "2024-02-01T16:45:00Z",
+  },
+  {
+    id: "4",
+    userId: "user123",
+    amount: 25,
+    type: "bonus",
+    description: "Daily login bonus",
+    source: "System",
+    createdAt: "2024-02-05T10:00:00Z",
   },
 ];
 
 const RewardsPage = () => {
+  const [points, setPoints] = useState(275);
+  const [rewards, setRewards] = useState(mockRewards);
+  const [achievements, setAchievements] = useState(mockAchievements);
+  const [pointsHistory, setPointsHistory] = useState(mockPointsHistory);
+  const [loading, setLoading] = useState(false);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const userPoints = 750; // This would come from user context in real app
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = (reward: Reward) => {
+    setSelectedReward(reward);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedReward(null);
+  };
 
   const handleClaimReward = (reward: Reward) => {
-    setSelectedReward(reward);
-    setModalOpen(true);
+    if (points >= reward.pointsRequired) {
+      setPoints(points - reward.pointsRequired);
+      setRewards(
+        rewards.map((r) =>
+          r.id === reward.id ? { ...r, available: false, claimed: true } : r
+        )
+      );
+      setPointsHistory([
+        ...pointsHistory,
+        {
+          id: String(Date.now()),
+          userId: "user123",
+          amount: -reward.pointsRequired,
+          type: "spent",
+          description: `Redeemed '${reward.title}' reward`,
+          source: "Reward Redemption",
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+      handleCloseModal();
+    } else {
+      alert("Not enough points to claim this reward.");
+    }
   };
 
-  const handleConfirmClaim = (rewardId: string) => {
-    console.log('Claiming reward:', rewardId);
-    // Implement actual reward claim logic
+  const handleClaimAchievement = (achievement: Achievement) => {
+    if (!achievement.claimed) {
+      setPoints(points + achievement.pointsAwarded);
+      setAchievements(
+        achievements.map((a) =>
+          a.id === achievement.id ? { ...a, claimed: true } : a
+        )
+      );
+      setPointsHistory([
+        ...pointsHistory,
+        {
+          id: String(Date.now()),
+          userId: "user123",
+          amount: achievement.pointsAwarded,
+          type: "earned",
+          description: `Claimed '${achievement.title}' achievement`,
+          source: "Achievement",
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+    }
   };
 
-  const handleClaimAchievement = (achievementId: string) => {
-    console.log('Claiming achievement:', achievementId);
-    // Implement actual achievement claim logic
-  };
-
-  const totalEarned = mockTransactions
-    .filter(t => t.type === 'earned' || t.type === 'bonus')
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const totalSpent = mockTransactions
-    .filter(t => t.type === 'spent')
-    .reduce((sum, t) => sum + t.amount, 0);
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} className="h-48" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <Layout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Rewards & Achievements</h1>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Your Points</CardTitle>
+            <CardDescription>Track your points balance</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold">{points}</div>
             <p className="text-muted-foreground">
-              Earn points through engagement and redeem exciting rewards
+              {pointsHistory.length} transactions
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        {/* Points Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Current Points</CardTitle>
-              <Coins className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{userPoints}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Earned</CardTitle>
-              <Trophy className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">{totalEarned}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{totalSpent}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Achievements</CardTitle>
-              <Badge variant="secondary">
-                {mockAchievements.filter(a => a.completed).length}/{mockAchievements.length}
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {mockAchievements.filter(a => a.completed).length}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Rewards Available</CardTitle>
+            <CardDescription>Explore available rewards</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold">{rewards.filter((r) => r.available).length}</div>
+            <p className="text-muted-foreground">
+              {rewards.length} total rewards
+            </p>
+          </CardContent>
+        </Card>
 
-        {/* Progress Section */}
-        <RewardsProgress rewards={mockRewards} userPoints={userPoints} />
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Achievements</CardTitle>
+            <CardDescription>Track your progress</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold">{achievements.filter((a) => a.completed).length} / {achievements.length}</div>
+            <p className="text-muted-foreground">
+              {achievements.length} total achievements
+            </p>
+          </CardContent>
+        </Card>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="rewards" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="rewards">Available Rewards</TabsTrigger>
-            <TabsTrigger value="achievements">Achievements</TabsTrigger>
-            <TabsTrigger value="history">Points History</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="rewards" className="space-y-4">
-            <RewardsSection 
-              rewards={mockRewards} 
-              userPoints={userPoints} 
-              onClaimReward={handleClaimReward} 
-            />
-          </TabsContent>
-          
-          <TabsContent value="achievements" className="space-y-4">
-            <AchievementsSection 
-              achievements={mockAchievements}
-              onClaimAchievement={handleClaimAchievement}
-            />
-          </TabsContent>
-          
-          <TabsContent value="history" className="space-y-4">
-            <PointsHistory transactions={mockTransactions} />
-          </TabsContent>
-        </Tabs>
-
-        {/* Claim Modal */}
-        <RewardClaimModal
-          reward={selectedReward}
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onClaim={handleConfirmClaim}
-          userPoints={userPoints}
-        />
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Points to Next Reward</CardTitle>
+            <CardDescription>Keep earning points!</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold">{rewards.length > 0 ? Math.max(0, rewards[0].pointsRequired - points) : 0}</div>
+            <p className="text-muted-foreground">
+              Next reward: {rewards.length > 0 ? rewards[0].title : "No rewards available"}
+            </p>
+          </CardContent>
+        </Card>
       </div>
-    </Layout>
+
+      <Tabs defaultValue="rewards" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="rewards">Rewards</TabsTrigger>
+          <TabsTrigger value="achievements">Achievements</TabsTrigger>
+          <TabsTrigger value="history">Points History</TabsTrigger>
+        </TabsList>
+        <TabsContent value="rewards" className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rewards.map((reward) => (
+              <Card key={reward.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">{reward.title}</CardTitle>
+                  <CardDescription>{reward.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <img
+                    src={reward.image}
+                    alt={reward.title}
+                    className="rounded-md mb-3"
+                  />
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      <Gift className="mr-2 h-4 w-4 inline-block" />
+                      {reward.pointsRequired} Points
+                    </p>
+                    {reward.available ? (
+                      <Button onClick={() => handleOpenModal(reward)} size="sm">
+                        Claim Reward
+                      </Button>
+                    ) : (
+                      <Badge variant="secondary">Claimed</Badge>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="achievements" className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {achievements.map((achievement) => (
+              <Card key={achievement.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">{achievement.title}</CardTitle>
+                  <CardDescription>{achievement.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Progress value={achievement.progress} />
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      <Trophy className="mr-2 h-4 w-4 inline-block" />
+                      {achievement.pointsAwarded} Points
+                    </p>
+                    {achievement.completed ? (
+                      achievement.claimed ? (
+                        <Badge variant="secondary">Claimed</Badge>
+                      ) : (
+                        <Button onClick={() => handleClaimAchievement(achievement)} size="sm">
+                          Claim
+                        </Button>
+                      )
+                    ) : (
+                      <Badge variant="outline">In Progress</Badge>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="history" className="space-y-2">
+          <PointsHistory pointsHistory={pointsHistory} />
+        </TabsContent>
+      </Tabs>
+
+      <RewardClaimModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        reward={selectedReward}
+        onClaim={handleClaimReward}
+        points={points}
+      />
+    </div>
   );
 };
 
