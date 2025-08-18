@@ -6,8 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Gift, Trophy, Star, Clock, CheckCircle, Plus, Minus } from "lucide-react";
-import { RewardClaimModal } from "@/components/rewards/RewardClaimModal";
-import { PointsHistory } from "@/components/rewards/PointsHistory";
+import RewardClaimModal from "@/components/rewards/RewardClaimModal";
+import PointsHistory from "@/components/rewards/PointsHistory";
 import type { Reward, Achievement, PointsTransaction } from "@/types/rewards";
 
 const mockRewards: Reward[] = [
@@ -150,8 +150,9 @@ const RewardsPage = () => {
     setSelectedReward(null);
   };
 
-  const handleClaimReward = (reward: Reward) => {
-    if (points >= reward.pointsRequired) {
+  const handleClaimReward = (rewardId: string) => {
+    const reward = rewards.find(r => r.id === rewardId);
+    if (reward && points >= reward.pointsRequired) {
       setPoints(points - reward.pointsRequired);
       setRewards(
         rewards.map((r) =>
@@ -171,8 +172,6 @@ const RewardsPage = () => {
         },
       ]);
       handleCloseModal();
-    } else {
-      alert("Not enough points to claim this reward.");
     }
   };
 
@@ -345,16 +344,16 @@ const RewardsPage = () => {
         </TabsContent>
 
         <TabsContent value="history" className="space-y-2">
-          <PointsHistory pointsHistory={pointsHistory} />
+          <PointsHistory transactions={pointsHistory} />
         </TabsContent>
       </Tabs>
 
       <RewardClaimModal
+        reward={selectedReward}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        reward={selectedReward}
         onClaim={handleClaimReward}
-        points={points}
+        userPoints={points}
       />
     </div>
   );

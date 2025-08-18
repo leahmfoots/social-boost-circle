@@ -29,7 +29,7 @@ import { supabase } from "@/lib/supabase";
 import { Reward } from "@/types/rewards";
 import { Engagement } from "@/types/engagement";
 
-// Mock data with correct properties
+// Mock data with correct properties including 'available'
 const mockRewards: Reward[] = [
   {
     id: "r1",
@@ -37,7 +37,8 @@ const mockRewards: Reward[] = [
     description: "Redeem your points for an Amazon gift card",
     pointsRequired: 500,
     image: "/gift-card.png",
-    category: "Gift Card"
+    category: "Gift Card",
+    available: true
   },
   {
     id: "r2",
@@ -45,7 +46,8 @@ const mockRewards: Reward[] = [
     description: "Upgrade to premium features for one month",
     pointsRequired: 800,
     image: "/premium.png",
-    category: "Subscription"
+    category: "Subscription",
+    available: true
   }
 ];
 
@@ -106,25 +108,9 @@ const Dashboard = () => {
       setUserProfile(profile);
       setUserPoints(profile?.points || 0);
 
-      // Fetch rewards
-      const { data: rewardsData } = await supabase
-        .from('rewards')
-        .select('*')
-        .eq('is_active', true)
-        .order('points_required', { ascending: true })
-        .limit(5);
-
-      setRewards(rewardsData || []);
-
-      // Fetch recent engagements
-      const { data: engagementsData } = await supabase
-        .from('engagements')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('submitted_at', { ascending: false })
-        .limit(5);
-
-      setEngagements(engagementsData || []);
+      // Use mock data for now - replace with real data later
+      setRewards(mockRewards);
+      setEngagements(mockEngagements);
     } catch (error) {
       console.error('Error fetching user data:', error);
     } finally {
