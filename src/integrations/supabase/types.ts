@@ -173,6 +173,102 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_workflows: {
+        Row: {
+          agents: Json
+          config: Json
+          created_at: string | null
+          description: string | null
+          id: string
+          last_run: string | null
+          name: string
+          run_count: number | null
+          status: string
+          success_count: number | null
+          triggers: Json
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          agents?: Json
+          config?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          last_run?: string | null
+          name: string
+          run_count?: number | null
+          status?: string
+          success_count?: number | null
+          triggers?: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          agents?: Json
+          config?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          last_run?: string | null
+          name?: string
+          run_count?: number | null
+          status?: string
+          success_count?: number | null
+          triggers?: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_models: {
+        Row: {
+          capabilities: string[] | null
+          context_length: number | null
+          cost_per_token: number | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          model_type: string | null
+          name: string
+          provider: string
+          status: Database["public"]["Enums"]["system_status"] | null
+          updated_at: string
+          version: string | null
+        }
+        Insert: {
+          capabilities?: string[] | null
+          context_length?: number | null
+          cost_per_token?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          model_type?: string | null
+          name: string
+          provider: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          updated_at?: string
+          version?: string | null
+        }
+        Update: {
+          capabilities?: string[] | null
+          context_length?: number | null
+          cost_per_token?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          model_type?: string | null
+          name?: string
+          provider?: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          updated_at?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       ai_tools: {
         Row: {
           categories: string[] | null
@@ -437,6 +533,48 @@ export type Database = {
           },
         ]
       }
+      budgets: {
+        Row: {
+          alert_threshold: number | null
+          alerts_enabled: boolean | null
+          amount: number
+          created_at: string
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          period: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          alert_threshold?: number | null
+          alerts_enabled?: boolean | null
+          amount: number
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          period?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Update: {
+          alert_threshold?: number | null
+          alerts_enabled?: boolean | null
+          amount?: number
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          period?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       categories_enhanced: {
         Row: {
           color_hex: string | null
@@ -607,6 +745,135 @@ export type Database = {
           video_id?: string
           video_title?: string | null
           video_url?: string
+        }
+        Relationships: []
+      }
+      context7_libraries: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          language: string | null
+          last_updated: string | null
+          metadata: Json | null
+          name: string
+          popularity_score: number | null
+          version: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string | null
+          last_updated?: string | null
+          metadata?: Json | null
+          name: string
+          popularity_score?: number | null
+          version?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string | null
+          last_updated?: string | null
+          metadata?: Json | null
+          name?: string
+          popularity_score?: number | null
+          version?: string | null
+        }
+        Relationships: []
+      }
+      conversion_jobs: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          file_url: string | null
+          id: string
+          model_name: string
+          optimizations: string[] | null
+          progress: number | null
+          result_url: string | null
+          source_format: string
+          status: string
+          target_format: string
+          target_platform: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          model_name: string
+          optimizations?: string[] | null
+          progress?: number | null
+          result_url?: string | null
+          source_format: string
+          status?: string
+          target_format: string
+          target_platform: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          model_name?: string
+          optimizations?: string[] | null
+          progress?: number | null
+          result_url?: string | null
+          source_format?: string
+          status?: string
+          target_format?: string
+          target_platform?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      cost_entries: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string | null
+          date: string
+          id: string
+          metadata: Json | null
+          provider: string
+          service_type: string
+          usage_amount: number | null
+          usage_units: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string | null
+          date?: string
+          id?: string
+          metadata?: Json | null
+          provider: string
+          service_type: string
+          usage_amount?: number | null
+          usage_units?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string | null
+          date?: string
+          id?: string
+          metadata?: Json | null
+          provider?: string
+          service_type?: string
+          usage_amount?: number | null
+          usage_units?: string | null
         }
         Relationships: []
       }
@@ -870,6 +1137,54 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      model_requests: {
+        Row: {
+          cost: number | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          latency_ms: number | null
+          metadata: Json | null
+          model_id: string
+          prompt: string
+          provider: string
+          response: string | null
+          status: string
+          tokens_used: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cost?: number | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model_id: string
+          prompt: string
+          provider: string
+          response?: string | null
+          status?: string
+          tokens_used?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cost?: number | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model_id?: string
+          prompt?: string
+          provider?: string
+          response?: string | null
+          status?: string
+          tokens_used?: number | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1355,6 +1670,102 @@ export type Database = {
         }
         Relationships: []
       }
+      repositories: {
+        Row: {
+          auto_update: boolean | null
+          clone_url: string | null
+          created_at: string
+          default_branch: string | null
+          description: string | null
+          full_name: string
+          github_url: string | null
+          id: string
+          is_trending: boolean | null
+          language: string | null
+          last_sync: string | null
+          name: string
+          size_mb: number | null
+          stars: number | null
+          status: Database["public"]["Enums"]["repository_status"] | null
+          updated_at: string
+        }
+        Insert: {
+          auto_update?: boolean | null
+          clone_url?: string | null
+          created_at?: string
+          default_branch?: string | null
+          description?: string | null
+          full_name: string
+          github_url?: string | null
+          id?: string
+          is_trending?: boolean | null
+          language?: string | null
+          last_sync?: string | null
+          name: string
+          size_mb?: number | null
+          stars?: number | null
+          status?: Database["public"]["Enums"]["repository_status"] | null
+          updated_at?: string
+        }
+        Update: {
+          auto_update?: boolean | null
+          clone_url?: string | null
+          created_at?: string
+          default_branch?: string | null
+          description?: string | null
+          full_name?: string
+          github_url?: string | null
+          id?: string
+          is_trending?: boolean | null
+          language?: string | null
+          last_sync?: string | null
+          name?: string
+          size_mb?: number | null
+          stars?: number | null
+          status?: Database["public"]["Enums"]["repository_status"] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_content: {
+        Row: {
+          created_at: string
+          description: string | null
+          engagement_score: number | null
+          id: string
+          is_trending: boolean | null
+          metadata: Json | null
+          source: Database["public"]["Enums"]["research_source"]
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          engagement_score?: number | null
+          id?: string
+          is_trending?: boolean | null
+          metadata?: Json | null
+          source: Database["public"]["Enums"]["research_source"]
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          engagement_score?: number | null
+          id?: string
+          is_trending?: boolean | null
+          metadata?: Json | null
+          source?: Database["public"]["Enums"]["research_source"]
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       review_votes: {
         Row: {
           created_at: string | null
@@ -1487,6 +1898,87 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          created_at: string
+          id: string
+          last_check: string | null
+          metadata: Json | null
+          name: string
+          status: Database["public"]["Enums"]["system_status"] | null
+          updated_at: string
+          uptime_percentage: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_check?: string | null
+          metadata?: Json | null
+          name: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          updated_at?: string
+          uptime_percentage?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_check?: string | null
+          metadata?: Json | null
+          name?: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          updated_at?: string
+          uptime_percentage?: number | null
+        }
+        Relationships: []
+      }
+      social_intelligence: {
+        Row: {
+          content: string | null
+          content_id: string
+          content_type: string
+          created_at: string | null
+          engagement_metrics: Json | null
+          extracted_at: string | null
+          id: string
+          metadata: Json | null
+          platform: string
+          sentiment_score: number | null
+          title: string | null
+          trending_score: number | null
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          content_id: string
+          content_type: string
+          created_at?: string | null
+          engagement_metrics?: Json | null
+          extracted_at?: string | null
+          id?: string
+          metadata?: Json | null
+          platform: string
+          sentiment_score?: number | null
+          title?: string | null
+          trending_score?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          content_id?: string
+          content_type?: string
+          created_at?: string | null
+          engagement_metrics?: Json | null
+          extracted_at?: string | null
+          id?: string
+          metadata?: Json | null
+          platform?: string
+          sentiment_score?: number | null
+          title?: string | null
+          trending_score?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       stories: {
         Row: {
           content: string
@@ -1530,6 +2022,141 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      system_logs: {
+        Row: {
+          component: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          level: Database["public"]["Enums"]["log_level"]
+          message: string
+        }
+        Insert: {
+          component?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          level: Database["public"]["Enums"]["log_level"]
+          message: string
+        }
+        Update: {
+          component?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          level?: Database["public"]["Enums"]["log_level"]
+          message?: string
+        }
+        Relationships: []
+      }
+      system_metrics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_value: number
+          recorded_at: string
+          status: Database["public"]["Enums"]["system_status"] | null
+          unit: string | null
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_value: number
+          recorded_at?: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          unit?: string | null
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_value?: number
+          recorded_at?: string
+          status?: Database["public"]["Enums"]["system_status"] | null
+          unit?: string | null
+        }
+        Relationships: []
+      }
+      system_monitoring: {
+        Row: {
+          cpu_usage: number | null
+          error_rate: number | null
+          id: string
+          memory_usage: number | null
+          metadata: Json | null
+          response_time_ms: number | null
+          service_name: string
+          status: string
+          throughput: number | null
+          timestamp: string | null
+        }
+        Insert: {
+          cpu_usage?: number | null
+          error_rate?: number | null
+          id?: string
+          memory_usage?: number | null
+          metadata?: Json | null
+          response_time_ms?: number | null
+          service_name: string
+          status: string
+          throughput?: number | null
+          timestamp?: string | null
+        }
+        Update: {
+          cpu_usage?: number | null
+          error_rate?: number | null
+          id?: string
+          memory_usage?: number | null
+          metadata?: Json | null
+          response_time_ms?: number | null
+          service_name?: string
+          status?: string
+          throughput?: number | null
+          timestamp?: string | null
+        }
+        Relationships: []
+      }
+      system_updates: {
+        Row: {
+          available_version: string | null
+          changelog: string | null
+          completed_at: string | null
+          component: string
+          created_at: string
+          current_version: string | null
+          id: string
+          scheduled_at: string | null
+          update_status: string | null
+          update_url: string | null
+        }
+        Insert: {
+          available_version?: string | null
+          changelog?: string | null
+          completed_at?: string | null
+          component: string
+          created_at?: string
+          current_version?: string | null
+          id?: string
+          scheduled_at?: string | null
+          update_status?: string | null
+          update_url?: string | null
+        }
+        Update: {
+          available_version?: string | null
+          changelog?: string | null
+          completed_at?: string | null
+          component?: string
+          created_at?: string
+          current_version?: string | null
+          id?: string
+          scheduled_at?: string | null
+          update_status?: string | null
+          update_url?: string | null
+        }
+        Relationships: []
       }
       tool_comparisons: {
         Row: {
@@ -2419,6 +3046,45 @@ export type Database = {
         }
         Relationships: []
       }
+      workflows: {
+        Row: {
+          config: Json
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          last_run: string | null
+          name: string
+          run_count: number | null
+          success_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          name: string
+          run_count?: number | null
+          success_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          name?: string
+          run_count?: number | null
+          success_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -2427,7 +3093,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      log_level: "info" | "warning" | "error" | "success"
+      repository_status: "synced" | "syncing" | "error" | "pending"
+      research_source: "youtube" | "github" | "reddit" | "openrouter"
+      system_status: "online" | "warning" | "error" | "maintenance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2554,6 +3223,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      log_level: ["info", "warning", "error", "success"],
+      repository_status: ["synced", "syncing", "error", "pending"],
+      research_source: ["youtube", "github", "reddit", "openrouter"],
+      system_status: ["online", "warning", "error", "maintenance"],
+    },
   },
 } as const
