@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import DashboardStatsGrid from "@/components/DashboardStatsGrid";
-import EngagementChart from "@/components/analytics/EngagementChart";
+import { EngagementChart } from "@/components/analytics/EngagementChart";
 import RewardsProgress from "@/components/rewards/RewardsProgress";
 import { ContentSuggestions } from "@/components/ai/ContentSuggestions";
 import { AdvancedSearch } from "@/components/search/AdvancedSearch";
@@ -179,7 +179,11 @@ const Dashboard = () => {
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <EngagementChart />
+              <EngagementChart data={engagements.map(e => ({
+                date: new Date(e.submitted_at || '').toLocaleDateString(),
+                engagements: 1,
+                points: e.points_value || 0
+              }))} />
               <RewardsProgress rewards={rewards} userPoints={userPoints} />
             </div>
             
